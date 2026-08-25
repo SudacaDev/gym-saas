@@ -26,12 +26,13 @@
     - id: T-20260825-006
     - type: ui
     - contexto: hoy "Horarios" (T-20260821-004) tiene una única vista — grilla semanal de 7 columnas (`features/schedules-page/`). Se pide agregar un selector de 3 vistas (tabla, kanban, calendario) que cambien cómo se muestran los mismos horarios.
-    - open_questions (no asumir, resolver antes de `#run`):
-      1. "Mostrar esas 3 variables al hacer click" — ¿es un typo por "vistas" (cambiar cómo se renderizan los mismos horarios al clickear cada botón), o "variables" es literal (cada botón revela un dato/métrica distinto)? Se asume lectura de "vistas" por ser la más consistente con "tabla/kanban/calendario", pero hay que confirmarlo antes de construir nada.
-      2. La grilla semanal actual (T-20260821-004) — ¿cuenta como una de las 3 vistas (probablemente "tabla") y se agregan kanban+calendario nuevas, o las 3 se construyen de cero reemplazando la vista actual?
-      3. Vista "kanban" — ¿columnas por día de la semana con las clases como cards? ¿O por otra dimensión (actividad, instructor)?
-      4. Vista "calendario" — ¿grilla mensual tipo calendario, o es la misma semanal pero con otro estilo visual? ¿Difiere de la grilla semanal ya existente?
-      5. ¿Cuál vista queda como default al entrar a la pantalla?
+    - decisiones confirmadas con el usuario (`AskUserQuestion`, 2026-08-25):
+      1. "3 variables" = typo por **"vistas"** — los 3 botones cambian cómo se renderizan los mismos horarios, no revelan datos distintos.
+      2. La grilla semanal existente **se reusa como la vista "tabla"** — no se reemplaza. Kanban y calendario se agregan como nuevas.
+      3. Kanban: **columnas por día de la semana** (Lunes...Domingo), las clases de ese día como cards.
+      4. Calendario: **grilla mensual** tipo Google Calendar — un mes, las clases recurrentes aparecen en cada día que corresponde según `dayOfWeek`.
+      5. Vista default: sin preguntar explícitamente — decisión propia, se mantiene **"tabla"** como default (es la vista ya existente, cambiar el default sería una regresión de UX no pedida).
+    - open_questions: ninguna restante — lista para `#run`.
     - severity_flag: `low`/`medium` — solo UI sobre datos ya existentes de `class_schedules`, sin dato sensible nuevo ni cambio de schema esperado.
     - depends_on: T-20260821-004 (completada)
 
