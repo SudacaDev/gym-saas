@@ -1,0 +1,2 @@
+ALTER TABLE "staff_members" ADD COLUMN "username" text NOT NULL;--> statement-breakpoint
+CREATE UNIQUE INDEX "staff_members_tenant_id_username_unique" ON "staff_members" USING btree ("tenant_id","username");

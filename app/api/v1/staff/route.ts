@@ -25,6 +25,7 @@ export async function GET() {
           firstName: schema.users.firstName,
           lastName: schema.users.lastName,
           email: schema.users.email,
+          username: schema.staffMembers.username,
           staffCategory: schema.staffMembers.staffCategory,
           phone: schema.staffMembers.phone,
           dni: schema.staffMembers.dni,
@@ -53,11 +54,20 @@ export async function GET() {
 // Owner-only: creating a real Supabase Auth account is HR-sensitive, same
 // tier as the money-adjacent owner-only writes elsewhere (plans POST).
 //
+// As of T-20260825-002, the owner defines the account's email+password
+// directly in the form (admin.auth.admin.createUser, email_confirm: true)
+// — this REPLACES the invite-by-email design from T-20260821-007, where
+// Supabase sent an invite and the new hire set their own password. The
+// owner now knows the employee's credential, a known security tradeoff
+// confirmed explicitly by the user (see gate T-20260825-002). Login stays
+// single-factor (email+password) — no design choice here hardcodes that
+// assumption in a way that would block adding 2FA later; 2FA itself is
+// out of scope for this pass.
+//
 // Transactional-with-compensation: the Supabase Auth account is created
-// first (via invite, so the new hire sets their own password — the owner
-// never handles it), then the local `users`/`staff_members` rows. If either
-// DB insert fails, the just-created auth account is deleted so we never
-// leave an orphaned Supabase Auth user with no matching business record.
+// first, then the local `users`/`staff_members` rows. If either DB insert
+// fails, the just-created auth account is deleted so we never leave an
+// orphaned Supabase Auth user with no matching business record.
 export async function POST(request: Request) {
   try {
     const context = await getTenantContext();
@@ -70,18 +80,20 @@ export async function POST(request: Request) {
     }
 
     const admin = createAdminClient();
-    const { data: invited, error: inviteError } = await admin.auth.admin.inviteUserByEmail(
-      parsed.data.email,
-    );
+    const { data: created, error: createError } = await admin.auth.admin.createUser({
+      email: parsed.data.email,
+      password: parsed.data.password,
+      email_confirm: true,
+    });
 
-    if (inviteError || !invited?.user) {
+    if (createError || !created?.user) {
       return NextResponse.json(
-        { error: `No se pudo invitar la cuenta: ${inviteError?.message ?? "error desconocido"}` },
+        { error: `No se pudo crear la cuenta: ${createError?.message ?? "error desconocido"}` },
         { status: 400 },
       );
     }
 
-    const authUserId = invited.user.id;
+    const authUserId = created.user.id;
 
     try {
       const staffMember = await withTenantContext(context.tenantId, context.role, async (tx) => {
@@ -103,6 +115,7 @@ export async function POST(request: Request) {
             tenantId: context.tenantId,
             userId: userRow.id,
             staffCategory: parsed.data.staffCategory,
+            username: parsed.data.username,
             phone: parsed.data.phone,
             dni: parsed.data.dni,
             hireDate: parsed.data.hireDate || null,
