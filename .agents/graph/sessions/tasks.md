@@ -22,32 +22,42 @@
 
 ## Backlog del proyecto
 ### Tareas pendientes
-- [ ] Horarios (vista Tabla): botón "+ Agregar franja horaria" para crear una fila nueva a demanda
+- [ ] Horarios (vista Tabla): rango de filas derivado de los propios horarios del owner (min–max + relleno horario), sin default universal por tipo de negocio
+    - id: T-20260825-009
+    - type: ui
+    - **supersede a T-20260825-008** (no correr esa, queda documentada abajo como historial de la discusión, no como plan vigente).
+    - contexto: el usuario vio la recomendación de T-008 ("+ Agregar franja horaria" a demanda) y contraargumentó con el patrón de Google Calendar — la grilla debería existir desde el primer momento, sin un click extra para "crear" una fila. Se reenganchó a `uiux-designer` con ese contraargumento específico (no se le pidió que le diera la razón porque sí, se le pidió que lo repiense en serio). Segunda pasada, honesta, cambió de recomendación:
+      - Reconoce que el bloque vacío de T-007 (`bg-secondary/30` + ícono, no una caja pelada) hace que el argumento de "ruido visual" de la primera pasada fuera más débil de lo que pensó.
+      - Reconoce que el peor caso de T-008 (botón a demanda) es un gym nuevo sin ninguna clase cargada: ahí ni siquiera aparece una fila resolviendo algo, es fricción pura en el peor momento (onboarding).
+      - Sigue rechazando un rango universal igual para todos los tenants (ej. 06:00–22:00 fijo) — y ahí es donde entra el punto que agregó el usuario en esta vuelta: **un gym común, un box de CrossFit y un estudio de salsa tienen patrones horarios totalmente distintos**, así que cualquier rango "adivinado" por el equipo (aunque sea razonable para un caso) va a quedar mal para otro tipo de negocio.
+    - **Diseño acordado:** las filas de la tabla ya no salen de los `startTime` exactos que existen (como hoy) — se calculan entre la hora más temprana (`startTime` mínimo) y la más tardía (`endTime` máximo) de los horarios YA cargados por ese owner, completando cada hora intermedia aunque no tenga clase (ej. si hay clases a las 06:00 y 08:00, también aparece la fila de las 07:00, vacía y clickeable). Contenido 100% por lo que el propio owner definió — nada inventado por el equipo ni un default "de gimnasio típico" que no le calce a un box o un estudio de baile.
+    - **Caso "cero horarios cargados" — verificado en el código, no es un problema real:** `features/schedules-page/index.tsx` ya gatea las 3 vistas (incluida Tabla) detrás de `schedules.length === 0` — si el tenant no cargó ningún horario todavía, se muestra `"Todavía no cargaste horarios."` y `ScheduleTableView` ni siquiera se renderiza. Por lo tanto el rango de filas *siempre* se calcula con al menos un horario real ya cargado — no hace falta ningún rango "bootstrap"/default para el estado vacío, la propuesta anterior de "07:00–21:00 por default" (segunda pasada de UX) queda descartada por innecesaria, no solo por indeseable.
+    - decisiones confirmadas con el usuario (`AskUserQuestion`, 2026-08-25):
+      1. **Paso entre horas: 1 hora fija.**
+    - open_question sin resolver — **el usuario pidió explícitamente dejarla para después, no forzar una decisión ahora**: ¿el relleno de horas intermedias vacías se calcula sobre TODOS los días combinados (un rango único para toda la semana) o por columna/día (cada día puede tener su propio rango, ej. sábado con horario reducido)? El propio usuario señaló que esto varía mucho según el tipo de negocio (gym vs box de CrossFit vs estudio de salsa) — es justo la razón por la que el diseño ya deriva todo de lo que el owner carga, así que no conviene apurar esta parte con un default improvisado. **No hacer `#run` de esta tarea hasta que esta pregunta se cierre.**
+    - severity_flag: sin definir todavía (UI pura, sin schema — probablemente `low`/`medium`)
+    - depends_on: T-20260825-007 (completada — reusa su mecanismo de celda vacía clickeable)
+
+- [ ] ~~Horarios (vista Tabla): botón "+ Agregar franja horaria" para crear una fila nueva a demanda~~ — **superseded por T-20260825-009, no correr**
     - id: T-20260825-008
     - type: ui
-    - contexto: usuario preguntó si la tabla debería mostrar filas hasta una hora de cierre (fija o configurable por el dueño) para poder agregar horarios "desde cero". Convocados `uiux-designer` + `backend-developer` en paralelo (2026-08-25) — ambos convergen en **no** a las dos ideas originales del usuario:
-      - No a un rango fijo de filas (ej. 06:00–22:00 pre-renderizado): rompe la densidad visual (la mitad de la grilla vacía la mayor parte del tiempo, en las 7 columnas), va contra la regla de `DESIGN.md` de que cada elemento tiene que justificar su lugar.
-      - No a `opening_time`/`closing_time` configurable por tenant (nuevo campo en `tenants` + pantalla de settings): mucho costo de infraestructura (migración, validación, UI nueva) para un problema no validado, y no cubre bien casos como box 24hs o fin de semana distinto (nota de backend, por si esto se revisita: si algún día se hace, `nullable` sin backfill inventado, `time` sin timezone, constraint DB `opening < closing`, `owner`-only — no repetir el patrón de `short_code` que sí backfillea, acá sería inventarle al dueño un dato de negocio falso).
-      - **Recomendación elegida:** un botón "+ Agregar franja horaria" (outline/ghost) en la tabla. Al clickearlo, el dueño elige una hora y se agrega una fila nueva **solo en estado local** (no se persiste nada hasta cargar la primera clase ahí) — esa fila reusa 100% el mecanismo de celda vacía clickeable que ya construyó T-20260825-007, sin tocar schema ni crear un segundo camino paralelo.
-    - fuera de alcance de esta tarea (anotado por UX, no pedido, no implementar acá): mismo patrón de "click en vacío → diálogo prefilled" en la columna vacía de la vista Kanban (hoy solo muestra "—" sin acción) — inconsistencia real entre vistas, pero es su propia tarea si el usuario la pide.
-    - severity_flag: sin definir todavía (UI pura, sin schema — probablemente `low`/`medium`, a confirmar contra `gates/policy.yml`)
-    - depends_on: T-20260825-007 (completada — reusa su mecanismo de celda vacía)
-
-- [ ] Fichaje de staff: registrar horario de entrada/salida (clock-in/clock-out)
-    - id: T-20260825-005
-    - type: schema+feature
-    - contexto: spinoff de T-20260825-002 — el usuario pidió originalmente "registrar horario de entrada/salida" como parte del alta de staff; confirmado (`AskUserQuestion`, 2026-08-25) que se separa en tarea propia porque es fichaje real, no dos columnas sueltas.
-    - decisiones confirmadas con el usuario (`AskUserQuestion`, 2026-08-25):
-      1. **Lo carga el owner/otro staff por él** — no hay autoservicio, no hace falta una pantalla propia para que cada staff marque su propia entrada/salida en esta primera vuelta.
-      2. **Fila abierta que se cierra**: fichar entrada crea una fila con `clock_in` y `clock_out=NULL`; fichar salida actualiza esa misma fila — mismo patrón que `checkins`/`checkedOutAt`.
-      3. **Sí, con listado básico** — se agrega una vista mínima de historial de fichajes (ej. en la ficha de cada staff), no solo el dato guardado sin UI de consulta.
-    - open_questions: ninguna restante — lista para `#run`.
-    - severity_flag: `medium` — toca datos de asistencia de cuentas reales de staff, cargados por un tercero (owner/staff), no por la propia persona.
-    - depends_on: T-20260825-002 (completada — ya no bloquea)
+    - motivo del reemplazo: el usuario contraargumentó con el patrón de Google Calendar (grilla siempre visible, sin un click extra para "crear" la fila) y el equipo, al repensarlo en serio, cambió de recomendación — ver T-20260825-009 para el diseño vigente. Queda acá solo como historial de la discusión (primera recomendación del equipo, luego revisada), no como tarea a ejecutar.
+    - contexto original (primera pasada del equipo, ya no vigente): convocados `uiux-designer` + `backend-developer` en paralelo, recomendaron un botón "+ Agregar franja horaria" que agregaba una fila en estado local hasta guardar la primera clase ahí, y rechazaron tanto un rango fijo universal como un campo `opening_time`/`closing_time` configurable en `tenants` (esa parte del análisis de backend — no repetir el patrón de `short_code` que backfillea, acá sería inventarle al dueño un dato de negocio falso — sigue siendo válida si el tema de horario configurable se revisita en el futuro).
+    - depends_on: T-20260825-007 (completada)
 
 ### Tareas en curso
 
 ### Tareas completadas (referenciar en `progress.md`)
+- [x] Fichaje de staff: registrar horario de entrada/salida (clock-in/clock-out)
+    - id: T-20260825-005
+    - type: schema+feature
+    - decisiones confirmadas con el usuario (`AskUserQuestion`, 2026-08-25): lo carga el owner/otro staff por él (sin autoservicio); fila abierta que se cierra (`clockIn`+`clockOut` nullable, mismo patrón que `checkins.checkedOutAt`); listado básico de historial en esta primera vuelta.
+    - path: `db/schema/staff-attendance.ts` (nuevo), `db/policies/0007_staff_attendance_rls.sql`, `db/migrations/0013_old_paladin.sql`, `lib/validations/staff-attendance.schema.ts` (nuevo), `app/api/v1/staff/[id]/attendance/route.ts` (nuevo — GET historial + POST fichar entrada), `app/api/v1/staff/[id]/attendance/[attendanceId]/route.ts` (nuevo — PATCH fichar salida), `app/api/v1/staff/route.ts` (+`openAttendanceId`), `features/staff-page/index.tsx` + `types.ts`, `features/staff-page/components/staff-attendance-dialog.tsx` (nuevo) + `.module.css`.
+    - description: Tabla `staff_attendance` — FK a `staffMembers.id` (no a `users.id`, es dato de RR.HH./turno específico del rol staff), RLS `tenant_isolation` estándar. **Decisión de alcance (no pedida explícitamente, documentada en el gate):** no existe pantalla de detalle por staff (a diferencia de socios) — el historial vive en un diálogo por fila en la tabla de "Equipo", no se construyó una página nueva. **Permisos: owner+staff, no owner-only** — se mantiene así a pesar de que T-20260825-001 restringió el roster (`GET /api/v1/staff`) a owner-only, porque la propia decisión #1 de esta tarea dice explícitamente "el owner **o otro staff**" ficha — restringir a owner-only hubiera contradicho eso. Gap señalado: hoy en la práctica solo el owner llega a esta UI, porque `(owner)/layout.tsx` ya redirige a staff fuera de todo el route group (mismo gap heredado que T-20260825-001 documentó). `GET /api/v1/staff` gana `openAttendanceId` (subquery correlacionada) para que la UI sepa el estado fichado/no-fichado de cada fila sin un round-trip extra por fila. De paso, se corrigió un bug real: `StaffFormDialog` (edición) no devolvía `openAttendanceId`, así que "Editar" borraba ese estado en memoria — corregido preservándolo localmente. `tsc`/`eslint` limpios; `test:unit` 29-31/34 (fallas por `PostgresError` de pool de conexiones, ambiental, confirmado sin relación a los archivos tocados).
+    - gate: `graph/gates/pending/T-20260825-005.md` — `medium`/async. `npm run db:migrate` no corrido (migración `0013` pendiente de aprobación).
+    - commit: `25ebac7`
+    - depends_on: T-20260825-002 (completada)
+
 - [x] Horarios (vista Tabla): click en un bloque vacío de la grilla día×hora abre el diálogo de "Nuevo horario" con día/hora ya cargados
     - id: T-20260825-007
     - type: ui
