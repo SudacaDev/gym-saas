@@ -1,0 +1,101 @@
+@reference "../../app/globals.css";
+
+.container {
+  @apply space-y-6;
+}
+
+.title {
+  @apply font-heading text-3xl uppercase tracking-tight;
+}
+
+.resultBanner {
+  @apply rounded-xl border-2 px-6 py-5 text-center;
+}
+
+.resultBannerSuccess {
+  @apply border-status-success-fg bg-status-success-bg;
+}
+
+.resultBannerError {
+  @apply border-status-danger-fg bg-status-danger-bg;
+}
+
+.resultTitle {
+  @apply font-heading text-2xl uppercase tracking-tight;
+}
+
+.resultTitleSuccess {
+  @apply text-status-success-fg;
+}
+
+.resultTitleError {
+  @apply text-status-danger-fg;
+}
+
+.resultMessage {
+  @apply mt-1 text-lg text-foreground;
+}
+
+.searchInput {
+  @apply h-12 text-lg;
+}
+
+.errorText {
+  @apply text-sm text-destructive;
+}
+
+.emptyText {
+  @apply text-sm text-muted-foreground;
+}
+
+.list {
+  @apply divide-y divide-border-subtle overflow-hidden rounded-xl border border-border;
+}
+
+.listItem {
+  @apply flex flex-wrap items-center justify-between gap-3 bg-card px-4 py-4;
+}
+
+.memberInfo {
+  @apply flex flex-wrap items-center gap-3;
+}
+
+.memberName {
+  @apply text-lg font-semibold;
+}
+
+.memberShortCode {
+  @apply font-mono text-xs tracking-wide text-muted-foreground;
+}
+
+.insidePanel {
+  @apply overflow-hidden rounded-xl border border-border;
+}
+
+.insidePanelHeader {
+  @apply flex items-center justify-between border-b border-border-subtle bg-card px-4 py-3;
+}
+
+.insidePanelTitle {
+  @apply font-heading text-xs tracking-widest text-muted-foreground uppercase;
+}
+
+.insidePanelCount {
+  @apply font-heading text-lg text-primary;
+}
+
+.insideList {
+  @apply divide-y divide-border-subtle;
+}
+
+.insideRow {
+  @apply flex items-center justify-between bg-card px-4 py-2.5 text-sm;
+}
+
+.insideName {
+  @apply font-semibold;
+}
+
+.insideTime {
+  @apply text-muted-foreground;
+}

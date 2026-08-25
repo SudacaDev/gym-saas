@@ -1,0 +1,69 @@
+@reference "../../app/globals.css";
+
+.loadingText {
+  @apply text-sm text-muted-foreground;
+}
+
+.notFoundContainer {
+  @apply space-y-4;
+}
+
+.errorText {
+  @apply text-sm text-destructive;
+}
+
+.simpleLink {
+  @apply text-sm underline;
+}
+
+.container {
+  @apply space-y-8;
+}
+
+.backLink {
+  @apply text-sm text-muted-foreground hover:text-primary hover:underline;
+}
+
+.title {
+  @apply mt-2 font-heading text-3xl uppercase tracking-tight;
+}
+
+.infoList {
+  @apply mt-1 flex gap-6 text-sm text-muted-foreground;
+}
+
+.infoLabel {
+  @apply inline font-medium;
+}
+
+.infoValue {
+  @apply inline;
+}
+
+.shortCode {
+  @apply font-mono tracking-wide;
+}
+
+.section {
+  @apply space-y-3;
+}
+
+.sectionHeader {
+  @apply flex items-center justify-between;
+}
+
+.sectionTitle {
+  @apply text-xs font-bold tracking-widest text-muted-foreground uppercase;
+}
+
+.emptyText {
+  @apply text-sm text-muted-foreground;
+}
+
+.actionsHead {
+  @apply text-right;
+}
+
+.actions {
+  @apply flex justify-end gap-2;
+}
