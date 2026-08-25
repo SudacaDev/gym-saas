@@ -1,0 +1,25 @@
+@reference "../../../app/globals.css";
+
+.errorText {
+  @apply text-sm text-destructive;
+}
+
+.emptyText {
+  @apply text-sm text-muted-foreground;
+}
+
+.list {
+  @apply max-h-64 space-y-1 overflow-y-auto;
+}
+
+.row {
+  @apply flex items-center justify-between rounded-lg border border-border-subtle bg-muted/50 px-2.5 py-1.5 text-sm;
+}
+
+.date {
+  @apply font-medium text-foreground;
+}
+
+.times {
+  @apply text-muted-foreground;
+}

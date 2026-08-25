@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { eq, isNull } from "drizzle-orm";
+import { eq, isNull, sql } from "drizzle-orm";
 import { getTenantContext } from "@/lib/auth/get-tenant-context";
 import { requireRole } from "@/lib/auth/require-role";
 import { withTenantContext } from "@/db/rls-context";
@@ -39,6 +39,19 @@ export async function GET() {
           shift: schema.staffMembers.shift,
           createdAt: schema.staffMembers.createdAt,
           deletedAt: schema.staffMembers.deletedAt,
+          // T-20260825-005: this person's currently-open (not-yet-clocked-out)
+          // staff_attendance row id, if any — a scalar correlated subquery
+          // instead of N calls to GET /api/v1/staff/[id]/attendance (one
+          // per row rendered). Chosen over a plain boolean because the
+          // "Fichar salida" row action needs this exact id to PATCH
+          // /api/v1/staff/[id]/attendance/[attendanceId] directly, so this
+          // also saves a "fetch the open row first" round-trip on click.
+          openAttendanceId: sql<string | null>`(
+            SELECT ${schema.staffAttendance.id} FROM ${schema.staffAttendance}
+            WHERE ${schema.staffAttendance.staffMemberId} = ${schema.staffMembers.id}
+              AND ${schema.staffAttendance.clockOut} IS NULL
+            LIMIT 1
+          )`,
         })
         .from(schema.staffMembers)
         .innerJoin(schema.users, eq(schema.staffMembers.userId, schema.users.id))

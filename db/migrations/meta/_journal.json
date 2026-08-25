@@ -92,6 +92,13 @@
       "when": 1787673659286,
       "tag": "0012_melted_lethal_legion",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1787690230858,
+      "tag": "0013_old_paladin",
+      "breakpoints": true
     }
   ]
 }
