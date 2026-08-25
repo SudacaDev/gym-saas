@@ -59,6 +59,7 @@ describe.skipIf(!process.env.DATABASE_URL)(
             .values({
               tenantId: tenant.id,
               shortCode: "PY01TT",
+              checkinCode: "990011",
               firstName: "Pay",
               lastName: "Test",
             })

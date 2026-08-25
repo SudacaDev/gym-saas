@@ -12,6 +12,7 @@ loadEnv({ path: join(__dirname, "..", "..", ".env.local") });
 import { getDb, schema } from "@/db/client";
 import { withTenantContext } from "@/db/rls-context";
 import { generateShortCode } from "@/lib/members/generate-short-code";
+import { generateCheckinCode } from "@/lib/members/generate-checkin-code";
 
 /**
  * Mirrors app/api/v1/checkins/[id]/route.ts's PATCH handler: sets
@@ -51,6 +52,7 @@ describe.skipIf(!process.env.DATABASE_URL)("check-out", () => {
         .values({
           tenantId: tenant.id,
           shortCode: generateShortCode(),
+          checkinCode: generateCheckinCode(),
           firstName: "Socio",
           lastName: "Test",
         })

@@ -13,6 +13,7 @@ import { getDb, schema } from "@/db/client";
 import { withTenantContext } from "@/db/rls-context";
 import { getDashboardMetrics } from "@/lib/dashboard/metrics";
 import { generateShortCode } from "@/lib/members/generate-short-code";
+import { generateCheckinCode } from "@/lib/members/generate-checkin-code";
 
 /**
  * Proves app/(owner)/dashboard's 4 headline metrics against known, seeded
@@ -66,6 +67,7 @@ describe.skipIf(!process.env.DATABASE_URL)("dashboard metrics", () => {
         .values({
           tenantId: tenant.id,
           shortCode: generateShortCode(),
+          checkinCode: generateCheckinCode(),
           firstName: "Vence",
           lastName: "Pronto",
         })
@@ -90,6 +92,7 @@ describe.skipIf(!process.env.DATABASE_URL)("dashboard metrics", () => {
         .values({
           tenantId: tenant.id,
           shortCode: generateShortCode(),
+          checkinCode: generateCheckinCode(),
           firstName: "Vencido",
           lastName: "Test",
         })

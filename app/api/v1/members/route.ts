@@ -7,12 +7,17 @@ import { schema } from "@/db/client";
 import { memberSchema } from "@/lib/validations/member.schema";
 import { handleApiError, isUniqueViolation } from "@/lib/api/handle-api-error";
 import { generateShortCode } from "@/lib/members/generate-short-code";
+import { generateCheckinCode } from "@/lib/members/generate-checkin-code";
 import type { Member } from "@/db/schema/members";
 
-// Small collision-retry budget for the generated short code (T-20260825-003)
-// — see generate-short-code.ts's docstring for why this should almost
-// never actually retry (45.7M combinations per tenant).
-const SHORT_CODE_MAX_ATTEMPTS = 5;
+// Small collision-retry budget shared by both generated per-tenant codes
+// (T-20260825-003's shortCode, T-20260825-004's checkinCode) — see their
+// respective generate-*.ts docstrings for why this should almost never
+// actually retry (45.7M / 1M combinations per tenant respectively). On any
+// collision, both codes are regenerated together rather than only the one
+// that collided — simpler than tracking which field failed, and the
+// combined collision odds are still negligible.
+const GENERATED_CODE_MAX_ATTEMPTS = 5;
 
 // Front desk (staff) gives members a walk-in sign-up, so both owner and
 // staff can list/create — unlike plans, where pricing is owner-only.
@@ -54,8 +59,9 @@ export async function POST(request: Request) {
     let member: Member | undefined;
     let lastCollisionError: unknown;
 
-    for (let attempt = 0; attempt < SHORT_CODE_MAX_ATTEMPTS; attempt++) {
+    for (let attempt = 0; attempt < GENERATED_CODE_MAX_ATTEMPTS; attempt++) {
       const shortCode = generateShortCode();
+      const checkinCode = generateCheckinCode();
       try {
         [member] = await withTenantContext(
           context.tenantId,
@@ -66,6 +72,7 @@ export async function POST(request: Request) {
               .values({
                 tenantId: context.tenantId,
                 shortCode,
+                checkinCode,
                 firstName: parsed.data.firstName,
                 lastName: parsed.data.lastName,
                 email: parsed.data.email,
@@ -80,7 +87,10 @@ export async function POST(request: Request) {
         );
         break;
       } catch (error) {
-        if (isUniqueViolation(error, "members_tenant_id_short_code_unique")) {
+        if (
+          isUniqueViolation(error, "members_tenant_id_short_code_unique") ||
+          isUniqueViolation(error, "members_tenant_id_checkin_code_unique")
+        ) {
           lastCollisionError = error;
           continue;
         }
@@ -90,7 +100,7 @@ export async function POST(request: Request) {
 
     if (!member) {
       console.error(
-        "Failed to generate a unique member short code after retries",
+        "Failed to generate a unique member short code / checkin code after retries",
         lastCollisionError,
       );
       return NextResponse.json(

@@ -11,6 +11,7 @@ loadEnv({ path: join(__dirname, "..", "..", "..", ".env.local") });
 import { getDb, getScopedDb, schema } from "@/db/client";
 import { withTenantContext } from "@/db/rls-context";
 import { generateShortCode } from "@/lib/members/generate-short-code";
+import { generateCheckinCode } from "@/lib/members/generate-checkin-code";
 
 /**
  * Proves the RLS policies in db/policies/ actually isolate tenants at the
@@ -80,6 +81,7 @@ describe.skipIf(!process.env.DATABASE_URL)("RLS tenant isolation", () => {
         .values({
           tenantId,
           shortCode: generateShortCode(),
+          checkinCode: generateCheckinCode(),
           firstName: `Member`,
           lastName: tag,
           email: `member-${tag}@example.test`,
@@ -243,6 +245,7 @@ describe.skipIf(!process.env.DATABASE_URL)("RLS tenant isolation", () => {
         tx.insert(schema.members).values({
           tenantId: tenantB.id, // <- claims to belong to tenant B
           shortCode: generateShortCode(),
+          checkinCode: generateCheckinCode(),
           firstName: "Sneaky",
           lastName: "Insert",
         }),

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
 import type { Member } from "@/db/schema/members";
 import type { EffectiveMembershipStatus } from "@/lib/memberships/status";
 import {
@@ -26,7 +26,10 @@ interface OpenCheckin {
 
 type CheckinResult =
   | { kind: "success"; action: "checkin" | "checkout"; member: Member; timestamp: string }
-  | { kind: "error"; action: "checkin" | "checkout"; member: Member; message: string };
+  // `member` is null only for the self-code flow when the code itself
+  // doesn't resolve to anyone (T-20260825-004) — the name-based flow
+  // always has a member (staff picked it from the list before calling).
+  | { kind: "error"; action: "checkin" | "checkout"; member: Member | null; message: string };
 
 const RESULT_TITLES: Record<CheckinResult["kind"], Record<CheckinResult["action"], string>> = {
   success: { checkin: "Check-in registrado", checkout: "Check-out registrado" },
@@ -53,6 +56,12 @@ export function CheckinPage() {
   const [query, setQuery] = useState("");
   const [pendingId, setPendingId] = useState<string | null>(null);
   const [result, setResult] = useState<CheckinResult | null>(null);
+  // Self-service auto-check-in by code (T-20260825-004) — an alternate
+  // input mode alongside the name search above, not a separate screen
+  // (see the endpoint's docstring for the authenticated-session scope
+  // decision).
+  const [code, setCode] = useState("");
+  const [codePending, setCodePending] = useState(false);
 
   const loadMembers = useCallback(async () => {
     setLoading(true);
@@ -185,6 +194,50 @@ export function CheckinPage() {
     }
   }
 
+  async function handleSelfCheckin(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (code.length !== 6) return;
+
+    setCodePending(true);
+    setResult(null);
+    try {
+      const res = await fetch("/api/v1/checkins/self", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code }),
+      });
+      const body = await res.json().catch(() => null);
+
+      if (!res.ok) {
+        setResult({
+          kind: "error",
+          action: "checkin",
+          member: (body?.member as Member | undefined) ?? null,
+          message:
+            typeof body?.error === "string"
+              ? body.error
+              : "No se pudo registrar el check-in",
+        });
+        return;
+      }
+
+      const { member, checkin } = body as { member: Member; checkin: { id: string; timestamp: string } };
+      setOpenCheckins((prev) => [
+        ...prev,
+        { id: checkin.id, memberId: member.id, timestamp: checkin.timestamp },
+      ]);
+      // The self-code flow can resolve a member that isn't in the
+      // client's already-loaded `members` list yet (e.g. created after
+      // this page loaded) — merge it in so "En el gym ahora" can render
+      // their name instead of falling back to "Socio".
+      setMembers((prev) => (prev.some((m) => m.id === member.id) ? prev : [...prev, member]));
+      setResult({ kind: "success", action: "checkin", member, timestamp: checkin.timestamp });
+    } finally {
+      setCode("");
+      setCodePending(false);
+    }
+  }
+
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>
@@ -210,7 +263,7 @@ export function CheckinPage() {
             {RESULT_TITLES[result.kind][result.action]}
           </p>
           <p className={styles.resultMessage}>
-            {result.member.firstName} {result.member.lastName}
+            {result.member ? `${result.member.firstName} ${result.member.lastName}` : "Código no encontrado"}
             {" — "}
             {result.kind === "success"
               ? timeFormatter.format(new Date(result.timestamp))
@@ -245,6 +298,19 @@ export function CheckinPage() {
           </ul>
         </div>
       )}
+
+      <form onSubmit={handleSelfCheckin} className={styles.codeForm}>
+        <Input
+          inputMode="numeric"
+          placeholder="Código de 6 dígitos del socio"
+          value={code}
+          onChange={(event) => setCode(event.target.value.replace(/\D/g, "").slice(0, 6))}
+          className={styles.codeInput}
+        />
+        <Button type="submit" size="lg" disabled={code.length !== 6 || codePending}>
+          {codePending ? "Verificando..." : "Check-in por código"}
+        </Button>
+      </form>
 
       <Input
         placeholder="Buscar socio por nombre, apellido o código..."

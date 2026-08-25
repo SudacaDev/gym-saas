@@ -40,6 +40,14 @@
   @apply h-12 text-lg;
 }
 
+.codeForm {
+  @apply flex flex-wrap items-center gap-3;
+}
+
+.codeInput {
+  @apply h-12 max-w-64 text-lg tracking-widest;
+}
+
 .errorText {
   @apply text-sm text-destructive;
 }

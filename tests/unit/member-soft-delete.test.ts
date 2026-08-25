@@ -12,6 +12,7 @@ loadEnv({ path: join(__dirname, "..", "..", ".env.local") });
 import { getDb, schema } from "@/db/client";
 import { withTenantContext } from "@/db/rls-context";
 import { generateShortCode } from "@/lib/members/generate-short-code";
+import { generateCheckinCode } from "@/lib/members/generate-checkin-code";
 
 /**
  * Phase 1's two DB-level invariants that aren't already covered by
@@ -58,6 +59,7 @@ describe.skipIf(!process.env.DATABASE_URL)("member soft delete / plan FK restric
           .values({
             tenantId: tenant.id,
             shortCode: generateShortCode(),
+            checkinCode: generateCheckinCode(),
             firstName: "Active",
             lastName: "Member",
           })
@@ -68,6 +70,7 @@ describe.skipIf(!process.env.DATABASE_URL)("member soft delete / plan FK restric
           .values({
             tenantId: tenant.id,
             shortCode: generateShortCode(),
+            checkinCode: generateCheckinCode(),
             firstName: "Deleted",
             lastName: "Member",
             deletedAt: new Date(),
@@ -97,6 +100,7 @@ describe.skipIf(!process.env.DATABASE_URL)("member soft delete / plan FK restric
         .values({
           tenantId: tenant.id,
           shortCode: generateShortCode(),
+          checkinCode: generateCheckinCode(),
           firstName: "FK",
           lastName: "Test",
         })

@@ -14,6 +14,7 @@ import { withTenantContext } from "@/db/rls-context";
 import { getCurrentEffectiveStatus } from "@/lib/memberships/status";
 import type { MembershipStatus } from "@/lib/memberships/status";
 import { generateShortCode } from "@/lib/members/generate-short-code";
+import { generateCheckinCode } from "@/lib/members/generate-checkin-code";
 
 /**
  * Proves the one gate that makes manual check-in actually enforce
@@ -87,6 +88,7 @@ describe.skipIf(!process.env.DATABASE_URL)(
           .values({
             tenantId: tenant.id,
             shortCode: generateShortCode(),
+            checkinCode: generateCheckinCode(),
             firstName: label,
             lastName: "Test",
           })

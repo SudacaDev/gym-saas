@@ -39,6 +39,23 @@ export const members = pgTable(
     // in the same migration (see db/migrations — hand-appended backfill,
     // same pattern as class_schedules.activity_id in T-20260821-008).
     shortCode: text("short_code").notNull(),
+    // 6-digit numeric code for self-service auto-check-in (T-20260825-004)
+    // — a member types this into the numeric pad on the existing
+    // authenticated front-desk check-in screen (POST
+    // /api/v1/checkins/self) instead of staff finding them by name/short
+    // code and tapping "Check-in". Deliberately a SEPARATE field from
+    // `shortCode` above, by explicit user decision — not unified: that
+    // one is a display aid staff *reads*, this one is what a member
+    // *types in themselves* to self-identify. Only 10^6 = 1,000,000
+    // combinations per tenant (vs. shortCode's ~45.7M) — small enough to
+    // be brute-forceable without the rate limiting enforced at the
+    // endpoint (see lib/rate-limit/fixed-window-limiter.ts). Stored as
+    // text, not a number, so leading zeros ("012345") round-trip exactly.
+    // Unique per tenant (not globally) — same rationale and same
+    // `(tenant_id, checkin_code)` shape as shortCode above. NOT NULL:
+    // existing rows are backfilled deterministically in the same
+    // migration (hand-appended backfill, same pattern as short_code's).
+    checkinCode: text("checkin_code").notNull(),
     // Legal/health fields — visible to both owner and staff (confirmed with
     // the user 2026-08-21: front desk needs to see a health condition, not
     // just the owner). `dni` is Argentina's national ID; format is validated
@@ -73,6 +90,10 @@ export const members = pgTable(
     uniqueIndex("members_tenant_id_short_code_unique").on(
       table.tenantId,
       table.shortCode,
+    ),
+    uniqueIndex("members_tenant_id_checkin_code_unique").on(
+      table.tenantId,
+      table.checkinCode,
     ),
   ],
 );
