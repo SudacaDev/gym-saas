@@ -22,30 +22,43 @@
 
 ## Backlog del proyecto
 ### Tareas pendientes
-- [ ] Horarios (vista Tabla): click en un bloque vacío de la grilla día×hora abre el diálogo de "Nuevo horario" con día/hora ya cargados
-    - id: T-20260825-007
+- [ ] Horarios (vista Tabla): botón "+ Agregar franja horaria" para crear una fila nueva a demanda
+    - id: T-20260825-008
     - type: ui
-    - contexto: usuario compartió una captura de la vista Tabla (`features/schedules-page/components/schedule-table-view.tsx`) mostrando celdas vacías entre las que sí tienen horario cargado. Pedido: esas celdas vacías dejan de ser un `<div>` sin contenido y pasan a ser clickeables — al hacer click se abre `ScheduleFormDialog` (modo creación) con `dayOfWeek`/`startTime`/`endTime` ya precargados según la fila/columna clickeada, en vez de arrancar en blanco como hoy.
-    - alcance: **solo la vista Tabla** — no Kanban ni Calendario (`schedule-kanban-view.tsx`/`schedule-calendar-view.tsx` tienen estructuras de datos distintas, no celdas vacías día×hora equivalentes; fuera de esta tarea a menos que el usuario lo pida explícitamente después).
-    - requisitos visuales del bloque vacío (según la captura + pedido explícito): ícono "+" centrado, fondo tenue que ocupe todo el bloque (celda) para que se entienda como clickeable — usar la paleta ya definida en `DESIGN.md` (familia Soot/Hairline) en vez de inventar un color nuevo.
-    - detalle técnico (relevado, no implementado): hoy `ScheduleTableView` renderea `<div className={styles.cell}>{cellSchedules.map(...)}</div>` — si `cellSchedules` está vacío, el div queda sin contenido. Para esto hace falta (a) en la celda vacía, un trigger clickeable con el estilo de arriba envolviendo `ScheduleFormDialog` sin pasarle `schedule` (modo creación); (b) `ScheduleFormDialog` (`schedule-form-dialog.tsx`) hoy solo tiene defaults en blanco cuando no se pasa `schedule` (`defaultsFor`) — necesita un prop nuevo opcional (ej. `initialValues: { dayOfWeek, startTime, endTime }`) para poder precargar día/hora sin tener un `schedule` real todavía.
-    - open_question / decisión a tomar en el `#run` (no bloqueante, pero hay que decidirlo): las filas de la grilla hoy son un `Set` de `startTime` distintos — no existe un modelo de "duración fija" por fila. Se puede precargar `endTime` con un default razonable (ej. `startTime` + 1 hora, editable en el diálogo) o dejarlo vacío para que el usuario lo complete. Propuesta propia: default a +1 hora, mismo criterio que otros defaults chicos ya resueltos por cuenta propia en este proyecto (ej. T-20260821-006) — confirmar o cambiar antes de `#run` si el usuario prefiere otra cosa.
-    - severity_flag: sin definir todavía (UI pura, no toca base de datos — probablemente `low`/`medium`, a confirmar contra `gates/policy.yml`)
-    - depends_on: ninguna
+    - contexto: usuario preguntó si la tabla debería mostrar filas hasta una hora de cierre (fija o configurable por el dueño) para poder agregar horarios "desde cero". Convocados `uiux-designer` + `backend-developer` en paralelo (2026-08-25) — ambos convergen en **no** a las dos ideas originales del usuario:
+      - No a un rango fijo de filas (ej. 06:00–22:00 pre-renderizado): rompe la densidad visual (la mitad de la grilla vacía la mayor parte del tiempo, en las 7 columnas), va contra la regla de `DESIGN.md` de que cada elemento tiene que justificar su lugar.
+      - No a `opening_time`/`closing_time` configurable por tenant (nuevo campo en `tenants` + pantalla de settings): mucho costo de infraestructura (migración, validación, UI nueva) para un problema no validado, y no cubre bien casos como box 24hs o fin de semana distinto (nota de backend, por si esto se revisita: si algún día se hace, `nullable` sin backfill inventado, `time` sin timezone, constraint DB `opening < closing`, `owner`-only — no repetir el patrón de `short_code` que sí backfillea, acá sería inventarle al dueño un dato de negocio falso).
+      - **Recomendación elegida:** un botón "+ Agregar franja horaria" (outline/ghost) en la tabla. Al clickearlo, el dueño elige una hora y se agrega una fila nueva **solo en estado local** (no se persiste nada hasta cargar la primera clase ahí) — esa fila reusa 100% el mecanismo de celda vacía clickeable que ya construyó T-20260825-007, sin tocar schema ni crear un segundo camino paralelo.
+    - fuera de alcance de esta tarea (anotado por UX, no pedido, no implementar acá): mismo patrón de "click en vacío → diálogo prefilled" en la columna vacía de la vista Kanban (hoy solo muestra "—" sin acción) — inconsistencia real entre vistas, pero es su propia tarea si el usuario la pide.
+    - severity_flag: sin definir todavía (UI pura, sin schema — probablemente `low`/`medium`, a confirmar contra `gates/policy.yml`)
+    - depends_on: T-20260825-007 (completada — reusa su mecanismo de celda vacía)
+
 - [ ] Fichaje de staff: registrar horario de entrada/salida (clock-in/clock-out)
     - id: T-20260825-005
     - type: schema+feature
     - contexto: spinoff de T-20260825-002 — el usuario pidió originalmente "registrar horario de entrada/salida" como parte del alta de staff; confirmado (`AskUserQuestion`, 2026-08-25) que se separa en tarea propia porque es fichaje real, no dos columnas sueltas.
-    - open_questions (no asumir, resolver antes de `#run`):
-      1. ¿Quién ficha? ¿El propio staff desde una pantalla propia, o lo carga el owner/otro staff por él?
-      2. ¿Modelo de datos: tabla `staff_attendance` con timestamps de entrada/salida (par de eventos o fila abierta que se cierra al salir)?
-      3. ¿Hace falta reporte/listado de fichajes en esta primera vuelta, o alcanza con que el dato quede registrado?
-    - severity_flag: sin definir — toca datos de asistencia de cuentas reales de staff, probablemente `medium`.
-    - depends_on: T-20260825-002 (bloqueada — comparte contexto de `staff_members`, no debería avanzar antes)
+    - decisiones confirmadas con el usuario (`AskUserQuestion`, 2026-08-25):
+      1. **Lo carga el owner/otro staff por él** — no hay autoservicio, no hace falta una pantalla propia para que cada staff marque su propia entrada/salida en esta primera vuelta.
+      2. **Fila abierta que se cierra**: fichar entrada crea una fila con `clock_in` y `clock_out=NULL`; fichar salida actualiza esa misma fila — mismo patrón que `checkins`/`checkedOutAt`.
+      3. **Sí, con listado básico** — se agrega una vista mínima de historial de fichajes (ej. en la ficha de cada staff), no solo el dato guardado sin UI de consulta.
+    - open_questions: ninguna restante — lista para `#run`.
+    - severity_flag: `medium` — toca datos de asistencia de cuentas reales de staff, cargados por un tercero (owner/staff), no por la propia persona.
+    - depends_on: T-20260825-002 (completada — ya no bloquea)
 
 ### Tareas en curso
 
 ### Tareas completadas (referenciar en `progress.md`)
+- [x] Horarios (vista Tabla): click en un bloque vacío de la grilla día×hora abre el diálogo de "Nuevo horario" con día/hora ya cargados
+    - id: T-20260825-007
+    - type: ui
+    - contexto: usuario compartió una captura de la vista Tabla mostrando celdas vacías entre las que sí tienen horario cargado, pidiendo que sean clickeables (ícono "+" + fondo tenue ocupando todo el bloque) y abran el diálogo de creación con día/hora ya cargados.
+    - alcance: solo la vista Tabla — Kanban/Calendario quedan afuera (estructuras de datos distintas, sin celdas vacías día×hora equivalentes).
+    - path: `features/schedules-page/components/schedule-table-view.tsx`, `components/schedule-form-dialog.tsx`, `index.module.css`.
+    - description: `ScheduleFormDialog` gana `initialValues` opcional (día/inicio/fin), usado por `defaultsFor()` solo en modo creación — mismo formulario y `onSubmit` de siempre, sin lógica duplicada. La celda vacía renderiza un botón que ocupa todo el bloque (`PlusIcon` centrado, `bg-secondary/30` — familia Soot de `DESIGN.md`, no un color nuevo, intensifica en hover) envuelto en el mismo diálogo, sin `schedule`, con `initialValues` de esa fila/columna. `endTime` se precarga como `startTime` + 1 hora (`addOneHour`, función pura local) porque no hay modelo de duración fija por fila — decisión propia, campo queda editable. `tsc`/`eslint`/`test:unit` (34/34) limpios.
+    - gate: `graph/gates/pending/T-20260825-007.md` — `medium`/async, sin bloquear.
+    - **Gap conocido:** sin verificación visual en navegador (requiere sesión real autenticada).
+    - depends_on: ninguna
+
 - [x] Horarios: 3 vistas — tabla / kanban / calendario
     - id: T-20260825-006
     - type: ui
