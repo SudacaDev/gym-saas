@@ -22,20 +22,16 @@
 
 ## Backlog del proyecto
 ### Tareas pendientes
-- [ ] Horarios: agregar 3 botones de vista (tabla / kanban / calendario), mostrando los datos de horario en cada una al hacer click
-    - id: T-20260825-006
+- [ ] Horarios (vista Tabla): click en un bloque vacío de la grilla día×hora abre el diálogo de "Nuevo horario" con día/hora ya cargados
+    - id: T-20260825-007
     - type: ui
-    - contexto: hoy "Horarios" (T-20260821-004) tiene una única vista — grilla semanal de 7 columnas (`features/schedules-page/`). Se pide agregar un selector de 3 vistas (tabla, kanban, calendario) que cambien cómo se muestran los mismos horarios.
-    - decisiones confirmadas con el usuario (`AskUserQuestion`, 2026-08-25):
-      1. "3 variables" = typo por **"vistas"** — los 3 botones cambian cómo se renderizan los mismos horarios, no revelan datos distintos.
-      2. La grilla semanal existente **se reusa como la vista "tabla"** — no se reemplaza. Kanban y calendario se agregan como nuevas.
-      3. Kanban: **columnas por día de la semana** (Lunes...Domingo), las clases de ese día como cards.
-      4. Calendario: **grilla mensual** tipo Google Calendar — un mes, las clases recurrentes aparecen en cada día que corresponde según `dayOfWeek`.
-      5. Vista default: sin preguntar explícitamente — decisión propia, se mantiene **"tabla"** como default (es la vista ya existente, cambiar el default sería una regresión de UX no pedida).
-    - open_questions: ninguna restante — lista para `#run`.
-    - severity_flag: `low`/`medium` — solo UI sobre datos ya existentes de `class_schedules`, sin dato sensible nuevo ni cambio de schema esperado.
-    - depends_on: T-20260821-004 (completada)
-
+    - contexto: usuario compartió una captura de la vista Tabla (`features/schedules-page/components/schedule-table-view.tsx`) mostrando celdas vacías entre las que sí tienen horario cargado. Pedido: esas celdas vacías dejan de ser un `<div>` sin contenido y pasan a ser clickeables — al hacer click se abre `ScheduleFormDialog` (modo creación) con `dayOfWeek`/`startTime`/`endTime` ya precargados según la fila/columna clickeada, en vez de arrancar en blanco como hoy.
+    - alcance: **solo la vista Tabla** — no Kanban ni Calendario (`schedule-kanban-view.tsx`/`schedule-calendar-view.tsx` tienen estructuras de datos distintas, no celdas vacías día×hora equivalentes; fuera de esta tarea a menos que el usuario lo pida explícitamente después).
+    - requisitos visuales del bloque vacío (según la captura + pedido explícito): ícono "+" centrado, fondo tenue que ocupe todo el bloque (celda) para que se entienda como clickeable — usar la paleta ya definida en `DESIGN.md` (familia Soot/Hairline) en vez de inventar un color nuevo.
+    - detalle técnico (relevado, no implementado): hoy `ScheduleTableView` renderea `<div className={styles.cell}>{cellSchedules.map(...)}</div>` — si `cellSchedules` está vacío, el div queda sin contenido. Para esto hace falta (a) en la celda vacía, un trigger clickeable con el estilo de arriba envolviendo `ScheduleFormDialog` sin pasarle `schedule` (modo creación); (b) `ScheduleFormDialog` (`schedule-form-dialog.tsx`) hoy solo tiene defaults en blanco cuando no se pasa `schedule` (`defaultsFor`) — necesita un prop nuevo opcional (ej. `initialValues: { dayOfWeek, startTime, endTime }`) para poder precargar día/hora sin tener un `schedule` real todavía.
+    - open_question / decisión a tomar en el `#run` (no bloqueante, pero hay que decidirlo): las filas de la grilla hoy son un `Set` de `startTime` distintos — no existe un modelo de "duración fija" por fila. Se puede precargar `endTime` con un default razonable (ej. `startTime` + 1 hora, editable en el diálogo) o dejarlo vacío para que el usuario lo complete. Propuesta propia: default a +1 hora, mismo criterio que otros defaults chicos ya resueltos por cuenta propia en este proyecto (ej. T-20260821-006) — confirmar o cambiar antes de `#run` si el usuario prefiere otra cosa.
+    - severity_flag: sin definir todavía (UI pura, no toca base de datos — probablemente `low`/`medium`, a confirmar contra `gates/policy.yml`)
+    - depends_on: ninguna
 - [ ] Fichaje de staff: registrar horario de entrada/salida (clock-in/clock-out)
     - id: T-20260825-005
     - type: schema+feature
@@ -50,6 +46,16 @@
 ### Tareas en curso
 
 ### Tareas completadas (referenciar en `progress.md`)
+- [x] Horarios: 3 vistas — tabla / kanban / calendario
+    - id: T-20260825-006
+    - type: ui
+    - decisiones confirmadas con el usuario (`AskUserQuestion`, 2026-08-25): "3 variables" = typo por "vistas"; la grilla semanal existente se reusa como vista "tabla" (no se reemplaza); kanban con columnas por día de la semana; calendario como grilla mensual tipo Google Calendar (cada clase recurrente aparece en cada día del mes que matchea su `dayOfWeek`, sin modelo de excepciones por ocurrencia — fuera de alcance, el schema no tiene `startDate`/`endDate`). Default = "tabla" (decisión propia, no regresiva).
+    - path: `features/schedules-page/index.tsx` (reescrito), `index.module.css` (+ estilos de switcher), `use-schedules.ts` (nuevo — hook compartido de fetch/CRUD), `components/schedule-view-props.ts` (nuevo), `components/schedule-table-view.tsx` (nuevo — grilla existente extraída tal cual), `components/schedule-kanban-view.tsx` + `.module.css` (nuevo), `components/schedule-calendar-view.tsx` + `.module.css` (nuevo).
+    - description: Switcher de 3 tabs (subrayado 2px de acento, distinto del patrón borde-izquierdo+fondo del sidebar — `DESIGN.md` liga ese patrón específicamente al sidebar). Las 3 vistas comparten una única instancia del hook de datos (`use-schedules.ts`), sin fetch duplicado. Kanban y calendario abren el mismo `ScheduleFormDialog` para editar (paridad con la tabla); el botón "Nuevo horario" queda visible fuera del switch, en las 3 vistas. `tsc`/`eslint` limpios, `test:unit` 34/34 verde.
+    - gate: `graph/gates/pending/T-20260825-006.md` — `low/medium`/async.
+    - commit: `502949e`
+    - depends_on: T-20260821-004 (completada)
+
 - [x] Header de sesión: presencia en tiempo real + botón de salir, nav "Equipo" restringido a owner (datos y UI)
     - id: T-20260825-001
     - type: ui+feature
