@@ -1,0 +1,78 @@
+@reference "../../app/globals.css";
+
+.container {
+  @apply space-y-6;
+}
+.header {
+  @apply flex items-center justify-between;
+}
+.title {
+  @apply font-heading text-3xl uppercase tracking-tight;
+}
+.errorText {
+  @apply text-sm text-destructive;
+}
+.emptyText {
+  @apply text-sm text-muted-foreground;
+}
+
+.viewSwitcher {
+  @apply flex gap-4 border-b border-border-subtle;
+}
+
+.viewTab {
+  @apply -mb-px border-b-2 border-transparent px-1 pb-2 text-xs font-bold tracking-widest text-muted-foreground uppercase transition-colors hover:text-foreground;
+}
+
+.viewTabActive {
+  @apply border-primary text-foreground;
+}
+
+.weekWrap {
+  @apply overflow-x-auto rounded-xl border border-border-subtle;
+}
+
+.week {
+  @apply grid gap-px bg-border-subtle;
+  grid-template-columns: 64px repeat(7, minmax(150px, 1fr));
+}
+
+.cornerCell {
+  @apply sticky left-0 z-10 bg-background;
+}
+
+.dayHeader {
+  @apply bg-background px-3 py-3 text-center text-xs font-bold tracking-widest text-muted-foreground uppercase;
+}
+
+.timeLabel {
+  @apply sticky left-0 z-10 flex items-center justify-end bg-background px-3 py-3 text-[11px] font-bold tracking-widest text-muted-foreground uppercase;
+}
+
+.cell {
+  @apply flex flex-col gap-2 bg-background p-2;
+}
+
+.slot {
+  @apply flex flex-col gap-1 rounded-lg border border-border-subtle p-3;
+}
+
+.slotTime {
+  @apply text-[11px] font-bold tracking-widest text-muted-foreground uppercase;
+}
+
+.slotActivity {
+  @apply font-heading text-sm tracking-tight uppercase;
+}
+
+.slotActions {
+  @apply mt-1 flex gap-3;
+}
+
+.slotAction {
+  @apply text-[11px] font-bold tracking-widest text-muted-foreground uppercase transition-colors hover:text-foreground;
+}
+
+.slotActionDelete {
+  @apply hover:text-destructive;
+}

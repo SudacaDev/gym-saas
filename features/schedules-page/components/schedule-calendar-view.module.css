@@ -1,0 +1,53 @@
+@reference "../../../app/globals.css";
+
+.wrap {
+  @apply space-y-3;
+}
+
+.nav {
+  @apply flex items-center justify-between;
+}
+
+.navLabel {
+  @apply font-heading text-sm tracking-tight uppercase;
+}
+
+.navButtons {
+  @apply flex items-center gap-1;
+}
+
+.grid {
+  @apply grid grid-cols-7 gap-px overflow-hidden rounded-xl border border-border-subtle bg-border-subtle;
+}
+
+.weekday {
+  @apply bg-background px-2 py-2 text-center text-[11px] font-bold tracking-widest text-muted-foreground uppercase;
+}
+
+.day {
+  @apply flex min-h-24 flex-col gap-1 bg-background p-1.5 sm:min-h-32;
+}
+
+.dayMuted {
+  @apply bg-background/60;
+}
+
+.dayNumber {
+  @apply text-xs text-muted-foreground;
+}
+
+.dayNumberMuted {
+  @apply text-[#3a3a37];
+}
+
+.dayNumberToday {
+  @apply inline-flex size-5 items-center justify-center rounded-full bg-primary font-bold text-primary-foreground;
+}
+
+.chip {
+  @apply w-full truncate rounded-md border border-border-subtle bg-muted px-1.5 py-0.5 text-left text-[10px] font-bold tracking-wide text-foreground uppercase transition-colors outline-none hover:border-primary focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50;
+}
+
+.chipTime {
+  @apply text-muted-foreground;
+}

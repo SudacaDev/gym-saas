@@ -1,0 +1,17 @@
+@reference "../../../app/globals.css";
+
+.board {
+  @apply grid grid-cols-1 gap-px overflow-x-auto rounded-xl border border-border-subtle bg-border-subtle sm:grid-cols-2 lg:grid-cols-7;
+}
+
+.column {
+  @apply flex min-w-[180px] flex-col gap-2 bg-background p-3;
+}
+
+.columnHeader {
+  @apply pb-1 text-center text-xs font-bold tracking-widest text-muted-foreground uppercase;
+}
+
+.columnEmpty {
+  @apply text-center text-xs text-muted-foreground;
+}
