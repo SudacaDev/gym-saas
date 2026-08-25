@@ -1,0 +1,41 @@
+@reference "../globals.css";
+
+.footer {
+  @apply mt-auto flex flex-col gap-3 border-t border-border px-2 py-3 md:px-4;
+}
+
+.groupLabel {
+  @apply hidden px-0.5 text-[0.6875rem] font-bold tracking-widest text-muted-foreground uppercase md:block;
+}
+
+.presenceList {
+  @apply mt-1.5 flex flex-col gap-1.5;
+}
+
+.presenceRow {
+  @apply flex items-center gap-2 px-0.5;
+}
+
+.onlineDot {
+  @apply size-1.5 shrink-0 rounded-full bg-status-success-fg;
+}
+
+.presenceName {
+  @apply hidden truncate text-xs font-bold text-foreground md:inline;
+}
+
+.presenceYou {
+  @apply font-normal text-muted-foreground normal-case;
+}
+
+.presenceRole {
+  @apply hidden text-[0.6875rem] tracking-wide text-muted-foreground uppercase md:ml-auto md:inline;
+}
+
+.signOutButton {
+  @apply w-full justify-center gap-2 md:justify-start;
+}
+
+.signOutLabel {
+  @apply hidden md:inline;
+}
