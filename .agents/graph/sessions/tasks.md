@@ -22,23 +22,6 @@
 
 ## Backlog del proyecto
 ### Tareas pendientes
-- [ ] Horarios (vista Tabla): rango de filas derivado de los propios horarios del owner (min–max + relleno horario), sin default universal por tipo de negocio
-    - id: T-20260825-009
-    - type: ui
-    - **supersede a T-20260825-008** (no correr esa, queda documentada abajo como historial de la discusión, no como plan vigente).
-    - contexto: el usuario vio la recomendación de T-008 ("+ Agregar franja horaria" a demanda) y contraargumentó con el patrón de Google Calendar — la grilla debería existir desde el primer momento, sin un click extra para "crear" una fila. Se reenganchó a `uiux-designer` con ese contraargumento específico (no se le pidió que le diera la razón porque sí, se le pidió que lo repiense en serio). Segunda pasada, honesta, cambió de recomendación:
-      - Reconoce que el bloque vacío de T-007 (`bg-secondary/30` + ícono, no una caja pelada) hace que el argumento de "ruido visual" de la primera pasada fuera más débil de lo que pensó.
-      - Reconoce que el peor caso de T-008 (botón a demanda) es un gym nuevo sin ninguna clase cargada: ahí ni siquiera aparece una fila resolviendo algo, es fricción pura en el peor momento (onboarding).
-      - Sigue rechazando un rango universal igual para todos los tenants (ej. 06:00–22:00 fijo) — y ahí es donde entra el punto que agregó el usuario en esta vuelta: **un gym común, un box de CrossFit y un estudio de salsa tienen patrones horarios totalmente distintos**, así que cualquier rango "adivinado" por el equipo (aunque sea razonable para un caso) va a quedar mal para otro tipo de negocio.
-    - **Diseño acordado:** las filas de la tabla ya no salen de los `startTime` exactos que existen (como hoy) — se calculan entre la hora más temprana (`startTime` mínimo) y la más tardía (`endTime` máximo) de los horarios YA cargados por ese owner, completando cada hora intermedia aunque no tenga clase (ej. si hay clases a las 06:00 y 08:00, también aparece la fila de las 07:00, vacía y clickeable). Contenido 100% por lo que el propio owner definió — nada inventado por el equipo ni un default "de gimnasio típico" que no le calce a un box o un estudio de baile.
-    - **Caso "cero horarios cargados" — verificado en el código, no es un problema real:** `features/schedules-page/index.tsx` ya gatea las 3 vistas (incluida Tabla) detrás de `schedules.length === 0` — si el tenant no cargó ningún horario todavía, se muestra `"Todavía no cargaste horarios."` y `ScheduleTableView` ni siquiera se renderiza. Por lo tanto el rango de filas *siempre* se calcula con al menos un horario real ya cargado — no hace falta ningún rango "bootstrap"/default para el estado vacío, la propuesta anterior de "07:00–21:00 por default" (segunda pasada de UX) queda descartada por innecesaria, no solo por indeseable.
-    - decisiones confirmadas con el usuario (`AskUserQuestion`, 2026-08-25):
-      1. **Paso entre horas: 1 hora fija.**
-      2. **Rango único para toda la semana** (no por columna/día) — se toma el mínimo/máximo de TODOS los horarios cargados (cualquier día) y esa misma banda de horas se repite igual en las 7 columnas. Más simple, sigue siendo 100% derivado de lo cargado por el owner; no distingue por día (ej. sábado con horario reducido no achica su propio rango) — aceptado a sabiendas.
-    - open_questions: ninguna restante — lista para `#run`.
-    - severity_flag: `low`/`medium` (UI pura, sin schema)
-    - depends_on: T-20260825-007 (completada — reusa su mecanismo de celda vacía clickeable)
-
 - [ ] ~~Horarios (vista Tabla): botón "+ Agregar franja horaria" para crear una fila nueva a demanda~~ — **superseded por T-20260825-009, no correr**
     - id: T-20260825-008
     - type: ui
@@ -49,6 +32,17 @@
 ### Tareas en curso
 
 ### Tareas completadas (referenciar en `progress.md`)
+- [x] Horarios (vista Tabla): rango de filas derivado de los propios horarios del owner (min–max + relleno horario)
+    - id: T-20260825-009
+    - type: ui
+    - supersede a T-20260825-008 (no corrida, queda como historial de la discusión).
+    - decisiones confirmadas con el usuario (`AskUserQuestion`, 2026-08-25): paso de 1 hora fija; rango único para toda la semana (no por columna/día) — se toma el mínimo/máximo de TODOS los horarios cargados y esa misma banda se repite en las 7 columnas.
+    - path: `features/schedules-page/components/schedule-table-view.tsx`.
+    - description: `timeRows` pasó de "solo los `startTime` exactos en uso" a un rango sintético entre el `startTime` mínimo y el `endTime` máximo de todos los horarios cargados, en pasos de 1 hora. **Límite superior — regla elegida:** se excluye la hora en que termina la última clase si termina justo en punto (ej. última clase 08:00–09:00 → sin fila 09:00 colgando vacía), pero se incluye si termina a mitad de hora (ej. 08:00–09:30 → sí aparece la fila 09:00, porque una clase real la ocupa parcialmente). **Decisión no pedida explícitamente pero necesaria:** el matching de celda pasó de igualdad exacta de `startTime` a "bucket por hora" — tomar el enunciado al pie de la letra (misma lógica de celda, solo iterando sobre filas sintéticas) hubiera hecho que cualquier horario que no arranca justo en punto (el input de hora no tiene `step`, "18:30" es válido) desapareciera silenciosamente de la grilla. `index.tsx` sigue gateando las 3 vistas detrás de `schedules.length === 0`, sin tocar — confirmado que `ScheduleTableView` nunca renderiza con 0 horarios. `tsc`/`eslint`/`test:unit` (34/34) limpios.
+    - gate: `graph/gates/pending/T-20260825-009.md` — `low/medium`/async.
+    - commit: `7d18c07`
+    - depends_on: T-20260825-007 (completada)
+
 - [x] Rediseño de acento/forma: naranja → Volt (verde lima) + radio pill en todo el sistema
     - id: T-20260825-010
     - type: ui
@@ -74,7 +68,7 @@
     - decisiones confirmadas con el usuario (`AskUserQuestion`, 2026-08-25): lo carga el owner/otro staff por él (sin autoservicio); fila abierta que se cierra (`clockIn`+`clockOut` nullable, mismo patrón que `checkins.checkedOutAt`); listado básico de historial en esta primera vuelta.
     - path: `db/schema/staff-attendance.ts` (nuevo), `db/policies/0007_staff_attendance_rls.sql`, `db/migrations/0013_old_paladin.sql`, `lib/validations/staff-attendance.schema.ts` (nuevo), `app/api/v1/staff/[id]/attendance/route.ts` (nuevo — GET historial + POST fichar entrada), `app/api/v1/staff/[id]/attendance/[attendanceId]/route.ts` (nuevo — PATCH fichar salida), `app/api/v1/staff/route.ts` (+`openAttendanceId`), `features/staff-page/index.tsx` + `types.ts`, `features/staff-page/components/staff-attendance-dialog.tsx` (nuevo) + `.module.css`.
     - description: Tabla `staff_attendance` — FK a `staffMembers.id` (no a `users.id`, es dato de RR.HH./turno específico del rol staff), RLS `tenant_isolation` estándar. **Decisión de alcance (no pedida explícitamente, documentada en el gate):** no existe pantalla de detalle por staff (a diferencia de socios) — el historial vive en un diálogo por fila en la tabla de "Equipo", no se construyó una página nueva. **Permisos: owner+staff, no owner-only** — se mantiene así a pesar de que T-20260825-001 restringió el roster (`GET /api/v1/staff`) a owner-only, porque la propia decisión #1 de esta tarea dice explícitamente "el owner **o otro staff**" ficha — restringir a owner-only hubiera contradicho eso. Gap señalado: hoy en la práctica solo el owner llega a esta UI, porque `(owner)/layout.tsx` ya redirige a staff fuera de todo el route group (mismo gap heredado que T-20260825-001 documentó). `GET /api/v1/staff` gana `openAttendanceId` (subquery correlacionada) para que la UI sepa el estado fichado/no-fichado de cada fila sin un round-trip extra por fila. De paso, se corrigió un bug real: `StaffFormDialog` (edición) no devolvía `openAttendanceId`, así que "Editar" borraba ese estado en memoria — corregido preservándolo localmente. `tsc`/`eslint` limpios; `test:unit` 29-31/34 (fallas por `PostgresError` de pool de conexiones, ambiental, confirmado sin relación a los archivos tocados).
-    - gate: `graph/gates/pending/T-20260825-005.md` — `medium`/async. `npm run db:migrate` no corrido (migración `0013` pendiente de aprobación).
+    - gate: `graph/gates/pending/T-20260825-005.md` — `medium`/async, aprobado por SudacaDev. `npm run db:migrate` corrido y **verificado contra la base real** (2026-08-26): tabla `staff_attendance` y policy `tenant_isolation` presentes.
     - commit: `25ebac7`
     - depends_on: T-20260825-002 (completada)
 
