@@ -2,121 +2,17 @@ import Link from "next/link";
 import { getTenantContext } from "@/lib/auth/get-tenant-context";
 import { getDashboardMetrics } from "@/lib/dashboard/metrics";
 import { cn } from "@/lib/utils";
+import {
+  currencyFormatter,
+  integerFormatter,
+  dayMonthFormatter,
+  monthYearFormatter,
+  relativeTime,
+  activityLabel,
+} from "./format";
+import { CALENDAR_WEEKDAY_LABELS, buildCalendarWeeks } from "./calendar";
+import { SPARKLINE_X_POSITIONS, buildSparklinePoints } from "./sparkline";
 import styles from "./index.module.css";
-
-const currencyFormatter = new Intl.NumberFormat("es-AR", {
-  style: "currency",
-  currency: "ARS",
-  maximumFractionDigits: 0,
-});
-
-const integerFormatter = new Intl.NumberFormat("es-AR");
-
-const dayMonthFormatter = new Intl.DateTimeFormat("es-AR", {
-  day: "numeric",
-  month: "short",
-  timeZone: "UTC",
-});
-
-const monthYearFormatter = new Intl.DateTimeFormat("es-AR", {
-  month: "long",
-  year: "numeric",
-  timeZone: "UTC",
-});
-
-function dateOnlyString(date: Date): string {
-  return date.toISOString().slice(0, 10);
-}
-
-/**
- * "Hace 5 min" / "Hace 3h" / "Ayer" / "20 ago" — coarse-grained on purpose,
- * this is a glance-and-move-on feed, not a precise timestamp log.
- */
-function relativeTime(at: Date, now: Date): string {
-  const diffMs = now.getTime() - at.getTime();
-  const diffMin = Math.floor(diffMs / (60 * 1000));
-  if (diffMin < 1) return "Recién";
-  if (diffMin < 60) return `Hace ${diffMin} min`;
-  const diffHours = Math.floor(diffMin / 60);
-  if (diffHours < 24) return `Hace ${diffHours}h`;
-  const diffDays = Math.floor(diffHours / 24);
-  if (diffDays === 1) return "Ayer";
-  if (diffDays < 7) return `Hace ${diffDays} días`;
-  return dayMonthFormatter.format(at);
-}
-
-function activityLabel(
-  item: Awaited<ReturnType<typeof getDashboardMetrics>>["recentActivity"][number],
-): { name: string; rest: string } {
-  switch (item.type) {
-    case "checkin":
-      return { name: item.memberName, rest: "hizo check-in" };
-    case "payment":
-      return { name: item.memberName, rest: `pagó ${currencyFormatter.format(item.amount)}` };
-    case "new_member":
-      return { name: item.memberName, rest: "se sumó como socio" };
-  }
-}
-
-interface CalendarDay {
-  date: string;
-  day: number;
-  inMonth: boolean;
-  isToday: boolean;
-  isExpiring: boolean;
-}
-
-const CALENDAR_WEEKDAY_LABELS = ["L", "M", "M", "J", "V", "S", "D"];
-
-/**
- * Grilla de semanas completas (lunes a domingo) que cubre el mes de `now`,
- * con los días fuera de mes incluidos para completar la grilla (atenuados
- * en la UI). isExpiring solo marca fechas presentes en expiringDates —
- * hoy esa fecha nunca cae más allá de 7 días porque expiringMembers ya
- * viene acotado a esa ventana desde getDashboardMetrics.
- */
-function buildCalendarWeeks(now: Date, expiringDates: Set<string>): CalendarDay[][] {
-  const year = now.getUTCFullYear();
-  const month = now.getUTCMonth();
-  const todayStr = dateOnlyString(now);
-
-  const firstOfMonth = new Date(Date.UTC(year, month, 1));
-  const daysInMonth = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
-  const leadingDays = (firstOfMonth.getUTCDay() + 6) % 7;
-  const gridStart = new Date(firstOfMonth.getTime() - leadingDays * 24 * 60 * 60 * 1000);
-  const totalCells = Math.ceil((leadingDays + daysInMonth) / 7) * 7;
-
-  const cells: CalendarDay[] = [];
-  for (let i = 0; i < totalCells; i++) {
-    const date = new Date(gridStart.getTime() + i * 24 * 60 * 60 * 1000);
-    const dateStr = dateOnlyString(date);
-    cells.push({
-      date: dateStr,
-      day: date.getUTCDate(),
-      inMonth: date.getUTCMonth() === month,
-      isToday: dateStr === todayStr,
-      isExpiring: expiringDates.has(dateStr),
-    });
-  }
-
-  const weeks: CalendarDay[][] = [];
-  for (let i = 0; i < cells.length; i += 7) {
-    weeks.push(cells.slice(i, i + 7));
-  }
-  return weeks;
-}
-
-const SPARKLINE_X_POSITIONS = [10, 58, 106, 154, 202, 250, 298];
-
-function buildSparklinePoints(counts: number[]): string {
-  const maxValue = Math.max(...counts, 1);
-  return counts
-    .map((count, i) => {
-      const y = 90 - (count / maxValue) * 70;
-      return `${SPARKLINE_X_POSITIONS[i]},${y.toFixed(1)}`;
-    })
-    .join(" ");
-}
 
 /**
  * Owner dashboard. Server Component (no interactivity, loads once). Un
