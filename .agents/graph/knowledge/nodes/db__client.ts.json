@@ -1,0 +1,10 @@
+{
+  "id": "db/client.ts",
+  "community": "db",
+  "references": [
+    "db/schema/index.ts"
+  ],
+  "referenced_by": [
+    "db/rls-context.ts"
+  ]
+}

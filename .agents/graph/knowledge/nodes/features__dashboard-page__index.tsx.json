@@ -1,0 +1,8 @@
+{
+  "id": "features/dashboard-page/index.tsx",
+  "community": "features",
+  "references": [
+    "features/dashboard-page/index.module.css"
+  ],
+  "referenced_by": []
+}

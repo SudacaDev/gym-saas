@@ -1,0 +1,11 @@
+{
+  "id": "app/onboarding/onboarding-form.tsx",
+  "community": "app",
+  "references": [
+    "app/onboarding/actions.ts",
+    "app/onboarding/onboarding-form.module.css"
+  ],
+  "referenced_by": [
+    "app/onboarding/page.tsx"
+  ]
+}

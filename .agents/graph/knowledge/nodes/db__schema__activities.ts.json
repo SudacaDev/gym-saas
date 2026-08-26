@@ -1,0 +1,12 @@
+{
+  "id": "db/schema/activities.ts",
+  "community": "db",
+  "references": [
+    "db/schema/tenants.ts"
+  ],
+  "referenced_by": [
+    "db/schema/class-schedules.ts",
+    "db/schema/index.ts",
+    "db/schema/relations.ts"
+  ]
+}

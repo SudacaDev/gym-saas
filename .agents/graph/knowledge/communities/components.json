@@ -1,0 +1,14 @@
+{
+  "id": "components",
+  "nodes": [
+    "components/status-pill.module.css",
+    "components/status-pill.tsx",
+    "components/ui/button.tsx",
+    "components/ui/dialog.tsx",
+    "components/ui/field-error.tsx",
+    "components/ui/input.tsx",
+    "components/ui/label.tsx",
+    "components/ui/select.tsx",
+    "components/ui/table.tsx"
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "id": "app/(owner)/members/[memberId]/page.tsx",
+  "community": "app",
+  "references": [],
+  "referenced_by": []
+}

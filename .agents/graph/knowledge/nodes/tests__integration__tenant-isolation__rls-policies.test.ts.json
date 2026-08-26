@@ -1,0 +1,6 @@
+{
+  "id": "tests/integration/tenant-isolation/rls-policies.test.ts",
+  "community": "tests",
+  "references": [],
+  "referenced_by": []
+}

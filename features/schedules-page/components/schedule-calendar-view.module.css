@@ -17,7 +17,9 @@
 }
 
 .grid {
-  @apply grid grid-cols-7 gap-px overflow-hidden rounded-xl border border-border-subtle bg-border-subtle;
+  /* Multi-cell month grid clipped by overflow-hidden — capped radius, same
+     rationale as checkin-page's .list. */
+  @apply grid grid-cols-7 gap-px overflow-hidden rounded-[min(var(--radius-xl),20px)] border border-border-subtle bg-border-subtle;
 }
 
 .weekday {

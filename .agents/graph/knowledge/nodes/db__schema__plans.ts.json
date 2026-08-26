@@ -1,0 +1,13 @@
+{
+  "id": "db/schema/plans.ts",
+  "community": "db",
+  "references": [
+    "db/schema/tenants.ts",
+    "db/schema/enums.ts"
+  ],
+  "referenced_by": [
+    "db/schema/index.ts",
+    "db/schema/memberships.ts",
+    "db/schema/relations.ts"
+  ]
+}

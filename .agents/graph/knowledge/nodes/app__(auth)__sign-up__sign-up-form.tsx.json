@@ -1,0 +1,10 @@
+{
+  "id": "app/(auth)/sign-up/sign-up-form.tsx",
+  "community": "app",
+  "references": [
+    "app/(auth)/sign-up/sign-up-form.module.css"
+  ],
+  "referenced_by": [
+    "app/(auth)/sign-up/page.tsx"
+  ]
+}

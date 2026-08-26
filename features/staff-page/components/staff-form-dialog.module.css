@@ -1,0 +1,29 @@
+@reference "../../../app/globals.css";
+
+.form {
+  @apply space-y-4;
+}
+.field {
+  @apply space-y-1;
+}
+.row {
+  @apply grid grid-cols-2 gap-3;
+}
+.selectTrigger {
+  @apply w-full;
+}
+.staticValue {
+  @apply flex h-9 items-center rounded-lg border border-border-subtle bg-muted/50 px-2.5 text-sm text-muted-foreground;
+}
+.errorText {
+  @apply text-sm text-destructive;
+}
+.chipGrid {
+  @apply flex flex-wrap gap-2;
+}
+.chip {
+  @apply flex h-9 items-center justify-center rounded-lg border border-border bg-background px-3 text-sm font-bold tracking-wide text-foreground uppercase transition-colors outline-none hover:bg-muted focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50;
+}
+.chipSelected {
+  @apply border-primary bg-primary text-primary-foreground hover:bg-primary-hover;
+}

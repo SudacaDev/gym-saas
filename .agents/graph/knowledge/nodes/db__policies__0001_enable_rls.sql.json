@@ -1,0 +1,6 @@
+{
+  "id": "db/policies/0001_enable_rls.sql",
+  "community": "db",
+  "references": [],
+  "referenced_by": []
+}

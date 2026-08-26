@@ -1,0 +1,6 @@
+{
+  "id": "db/migrations/0001_supabase_auth.sql",
+  "community": "db",
+  "references": [],
+  "referenced_by": []
+}

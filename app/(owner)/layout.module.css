@@ -1,0 +1,9 @@
+@reference "../globals.css";
+
+.shell {
+  @apply flex flex-1;
+}
+
+.main {
+  @apply mx-auto w-full min-w-0 max-w-[1580px] flex-1 px-4 py-6 sm:px-6 sm:py-8;
+}

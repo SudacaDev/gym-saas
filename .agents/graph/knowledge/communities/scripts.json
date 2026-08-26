@@ -1,0 +1,7 @@
+{
+  "id": "scripts",
+  "nodes": [
+    "scripts/apply-policies.ts",
+    "scripts/setup-app-role.ts"
+  ]
+}

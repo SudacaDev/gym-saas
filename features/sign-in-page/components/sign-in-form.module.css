@@ -1,0 +1,25 @@
+@reference "../../../app/globals.css";
+
+.form {
+  @apply space-y-4;
+}
+
+.field {
+  @apply space-y-1.5;
+}
+
+.errorText {
+  @apply text-destructive text-sm;
+}
+
+.submitButton {
+  @apply w-full;
+}
+
+.footerText {
+  @apply text-muted-foreground text-center text-sm;
+}
+
+.footerLink {
+  @apply text-primary font-semibold underline-offset-4 hover:underline;
+}

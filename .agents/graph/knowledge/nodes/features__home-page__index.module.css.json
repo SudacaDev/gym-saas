@@ -1,0 +1,8 @@
+{
+  "id": "features/home-page/index.module.css",
+  "community": "features",
+  "references": [],
+  "referenced_by": [
+    "features/home-page/index.tsx"
+  ]
+}

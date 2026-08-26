@@ -1,0 +1,8 @@
+{
+  "id": "app/(auth)/sign-in/sign-in-form.module.css",
+  "community": "app",
+  "references": [],
+  "referenced_by": [
+    "app/(auth)/sign-in/sign-in-form.tsx"
+  ]
+}

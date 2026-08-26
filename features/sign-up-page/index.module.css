@@ -1,0 +1,17 @@
+@reference "../../app/globals.css";
+
+.wrapper {
+  @apply flex flex-1 items-center justify-center p-8;
+}
+
+.card {
+  @apply w-full max-w-sm space-y-6;
+}
+
+.header {
+  @apply space-y-2 text-center;
+}
+
+.title {
+  @apply font-heading text-3xl tracking-tight uppercase;
+}

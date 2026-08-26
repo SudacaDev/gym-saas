@@ -1,0 +1,9 @@
+{
+  "id": "features/schedules-page/day-labels.ts",
+  "community": "features",
+  "references": [],
+  "referenced_by": [
+    "features/schedules-page/components/schedule-form-dialog.tsx",
+    "features/schedules-page/index.tsx"
+  ]
+}

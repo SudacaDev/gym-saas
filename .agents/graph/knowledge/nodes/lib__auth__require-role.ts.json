@@ -1,0 +1,8 @@
+{
+  "id": "lib/auth/require-role.ts",
+  "community": "lib",
+  "references": [
+    "lib/auth/get-tenant-context.ts"
+  ],
+  "referenced_by": []
+}

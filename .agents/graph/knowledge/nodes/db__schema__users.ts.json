@@ -1,0 +1,15 @@
+{
+  "id": "db/schema/users.ts",
+  "community": "db",
+  "references": [
+    "db/schema/tenants.ts",
+    "db/schema/enums.ts"
+  ],
+  "referenced_by": [
+    "db/schema/email-send-log.ts",
+    "db/schema/index.ts",
+    "db/schema/members.ts",
+    "db/schema/relations.ts",
+    "db/schema/staff-members.ts"
+  ]
+}

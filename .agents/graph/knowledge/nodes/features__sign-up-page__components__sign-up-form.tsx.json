@@ -1,0 +1,10 @@
+{
+  "id": "features/sign-up-page/components/sign-up-form.tsx",
+  "community": "features",
+  "references": [
+    "features/sign-up-page/components/sign-up-form.module.css"
+  ],
+  "referenced_by": [
+    "features/sign-up-page/index.tsx"
+  ]
+}

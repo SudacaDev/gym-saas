@@ -1,0 +1,29 @@
+@reference "../app/globals.css";
+
+.pill {
+  @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-bold tracking-wide uppercase;
+}
+
+.dot {
+  @apply size-1.5 rounded-full bg-current;
+}
+
+.success {
+  @apply bg-status-success-bg text-status-success-fg;
+}
+
+.alert {
+  @apply bg-status-alert-bg text-status-alert-fg;
+}
+
+.neutral {
+  @apply bg-status-neutral-bg text-status-neutral-fg;
+}
+
+.danger {
+  @apply bg-status-danger-bg text-status-danger-fg;
+}
+
+.info {
+  @apply bg-status-info-bg text-status-info-fg;
+}

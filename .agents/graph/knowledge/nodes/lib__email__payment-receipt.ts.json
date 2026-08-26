@@ -1,0 +1,8 @@
+{
+  "id": "lib/email/payment-receipt.ts",
+  "community": "lib",
+  "references": [
+    "lib/email/resend-client.ts"
+  ],
+  "referenced_by": []
+}

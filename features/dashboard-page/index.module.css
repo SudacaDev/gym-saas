@@ -1,0 +1,249 @@
+@reference "../../app/globals.css";
+
+.container {
+  @apply space-y-10;
+}
+
+.title {
+  @apply font-heading text-3xl uppercase tracking-tight;
+}
+
+.srOnlyTitle {
+  @apply sr-only;
+}
+
+/* Onboarding (metrics.totalMembers === 0) */
+
+.onboarding {
+  /* Container, not a control — capped radius, see DESIGN.md Shapes. */
+  @apply rounded-[min(var(--radius-lg),20px)] border border-border bg-card px-8 py-16 text-center;
+}
+
+.onboardingEyebrow {
+  @apply text-xs font-bold tracking-widest text-primary uppercase;
+}
+
+.onboardingTitle {
+  @apply mt-3 font-heading text-3xl tracking-tight;
+}
+
+.onboardingText {
+  @apply mx-auto mt-3 max-w-md text-sm text-muted-foreground;
+}
+
+.onboardingActions {
+  @apply mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row;
+}
+
+.onboardingAction {
+  @apply rounded-md bg-primary px-6 py-3 text-sm font-bold tracking-wide text-primary-foreground uppercase transition-colors hover:bg-primary-hover;
+}
+
+/* Hero: ingresos del mes como número protagonista + fila fina de stats */
+
+.hero {
+  @apply flex flex-wrap items-end justify-between gap-8 border-b border-border-subtle pb-7;
+}
+
+.heroLabel {
+  @apply text-xs font-bold tracking-widest text-muted-foreground uppercase;
+}
+
+.heroValue {
+  @apply mt-2.5 font-heading text-5xl leading-none tracking-tight sm:text-6xl lg:text-7xl;
+}
+
+.heroTrend {
+  @apply mt-3 flex items-center gap-1.5 text-[13px] text-muted-foreground;
+}
+
+.trendIconUp {
+  @apply fill-status-success-fg;
+}
+
+.trendIconDown {
+  @apply fill-destructive;
+}
+
+.trendValueUp {
+  @apply font-bold text-status-success-fg;
+}
+
+.trendValueDown {
+  @apply text-destructive font-bold;
+}
+
+.statRow {
+  @apply flex flex-wrap items-stretch;
+}
+
+.statItem {
+  @apply flex flex-col justify-end px-4 first:pl-0 last:pr-0 sm:px-7;
+}
+
+.statDivider {
+  @apply w-px bg-border;
+}
+
+.statLabel {
+  @apply text-[11px] font-bold tracking-widest text-muted-foreground uppercase;
+}
+
+.statLabelAlert {
+  @apply text-status-alert-fg;
+}
+
+.statValue {
+  @apply mt-1.5 font-heading text-[32px] tracking-tight;
+}
+
+.statValueMuted {
+  @apply font-sans text-[15px] font-semibold text-muted-foreground;
+}
+
+.statValueAlert {
+  @apply text-status-alert-fg;
+}
+
+/* Vencimientos (calendario) + Check-ins (sparkline) */
+
+.twoCol {
+  @apply grid grid-cols-1 gap-12 lg:grid-cols-2;
+}
+
+.panelHeader {
+  @apply mb-5 flex items-baseline justify-between;
+}
+
+.panelTitle {
+  @apply font-heading text-sm tracking-tight uppercase;
+}
+
+.panelMeta {
+  @apply text-[11px] text-muted-foreground;
+}
+
+.calendarGrid {
+  @apply grid grid-cols-7 border-t border-border-subtle pt-3.5 text-center;
+}
+
+.calendarWeekday {
+  @apply pb-2.5 text-[9px] font-bold tracking-wide text-muted-foreground;
+}
+
+.calendarDay {
+  @apply py-1.5 text-xs text-foreground;
+}
+
+.calendarDayMuted {
+  @apply text-[#3a3a37];
+}
+
+.calendarDayToday {
+  @apply border-b-2 border-primary font-bold text-primary;
+}
+
+.calendarDayExpiringDot {
+  @apply mx-auto mt-1 block h-1 w-1 rounded-full bg-status-alert-fg;
+}
+
+.expiringList {
+  @apply mt-5 border-t border-border-subtle;
+}
+
+.expiringRow {
+  @apply flex items-baseline justify-between border-b border-border-subtle py-3 last:border-b-0;
+}
+
+.expiringName {
+  @apply text-sm;
+}
+
+.expiringDate {
+  @apply text-xs font-semibold text-status-alert-fg;
+}
+
+.sparklineWrap {
+  @apply border-t border-border-subtle pt-5;
+}
+
+.sparklineGridLine {
+  @apply stroke-border-subtle;
+  stroke-width: 1;
+}
+
+.sparklineLine {
+  @apply fill-none stroke-primary;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sparklineDot {
+  @apply fill-background stroke-primary;
+  stroke-width: 2;
+}
+
+.sparklineLabels {
+  @apply mt-1 flex justify-between;
+}
+
+.sparklineLabel {
+  @apply text-[10px] font-bold tracking-wide text-muted-foreground;
+}
+
+.sparklineLabelToday {
+  @apply text-primary;
+}
+
+/* Top socios */
+
+.leaderboard {
+  @apply border-t border-border-subtle;
+}
+
+.leaderboardRow {
+  @apply flex items-baseline gap-5 border-b border-border-subtle py-4 last:border-b-0;
+}
+
+.leaderboardRank {
+  @apply w-8 shrink-0 font-heading text-xl text-muted-foreground;
+}
+
+.leaderboardName {
+  @apply flex-1 text-[15px] font-semibold;
+}
+
+.leaderboardCount {
+  @apply font-heading text-xl;
+}
+
+/* Actividad reciente */
+
+.activityTimeline {
+  @apply border-t border-border-subtle;
+}
+
+.activityRow {
+  @apply flex items-center gap-3.5 border-b border-border-subtle py-3.5 last:border-b-0;
+}
+
+.activityDot {
+  @apply h-[5px] w-[5px] shrink-0 rounded-full bg-status-neutral-fg;
+}
+
+.activityDotPayment {
+  @apply bg-primary;
+}
+
+.activityText {
+  @apply flex-1 text-sm text-[#c8c8c4];
+}
+
+.activityName {
+  @apply font-semibold text-foreground;
+}
+
+.activityTime {
+  @apply shrink-0 text-xs text-muted-foreground;
+}

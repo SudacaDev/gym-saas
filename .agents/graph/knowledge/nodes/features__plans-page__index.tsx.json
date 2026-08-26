@@ -1,0 +1,9 @@
+{
+  "id": "features/plans-page/index.tsx",
+  "community": "features",
+  "references": [
+    "features/plans-page/components/plan-form-dialog.tsx",
+    "features/plans-page/index.module.css"
+  ],
+  "referenced_by": []
+}

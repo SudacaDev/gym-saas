@@ -1,0 +1,47 @@
+@reference "../../app/globals.css";
+
+.container {
+  @apply space-y-6;
+}
+.header {
+  @apply flex items-center justify-between;
+}
+.title {
+  @apply font-heading text-3xl uppercase tracking-tight;
+}
+.errorText {
+  @apply text-sm text-destructive;
+}
+.emptyText {
+  @apply text-sm text-muted-foreground;
+}
+
+.grid {
+  @apply grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3;
+}
+
+.card {
+  /* Container, not a control — capped radius, see DESIGN.md Shapes. Was
+     rendering as an egg/oval (width >> height, uncapped pill radius). */
+  @apply flex flex-col gap-4 rounded-[min(var(--radius-xl),20px)] border border-border bg-card p-6;
+}
+
+.periodTag {
+  @apply inline-flex w-fit items-center rounded-full border border-border px-2.5 py-1 text-[11px] font-bold tracking-widest text-muted-foreground uppercase;
+}
+
+.cardName {
+  @apply font-heading text-lg tracking-tight uppercase;
+}
+
+.cardPrice {
+  @apply mt-auto font-heading text-4xl leading-none tracking-tight;
+}
+
+.cardPriceUnit {
+  @apply ml-1 font-sans text-sm font-semibold text-muted-foreground;
+}
+
+.cardActions {
+  @apply flex items-center justify-end gap-2 border-t border-border-subtle pt-4;
+}

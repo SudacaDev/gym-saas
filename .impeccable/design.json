@@ -1,0 +1,188 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-21T00:00:00.000Z",
+  "title": "Design System: BoxFlow",
+  "extensions": {
+    "colorMeta": {
+      "ignition-orange": {
+        "role": "primary",
+        "displayName": "Ignition Orange",
+        "canonical": "#ff5a1f",
+        "tonalRamp": ["#260e05", "#59200b", "#8c3211", "#bf4417", "#ff5a1f", "#ff8357", "#ffa483", "#ffc5b0"]
+      },
+      "ignition-orange-bright": {
+        "role": "primary-hover",
+        "displayName": "Ignition Orange Bright",
+        "canonical": "#ff7a45",
+        "tonalRamp": ["#4d2615", "#7a3b21", "#a7502e", "#d4653a", "#ff7a45", "#ff9a6d", "#ffb595", "#ffd2bd"]
+      },
+      "blackout": {
+        "role": "neutral",
+        "displayName": "Blackout",
+        "canonical": "#0a0a0a",
+        "tonalRamp": ["#000000", "#0a0a0a", "#141414", "#1c1c1c", "#232323", "#3a3a37", "#5a5a56", "#8a8a86"]
+      },
+      "charcoal-panel": {
+        "role": "neutral",
+        "displayName": "Charcoal Panel",
+        "canonical": "#141414",
+        "tonalRamp": ["#000000", "#0a0a0a", "#141414", "#1c1c1c", "#232323", "#3a3a37", "#5a5a56", "#8a8a86"]
+      },
+      "soot": {
+        "role": "neutral",
+        "displayName": "Soot",
+        "canonical": "#1c1c1c",
+        "tonalRamp": ["#000000", "#0a0a0a", "#141414", "#1c1c1c", "#232323", "#3a3a37", "#5a5a56", "#8a8a86"]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#232323",
+        "tonalRamp": ["#000000", "#0a0a0a", "#141414", "#1c1c1c", "#232323", "#3a3a37", "#5a5a56", "#8a8a86"]
+      },
+      "warm-gray": {
+        "role": "neutral",
+        "displayName": "Warm Gray",
+        "canonical": "#8a8a86",
+        "tonalRamp": ["#5a5a56", "#6f6f6b", "#8a8a86", "#a3a39e", "#b8b8b4", "#c8c8c4", "#e0e0dc", "#f2f2f0"]
+      },
+      "chalk": {
+        "role": "neutral",
+        "displayName": "Chalk",
+        "canonical": "#f2f2f0",
+        "tonalRamp": ["#5a5a56", "#6f6f6b", "#8a8a86", "#a3a39e", "#b8b8b4", "#c8c8c4", "#e0e0dc", "#f2f2f0"]
+      },
+      "alert-red": {
+        "role": "semantic-destructive",
+        "displayName": "Alert Red",
+        "canonical": "#ef4444",
+        "tonalRamp": ["#240a0a", "#541818", "#832525", "#b33333", "#ef4444", "#f27474", "#f79696", "#fbb8b8"]
+      },
+      "signal-green": {
+        "role": "semantic-positive",
+        "displayName": "Signal Green",
+        "canonical": "#4ade80",
+        "tonalRamp": ["#0b2113", "#1a4e2d", "#297a46", "#38a760", "#4ade80", "#77e79f", "#a3eeb8", "#c0f3d3"]
+      },
+      "alert-amber": {
+        "role": "semantic-warning",
+        "displayName": "Alert Amber",
+        "canonical": "#ff8a4c",
+        "tonalRamp": ["#26150b", "#59301b", "#8c4c2a", "#bf6839", "#ff8a4c", "#ffa779", "#ffc09d", "#ffd6c0"]
+      },
+      "info-blue": {
+        "role": "semantic-info",
+        "displayName": "Info Blue",
+        "canonical": "#60a5fa",
+        "tonalRamp": ["#0e1926", "#223a58", "#355b8a", "#487cbc", "#60a5fa", "#87bbfc", "#a3cbfd", "#bfdcfd"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "The single hero number per screen — dashboard revenue, marketing hero title." },
+      "headline": { "displayName": "Headline", "purpose": "Page-level titles." },
+      "title": { "displayName": "Title", "purpose": "Panel and section titles, dialog titles." },
+      "body": { "displayName": "Body", "purpose": "Paragraphs, form values, table cells — the only sentence-case role." },
+      "label": { "displayName": "Label", "purpose": "Eyebrows, stat labels, nav links, table headers, status badge text." }
+    },
+    "shadows": [],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Marketing/CTA button — bold uppercase label, Ignition Orange fill.",
+      "html": "<button class=\"ds-btn-primary\">Quiero ver BoxFlow</button>",
+      "css": ".ds-btn-primary { background: #ff5a1f; color: #0a0a0a; padding: 16px 32px; border-radius: 0.3rem; font-size: 0.875rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; border: none; transition: background-color 0.15s; } .ds-btn-primary:hover { background: #ff7a45; } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(255,90,31,0.5); } .ds-btn-primary:active { transform: translateY(1px); }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "In-app secondary action — transparent fill, hairline border.",
+      "html": "<button class=\"ds-btn-outline\">Cancelar</button>",
+      "css": ".ds-btn-outline { background: transparent; color: #f2f2f0; padding: 6px 10px; border-radius: 0.375rem; border: 1px solid #232323; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; transition: background-color 0.15s, color 0.15s; } .ds-btn-outline:hover { background: #141414; } .ds-btn-outline:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(255,90,31,0.5); }"
+    },
+    {
+      "name": "Input Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Text input — transparent background, hairline border, ring on focus.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"Nombre del socio\" />",
+      "css": ".ds-input { height: 32px; width: 100%; background: transparent; color: #f2f2f0; border: 1px solid #232323; border-radius: 0.375rem; padding: 4px 10px; font-size: 0.875rem; outline: none; transition: border-color 0.15s; } .ds-input::placeholder { color: #8a8a86; } .ds-input:focus-visible { border-color: #ff5a1f; box-shadow: 0 0 0 3px rgba(255,90,31,0.5); }"
+    },
+    {
+      "name": "Status Badge — Active",
+      "kind": "chip",
+      "refersTo": "status-badge-active",
+      "description": "Dot-plus-pill status indicator for a positive/active state (e.g. active membership).",
+      "html": "<span class=\"ds-badge ds-badge-active\"><span class=\"ds-badge-dot\"></span>Activo</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; gap: 6px; border-radius: 9999px; padding: 2px 10px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; } .ds-badge-dot { width: 6px; height: 6px; border-radius: 9999px; background: currentColor; } .ds-badge-active { background: #132a1c; color: #4ade80; }"
+    },
+    {
+      "name": "Status Badge — Alert",
+      "kind": "chip",
+      "refersTo": "status-badge-alert",
+      "description": "Dot-plus-pill status indicator for an attention state (e.g. membership expiring soon).",
+      "html": "<span class=\"ds-badge ds-badge-alert\"><span class=\"ds-badge-dot\"></span>Vence pronto</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; gap: 6px; border-radius: 9999px; padding: 2px 10px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; } .ds-badge-dot { width: 6px; height: 6px; border-radius: 9999px; background: currentColor; } .ds-badge-alert { background: #2a1c13; color: #ff8a4c; }"
+    },
+    {
+      "name": "Dialog / Card Surface",
+      "kind": "card",
+      "refersTo": "dialog-content",
+      "description": "Modal/card container — tonal background step, hairline border, no shadow.",
+      "html": "<div class=\"ds-card\"><h3 class=\"ds-card-title\">Nuevo socio</h3><p class=\"ds-card-body\">Completá los datos para dar de alta al socio.</p></div>",
+      "css": ".ds-card { background: #141414; color: #f2f2f0; border: 1px solid #232323; border-radius: 0.525rem; padding: 16px; } .ds-card-title { font-family: 'Archivo Black', Arial Black, sans-serif; font-size: 1rem; text-transform: uppercase; letter-spacing: -0.01em; margin: 0 0 8px; } .ds-card-body { font-size: 0.875rem; color: #8a8a86; line-height: 1.6; margin: 0; }"
+    },
+    {
+      "name": "Nav Link",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "App-shell top nav link — uppercase label, 2px bottom border, orange when active.",
+      "html": "<a class=\"ds-nav-link ds-nav-link-active\" href=\"#\">Dashboard</a>",
+      "css": ".ds-nav-link { display: inline-block; padding: 4px 0; border-bottom: 2px solid transparent; color: #8a8a86; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; transition: color 0.15s, border-color 0.15s; } .ds-nav-link:hover { color: #f2f2f0; } .ds-nav-link-active { border-color: #ff5a1f; color: #f2f2f0; }"
+    },
+    {
+      "name": "Table",
+      "kind": "custom",
+      "refersTo": "table-header",
+      "description": "Data table — muted uppercase header row, hairline row dividers, hover tint.",
+      "html": "<table class=\"ds-table\"><thead><tr><th class=\"ds-th\">Socio</th><th class=\"ds-th\">Plan</th></tr></thead><tbody><tr class=\"ds-tr\"><td class=\"ds-td\">Julia Márquez</td><td class=\"ds-td\">Mensual</td></tr></tbody></table>",
+      "css": ".ds-table { width: 100%; border-collapse: collapse; border: 1px solid #232323; border-radius: 0.375rem; overflow: hidden; font-size: 0.875rem; } .ds-th { height: 40px; padding: 0 12px; text-align: left; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #8a8a86; background: #141414; border-bottom: 1px solid #1c1c1c; } .ds-td { padding: 12px; border-bottom: 1px solid #1c1c1c; } .ds-tr:hover { background: rgba(28,28,28,0.5); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Box Ledger",
+    "overview": "BoxFlow's screens read like a front-desk ledger that got fast instead of decorated: near-black surfaces, one loud accent color reserved for money and action, and dense rows of data (stat pairs, a check-in sparkline, a vencimientos calendar, a top-socios leaderboard) laid out to be scanned in a glance, not studied. There is no light theme — :root and .dark are intentionally identical — because this product has exactly one register: dim, high-contrast, always-on, built for a phone or tablet at the entrance. Nothing here tries to look premium or soft; the aesthetic is a direct extension of BoxFlow's own positioning against chain-gym software — blunt, operational, unbothered by ornament.\n\nDepth comes from tonal layering (background → panel → hairline border), never from shadows. Hierarchy comes from scale and weight (a 72px Archivo Black revenue number next to 11px tracked-uppercase labels), not from color variety — the hot orange accent is spent on maybe three things per screen: the primary CTA, the active nav/today marker, and the hero number's accent details. Everything else stays gray-on-black.",
+    "keyCharacteristics": [
+      "Dark-only, high-contrast, zero light-mode fallback.",
+      "One accent color (ignition orange), spent sparingly on CTAs, active states, and the hero metric.",
+      "Flat by construction: no shadows anywhere in the codebase; depth is tonal-step + hairline-border only.",
+      "Archivo Black, uppercase, tight-tracked for every heading and label; regular Archivo, sentence case, for all reading text.",
+      "Status conveyed through a consistent dot-plus-pill badge (active/alert/neutral/info), never through icon-only or color-only signaling.",
+      "Dashboard leads with one hero number, not a grid of equal-weight cards — this is a deliberate product principle (see PRODUCT.md), not a default layout choice."
+    ],
+    "rules": [
+      { "name": "The One Voice Rule", "body": "Ignition Orange is the only saturated, high-chroma color in the system. Every other color is either a neutral gray step or a desaturated-background/saturated-text semantic pair. If a new element wants a second \"loud\" color, it's wrong — route it through the existing semantic set or make it gray.", "section": "colors" },
+      { "name": "The Shout-or-Read Rule", "body": "A text element is either Display/Headline/Title/Label — uppercase, tracked, Archivo Black or bold — or it's Body — sentence case, regular weight, relaxed leading. There is no in-between register.", "section": "typography" },
+      { "name": "The Flat-By-Default Rule", "body": "No shadows, anywhere, ever. If something needs to read as \"above\" the surface, give it a lighter background tone and a hairline border — not a shadow. This is a deliberate invariant of the system, not an oversight to fix later.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do spend Ignition Orange only on primary actions, active/current state, and the one hero metric per screen.",
+      "Do build any new status indicator as a dot-plus-pill badge on a dark semantic-tint background, matching the existing Active/Alert/Info/Neutral set before inventing a new color.",
+      "Do use uppercase, tracked Archivo Black/bold for anything that functions as a label, heading, or number-to-be-scanned; keep reading paragraphs in regular-weight sentence case.",
+      "Do convey elevation with a tonal background step plus a 1px hairline border."
+    ],
+    "donts": [
+      "Don't add box-shadow anywhere — depth is tonal-step-and-hairline only, by deliberate invariant, not by omission.",
+      "Don't introduce a light theme or a second color mode; :root and .dark are intentionally identical.",
+      "Don't add a second saturated accent color; route new emphasis through the existing neutral/semantic palette instead.",
+      "Don't turn the dashboard into an equal-weight card grid — the single hero-number-plus-secondary-stats layout is a product decision (see PRODUCT.md), not a placeholder."
+    ]
+  }
+}

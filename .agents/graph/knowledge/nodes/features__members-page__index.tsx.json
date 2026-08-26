@@ -1,0 +1,9 @@
+{
+  "id": "features/members-page/index.tsx",
+  "community": "features",
+  "references": [
+    "features/members-page/components/member-form-dialog.tsx",
+    "features/members-page/index.module.css"
+  ],
+  "referenced_by": []
+}

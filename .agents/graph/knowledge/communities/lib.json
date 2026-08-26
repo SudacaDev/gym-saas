@@ -1,0 +1,31 @@
+{
+  "id": "lib",
+  "nodes": [
+    "lib/api/handle-api-error.ts",
+    "lib/auth/get-tenant-context.ts",
+    "lib/auth/require-role.ts",
+    "lib/dashboard/metrics.ts",
+    "lib/email/membership-reminder.ts",
+    "lib/email/payment-receipt.ts",
+    "lib/email/resend-client.ts",
+    "lib/memberships/renewal.ts",
+    "lib/memberships/status-presentation.ts",
+    "lib/memberships/status.ts",
+    "lib/reminders/reminder-window.ts",
+    "lib/reminders/send-and-log-reminder.ts",
+    "lib/supabase/admin.ts",
+    "lib/supabase/client.ts",
+    "lib/supabase/server.ts",
+    "lib/utils.ts",
+    "lib/validations/activity.schema.ts",
+    "lib/validations/auth.ts",
+    "lib/validations/checkin.schema.ts",
+    "lib/validations/member.schema.ts",
+    "lib/validations/membership.schema.ts",
+    "lib/validations/onboarding.ts",
+    "lib/validations/payment.schema.ts",
+    "lib/validations/plan.schema.ts",
+    "lib/validations/schedule.schema.ts",
+    "lib/validations/staff-member.schema.ts"
+  ]
+}

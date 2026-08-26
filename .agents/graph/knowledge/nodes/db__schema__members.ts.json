@@ -1,0 +1,16 @@
+{
+  "id": "db/schema/members.ts",
+  "community": "db",
+  "references": [
+    "db/schema/tenants.ts",
+    "db/schema/users.ts"
+  ],
+  "referenced_by": [
+    "db/schema/checkins.ts",
+    "db/schema/email-send-log.ts",
+    "db/schema/index.ts",
+    "db/schema/memberships.ts",
+    "db/schema/payments.ts",
+    "db/schema/relations.ts"
+  ]
+}

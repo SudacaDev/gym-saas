@@ -1,0 +1,8 @@
+{
+  "id": "features/sign-in-page/components/sign-in-form.module.css",
+  "community": "features",
+  "references": [],
+  "referenced_by": [
+    "features/sign-in-page/components/sign-in-form.tsx"
+  ]
+}

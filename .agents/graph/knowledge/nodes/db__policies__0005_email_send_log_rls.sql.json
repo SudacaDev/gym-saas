@@ -1,0 +1,6 @@
+{
+  "id": "db/policies/0005_email_send_log_rls.sql",
+  "community": "db",
+  "references": [],
+  "referenced_by": []
+}

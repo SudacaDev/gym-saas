@@ -1,0 +1,14 @@
+{
+  "id": "db/schema/payments.ts",
+  "community": "db",
+  "references": [
+    "db/schema/tenants.ts",
+    "db/schema/members.ts",
+    "db/schema/memberships.ts",
+    "db/schema/enums.ts"
+  ],
+  "referenced_by": [
+    "db/schema/index.ts",
+    "db/schema/relations.ts"
+  ]
+}

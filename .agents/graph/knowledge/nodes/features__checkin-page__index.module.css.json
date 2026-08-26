@@ -1,0 +1,8 @@
+{
+  "id": "features/checkin-page/index.module.css",
+  "community": "features",
+  "references": [],
+  "referenced_by": [
+    "features/checkin-page/index.tsx"
+  ]
+}

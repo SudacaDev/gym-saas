@@ -1,0 +1,8 @@
+{
+  "id": "lib/memberships/status-presentation.ts",
+  "community": "lib",
+  "references": [
+    "lib/memberships/status.ts"
+  ],
+  "referenced_by": []
+}

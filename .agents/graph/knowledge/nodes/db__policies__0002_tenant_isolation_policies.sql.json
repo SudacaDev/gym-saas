@@ -1,0 +1,6 @@
+{
+  "id": "db/policies/0002_tenant_isolation_policies.sql",
+  "community": "db",
+  "references": [],
+  "referenced_by": []
+}

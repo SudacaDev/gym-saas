@@ -1,26 +1,190 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-archivo);
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --font-heading: var(--font-archivo-black);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-border-subtle: var(--border-subtle);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-status-success-bg: var(--status-success-bg);
+  --color-status-success-fg: var(--status-success-fg);
+  --color-status-alert-bg: var(--status-alert-bg);
+  --color-status-alert-fg: var(--status-alert-fg);
+  --color-status-neutral-bg: var(--status-neutral-bg);
+  --color-status-neutral-fg: var(--status-neutral-fg);
+  --color-status-danger-bg: var(--status-danger-bg);
+  --color-status-danger-fg: var(--status-danger-fg);
+  --color-status-info-bg: var(--status-info-bg);
+  --color-status-info-fg: var(--status-info-fg);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/*
+ * "Bold Athletic" — dark, high-contrast, gym/sport identity approved from
+ * the mockup. There's no alternate light theme in this app: :root and
+ * .dark below intentionally carry the same values so the handful of
+ * shadcn `dark:`-prefixed utility classes still present in components/ui
+ * (extra opacity/hover nuances) resolve consistently whether or not the
+ * `dark` class is present on <html>.
+ */
+:root {
+  --background: #0a0a0a;
+  --foreground: #f2f2f0;
+  --card: #141414;
+  --card-foreground: #f2f2f0;
+  --popover: #141414;
+  --popover-foreground: #f2f2f0;
+  --primary: #ccff00;
+  --primary-foreground: #0a0a0a;
+  --primary-hover: #b8e600;
+  --secondary: #1c1c1c;
+  --secondary-foreground: #f2f2f0;
+  --muted: #141414;
+  --muted-foreground: #8a8a86;
+  --accent: #1c1c1c;
+  --accent-foreground: #f2f2f0;
+  --destructive: #ef4444;
+  --border: #232323;
+  --border-subtle: #1c1c1c;
+  --input: #232323;
+  --ring: #ccff00;
+  --chart-1: #ccff00;
+  --chart-2: #b8e600;
+  --chart-3: #ccff00;
+  --chart-4: #8a8a86;
+  --chart-5: #232323;
+  --radius: 9999px;
+  --sidebar: #141414;
+  --sidebar-foreground: #f2f2f0;
+  --sidebar-primary: #ccff00;
+  --sidebar-primary-foreground: #0a0a0a;
+  --sidebar-accent: #1c1c1c;
+  --sidebar-accent-foreground: #f2f2f0;
+  --sidebar-border: #232323;
+  --sidebar-ring: #ccff00;
+  /*
+   * Status pill tones (components/status-pill.tsx) — the tinted
+   * dark-bg/matching-fg pairs used for membership/payment/presence status
+   * everywhere in the app. Named tokens instead of the raw hex previously
+   * hand-copied into checkin-page, member-detail-page and dashboard-page
+   * independently (impeccable audit, 2026-08-21): one visual system, one
+   * place to change it.
+   */
+  --status-success-bg: #1f2400;
+  --status-success-fg: #ccff00;
+  --status-alert-bg: #2a1c13;
+  --status-alert-fg: #ff8a4c;
+  --status-neutral-bg: #1e1e1e;
+  --status-neutral-fg: #a3a39e;
+  --status-danger-bg: #2a1414;
+  --status-danger-fg: #ef4444;
+  --status-info-bg: #132036;
+  --status-info-fg: #60a5fa;
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #f2f2f0;
+  --card: #141414;
+  --card-foreground: #f2f2f0;
+  --popover: #141414;
+  --popover-foreground: #f2f2f0;
+  --primary: #ccff00;
+  --primary-foreground: #0a0a0a;
+  --primary-hover: #b8e600;
+  --secondary: #1c1c1c;
+  --secondary-foreground: #f2f2f0;
+  --muted: #141414;
+  --muted-foreground: #8a8a86;
+  --accent: #1c1c1c;
+  --accent-foreground: #f2f2f0;
+  --destructive: #ef4444;
+  --border: #232323;
+  --border-subtle: #1c1c1c;
+  --input: #232323;
+  --ring: #ccff00;
+  --chart-1: #ccff00;
+  --chart-2: #b8e600;
+  --chart-3: #ccff00;
+  --chart-4: #8a8a86;
+  --chart-5: #232323;
+  --sidebar: #141414;
+  --sidebar-foreground: #f2f2f0;
+  --sidebar-primary: #ccff00;
+  --sidebar-primary-foreground: #0a0a0a;
+  --sidebar-accent: #1c1c1c;
+  --sidebar-accent-foreground: #f2f2f0;
+  --sidebar-border: #232323;
+  --sidebar-ring: #ccff00;
+  /*
+   * Status pill tones (components/status-pill.tsx) — the tinted
+   * dark-bg/matching-fg pairs used for membership/payment/presence status
+   * everywhere in the app. Named tokens instead of the raw hex previously
+   * hand-copied into checkin-page, member-detail-page and dashboard-page
+   * independently (impeccable audit, 2026-08-21): one visual system, one
+   * place to change it.
+   */
+  --status-success-bg: #1f2400;
+  --status-success-fg: #ccff00;
+  --status-alert-bg: #2a1c13;
+  --status-alert-fg: #ff8a4c;
+  --status-neutral-bg: #1e1e1e;
+  --status-neutral-fg: #a3a39e;
+  --status-danger-bg: #2a1414;
+  --status-danger-fg: #ef4444;
+  --status-info-bg: #132036;
+  --status-info-fg: #60a5fa;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
 }

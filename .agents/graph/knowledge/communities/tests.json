@@ -1,0 +1,15 @@
+{
+  "id": "tests",
+  "nodes": [
+    "tests/integration/tenant-isolation/rls-policies.test.ts",
+    "tests/unit/checkin-checkout.test.ts",
+    "tests/unit/checkin-requires-active-membership.test.ts",
+    "tests/unit/dashboard-metrics.test.ts",
+    "tests/unit/member-soft-delete.test.ts",
+    "tests/unit/membership-reminder.test.ts",
+    "tests/unit/membership-renewal.test.ts",
+    "tests/unit/membership-status.test.ts",
+    "tests/unit/payment-extends-membership.test.ts",
+    "tests/unit/payment-receipt.test.ts"
+  ]
+}

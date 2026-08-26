@@ -1,0 +1,10 @@
+{
+  "id": "app/(owner)/plans/plan-form-dialog.tsx",
+  "community": "app",
+  "references": [
+    "app/(owner)/plans/plan-form-dialog.module.css"
+  ],
+  "referenced_by": [
+    "app/(owner)/plans/page.tsx"
+  ]
+}

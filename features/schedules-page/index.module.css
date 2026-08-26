@@ -29,7 +29,11 @@
 }
 
 .weekWrap {
-  @apply overflow-x-auto rounded-xl border border-border-subtle;
+  /* Multi-row/multi-column grid clipped by overflow-x-auto — capped
+     radius, same rationale as checkin-page's .list (see DESIGN.md
+     Shapes). Missed in the first pass of the container-radius fix
+     because that search only matched overflow-hidden, not overflow-x-auto. */
+  @apply overflow-x-auto rounded-[min(var(--radius-xl),20px)] border border-border-subtle;
 }
 
 .week {
@@ -53,8 +57,21 @@
   @apply flex flex-col gap-2 bg-background p-2;
 }
 
+.cellEmpty {
+  /* Container-shaped grid slot, not a small control — capped radius, see
+     DESIGN.md Shapes. Wide relative to its height, so the flat pill
+     radius rendered it as an oval instead of a rounded rectangle. */
+  @apply flex min-h-16 flex-1 items-center justify-center rounded-[min(var(--radius-lg),20px)] bg-secondary/30 text-muted-foreground/60 transition-colors hover:bg-secondary/60 hover:text-foreground;
+}
+
+.cellEmptyIcon {
+  @apply h-4 w-4;
+}
+
 .slot {
-  @apply flex flex-col gap-1 rounded-lg border border-border-subtle p-3;
+  /* Same rationale as .cellEmpty above — same cap so filled and empty
+     cells read as the same shape language. */
+  @apply flex flex-col gap-1 rounded-[min(var(--radius-lg),20px)] border border-border-subtle p-3;
 }
 
 .slotTime {

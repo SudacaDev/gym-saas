@@ -1,0 +1,8 @@
+{
+  "id": "db/schema/webhook-events.ts",
+  "community": "db",
+  "references": [],
+  "referenced_by": [
+    "db/schema/index.ts"
+  ]
+}

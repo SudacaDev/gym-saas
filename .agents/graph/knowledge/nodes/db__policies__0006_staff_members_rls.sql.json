@@ -1,0 +1,6 @@
+{
+  "id": "db/policies/0006_staff_members_rls.sql",
+  "community": "db",
+  "references": [],
+  "referenced_by": []
+}

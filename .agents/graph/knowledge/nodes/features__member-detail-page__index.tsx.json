@@ -1,0 +1,10 @@
+{
+  "id": "features/member-detail-page/index.tsx",
+  "community": "features",
+  "references": [
+    "features/member-detail-page/components/membership-form-dialog.tsx",
+    "features/member-detail-page/components/payment-form-dialog.tsx",
+    "features/member-detail-page/index.module.css"
+  ],
+  "referenced_by": []
+}

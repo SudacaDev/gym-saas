@@ -1,0 +1,9 @@
+{
+  "id": "features/sign-up-page/index.tsx",
+  "community": "features",
+  "references": [
+    "features/sign-up-page/components/sign-up-form.tsx",
+    "features/sign-up-page/index.module.css"
+  ],
+  "referenced_by": []
+}

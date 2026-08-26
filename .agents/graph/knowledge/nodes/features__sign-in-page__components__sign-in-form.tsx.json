@@ -1,0 +1,10 @@
+{
+  "id": "features/sign-in-page/components/sign-in-form.tsx",
+  "community": "features",
+  "references": [
+    "features/sign-in-page/components/sign-in-form.module.css"
+  ],
+  "referenced_by": [
+    "features/sign-in-page/index.tsx"
+  ]
+}

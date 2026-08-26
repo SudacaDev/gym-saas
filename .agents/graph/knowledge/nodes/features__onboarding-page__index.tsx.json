@@ -1,0 +1,9 @@
+{
+  "id": "features/onboarding-page/index.tsx",
+  "community": "features",
+  "references": [
+    "features/onboarding-page/components/onboarding-form.tsx",
+    "features/onboarding-page/index.module.css"
+  ],
+  "referenced_by": []
+}

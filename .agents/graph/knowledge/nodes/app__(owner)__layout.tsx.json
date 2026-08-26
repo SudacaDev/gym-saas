@@ -1,0 +1,9 @@
+{
+  "id": "app/(owner)/layout.tsx",
+  "community": "app",
+  "references": [
+    "app/(owner)/owner-nav.tsx",
+    "app/(owner)/layout.module.css"
+  ],
+  "referenced_by": []
+}

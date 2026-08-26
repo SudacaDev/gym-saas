@@ -1,0 +1,164 @@
+@reference "../../app/globals.css";
+
+.page {
+  @apply flex flex-col;
+}
+
+/* ---- nav ---- */
+.nav {
+  @apply flex items-center justify-between border-b border-border-subtle px-8 py-5 sm:px-14;
+}
+
+.brand {
+  @apply flex items-center gap-2 font-heading text-lg tracking-tight uppercase;
+}
+
+.brandIcon {
+  @apply size-5 shrink-0 text-primary;
+}
+
+.navActions {
+  @apply flex items-center gap-7;
+}
+
+.signInLink {
+  @apply text-xs font-bold tracking-wide text-muted-foreground uppercase transition-colors hover:text-foreground;
+}
+
+.navCta {
+  @apply rounded-md bg-primary px-5 py-2.5 text-xs font-extrabold tracking-wide text-primary-foreground uppercase transition-colors hover:bg-primary-hover;
+}
+
+/* ---- hero ---- */
+.hero {
+  @apply flex flex-col items-center gap-6 px-8 pt-20 pb-16 text-center sm:px-14 sm:pt-24;
+}
+
+.eyebrow {
+  @apply rounded-full border border-border-subtle bg-muted px-4 py-1.5 text-xs font-extrabold tracking-widest text-primary uppercase;
+}
+
+.heroTitle {
+  @apply max-w-3xl font-heading text-4xl leading-[1.05] tracking-tight uppercase sm:text-6xl;
+}
+
+.heroSubtitle {
+  @apply max-w-xl text-lg leading-relaxed text-muted-foreground;
+}
+
+.heroActions {
+  @apply mt-2 flex flex-col items-center gap-3 sm:flex-row;
+}
+
+.heroCta {
+  @apply rounded-md bg-primary px-8 py-4 text-sm font-extrabold tracking-wide text-primary-foreground uppercase transition-colors hover:bg-primary-hover;
+}
+
+.heroNote {
+  @apply text-xs text-muted-foreground;
+}
+
+/* ---- proof screenshots ---- */
+.proof {
+  @apply px-8 pb-20 sm:px-14;
+}
+
+.proofLabel {
+  @apply mb-6 text-center text-xs font-extrabold tracking-widest text-muted-foreground uppercase;
+}
+
+.proofGrid {
+  @apply mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-2;
+}
+
+.browserFrame {
+  /* Wraps a screenshot + toolbar, clipped by overflow-hidden — capped
+     radius, same rationale as checkin-page's .list. */
+  @apply overflow-hidden rounded-[min(var(--radius-xl),20px)] border border-border bg-muted;
+}
+
+.browserBar {
+  @apply flex items-center gap-2 border-b border-border px-4 py-3;
+}
+
+.browserDot {
+  @apply size-2.5 rounded-full bg-border;
+}
+
+.browserUrl {
+  @apply ml-2 text-[11px] text-muted-foreground;
+}
+
+.browserImageWrap {
+  @apply h-[220px] overflow-hidden sm:h-[260px];
+}
+
+.browserImage {
+  @apply h-auto w-full object-cover object-top;
+}
+
+/* ---- benefits ---- */
+.benefits {
+  @apply px-8 pb-20 sm:px-14;
+}
+
+.benefitsGrid {
+  /* Multi-cell grid clipped by overflow-hidden — capped radius, same
+     rationale as checkin-page's .list. */
+  @apply mx-auto grid max-w-5xl grid-cols-1 gap-px overflow-hidden rounded-[min(var(--radius-xl),20px)] border border-border-subtle bg-border-subtle sm:grid-cols-2 lg:grid-cols-4;
+}
+
+.benefitCard {
+  @apply flex flex-col gap-4 bg-background p-7;
+}
+
+.benefitIcon {
+  @apply size-6 text-primary;
+}
+
+.benefitTitle {
+  @apply font-heading text-base tracking-tight uppercase;
+}
+
+.benefitText {
+  @apply text-sm leading-relaxed text-muted-foreground;
+}
+
+/* ---- differentiation ---- */
+.differentiation {
+  @apply flex flex-col items-center gap-5 border-y border-border-subtle bg-muted px-8 py-20 text-center sm:px-14;
+}
+
+.differentiationLabel {
+  @apply text-xs font-extrabold tracking-widest text-primary uppercase;
+}
+
+.differentiationText {
+  @apply max-w-3xl text-lg leading-relaxed font-medium text-foreground;
+}
+
+/* ---- final CTA ---- */
+.finalCta {
+  @apply flex flex-col items-center gap-7 px-8 py-24 text-center sm:px-14;
+}
+
+.finalCtaTitle {
+  @apply font-heading text-3xl leading-tight tracking-tight uppercase sm:text-5xl;
+}
+
+/* ---- footer ---- */
+.footer {
+  @apply flex items-center justify-between border-t border-border-subtle px-8 py-7 sm:px-14;
+}
+
+.footerBrand {
+  @apply flex items-center gap-2 font-heading text-sm text-muted-foreground uppercase;
+}
+
+.footerIcon {
+  @apply size-4 text-muted-foreground;
+}
+
+.footerCopy {
+  @apply text-xs text-muted-foreground;
+}

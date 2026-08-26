@@ -1,0 +1,6 @@
+{
+  "id": "db/policies/0003_class_schedules_rls.sql",
+  "community": "db",
+  "references": [],
+  "referenced_by": []
+}

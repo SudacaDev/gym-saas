@@ -1,0 +1,10 @@
+{
+  "id": "features/staff-page/index.tsx",
+  "community": "features",
+  "references": [
+    "features/staff-page/components/staff-form-dialog.tsx",
+    "features/staff-page/types.ts",
+    "features/staff-page/index.module.css"
+  ],
+  "referenced_by": []
+}

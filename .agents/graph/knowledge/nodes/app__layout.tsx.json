@@ -1,0 +1,9 @@
+{
+  "id": "app/layout.tsx",
+  "community": "app",
+  "references": [
+    "app/layout.module.css",
+    "app/globals.css"
+  ],
+  "referenced_by": []
+}

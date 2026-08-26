@@ -1,0 +1,8 @@
+{
+  "id": "features/staff-page/index.module.css",
+  "community": "features",
+  "references": [],
+  "referenced_by": [
+    "features/staff-page/index.tsx"
+  ]
+}

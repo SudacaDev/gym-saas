@@ -1,0 +1,10 @@
+{
+  "id": "app/(owner)/members/[memberId]/payment-form-dialog.tsx",
+  "community": "app",
+  "references": [
+    "app/(owner)/members/[memberId]/payment-form-dialog.module.css"
+  ],
+  "referenced_by": [
+    "app/(owner)/members/[memberId]/page.tsx"
+  ]
+}

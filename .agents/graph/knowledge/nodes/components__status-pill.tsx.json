@@ -1,0 +1,8 @@
+{
+  "id": "components/status-pill.tsx",
+  "community": "components",
+  "references": [
+    "components/status-pill.module.css"
+  ],
+  "referenced_by": []
+}
