@@ -22,14 +22,16 @@
 
 ## Backlog del proyecto
 ### Tareas pendientes
-- [ ] ~~Horarios (vista Tabla): botón "+ Agregar franja horaria" para crear una fila nueva a demanda~~ — **superseded por T-20260825-009, no correr**
-    - id: T-20260825-008
-    - type: ui
-    - motivo del reemplazo: el usuario contraargumentó con el patrón de Google Calendar (grilla siempre visible, sin un click extra para "crear" la fila) y el equipo, al repensarlo en serio, cambió de recomendación — ver T-20260825-009 para el diseño vigente. Queda acá solo como historial de la discusión (primera recomendación del equipo, luego revisada), no como tarea a ejecutar.
-    - contexto original (primera pasada del equipo, ya no vigente): convocados `uiux-designer` + `backend-developer` en paralelo, recomendaron un botón "+ Agregar franja horaria" que agregaba una fila en estado local hasta guardar la primera clase ahí, y rechazaron tanto un rango fijo universal como un campo `opening_time`/`closing_time` configurable en `tenants` (esa parte del análisis de backend — no repetir el patrón de `short_code` que backfillea, acá sería inventarle al dueño un dato de negocio falso — sigue siendo válida si el tema de horario configurable se revisita en el futuro).
-    - depends_on: T-20260825-007 (completada)
 
 ### Tareas en curso
+
+### Tareas descartadas (con motivo — no ejecutar, se conservan por trazabilidad)
+- [ ] ~~Horarios (vista Tabla): botón "+ Agregar franja horaria" para crear una fila nueva a demanda~~ — **superseded por T-20260825-009**
+    - id: T-20260825-008
+    - type: ui
+    - motivo del reemplazo: el usuario contraargumentó con el patrón de Google Calendar (grilla siempre visible, sin un click extra para "crear" la fila) y el equipo, al repensarlo en serio, cambió de recomendación — ver T-20260825-009 (completada) para el diseño vigente. Queda acá solo como historial de la discusión (primera recomendación del equipo, luego revisada), no como tarea a ejecutar.
+    - contexto original (primera pasada del equipo, ya no vigente): convocados `uiux-designer` + `backend-developer` en paralelo, recomendaron un botón "+ Agregar franja horaria" que agregaba una fila en estado local hasta guardar la primera clase ahí, y rechazaron tanto un rango fijo universal como un campo `opening_time`/`closing_time` configurable en `tenants` (esa parte del análisis de backend — no repetir el patrón de `short_code` que backfillea, acá sería inventarle al dueño un dato de negocio falso — sigue siendo válida si el tema de horario configurable se revisita en el futuro).
+    - depends_on: T-20260825-007 (completada)
 
 ### Tareas completadas (referenciar en `progress.md`)
 - [x] Horarios (vista Tabla): rango de filas derivado de los propios horarios del owner (min–max + relleno horario)
