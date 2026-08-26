@@ -3,7 +3,9 @@
   "community": "features",
   "references": [
     "features/plans-page/components/plan-form-dialog.tsx",
-    "features/plans-page/index.module.css"
+    "features/plans-page/components/plan-card-skeleton.tsx",
+    "features/plans-page/index.module.css",
+    "features/plans-page/hooks/usePlans.ts"
   ],
   "referenced_by": []
 }

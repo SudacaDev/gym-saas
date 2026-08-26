@@ -1,0 +1,11 @@
+{
+  "id": "features/plans-page/components/plan-card-skeleton.tsx",
+  "community": "features",
+  "references": [
+    "features/plans-page/index.module.css",
+    "features/plans-page/components/plan-card-skeleton.module.css"
+  ],
+  "referenced_by": [
+    "features/plans-page/index.tsx"
+  ]
+}

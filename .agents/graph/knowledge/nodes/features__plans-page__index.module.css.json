@@ -3,6 +3,7 @@
   "community": "features",
   "references": [],
   "referenced_by": [
+    "features/plans-page/components/plan-card-skeleton.tsx",
     "features/plans-page/index.tsx"
   ]
 }

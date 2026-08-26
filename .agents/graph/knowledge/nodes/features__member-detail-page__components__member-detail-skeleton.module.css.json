@@ -1,0 +1,8 @@
+{
+  "id": "features/member-detail-page/components/member-detail-skeleton.module.css",
+  "community": "features",
+  "references": [],
+  "referenced_by": [
+    "features/member-detail-page/components/member-detail-skeleton.tsx"
+  ]
+}

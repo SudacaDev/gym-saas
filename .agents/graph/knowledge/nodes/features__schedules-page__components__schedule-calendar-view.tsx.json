@@ -1,0 +1,12 @@
+{
+  "id": "features/schedules-page/components/schedule-calendar-view.tsx",
+  "community": "features",
+  "references": [
+    "features/schedules-page/components/schedule-form-dialog.tsx",
+    "features/schedules-page/components/schedule-view-props.ts",
+    "features/schedules-page/components/schedule-calendar-view.module.css"
+  ],
+  "referenced_by": [
+    "features/schedules-page/index.tsx"
+  ]
+}

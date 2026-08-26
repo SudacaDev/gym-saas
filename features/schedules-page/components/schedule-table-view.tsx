@@ -5,7 +5,7 @@ import { PlusIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScheduleFormDialog } from "./schedule-form-dialog";
 import type { ScheduleViewProps } from "./schedule-view-props";
-import { DAY_ORDER, DAY_LABELS_SHORT } from "../day-labels";
+import { DAY_ORDER, DAY_LABELS_SHORT } from "../lib/day-labels";
 import styles from "../index.module.css";
 
 /**

@@ -2,7 +2,8 @@
   "id": "features/checkin-page/index.tsx",
   "community": "features",
   "references": [
-    "features/checkin-page/index.module.css"
+    "features/checkin-page/index.module.css",
+    "features/checkin-page/hooks/useCheckin.ts"
   ],
   "referenced_by": []
 }

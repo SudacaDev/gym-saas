@@ -3,6 +3,7 @@
   "community": "app",
   "references": [
     "app/(owner)/owner-nav.tsx",
+    "app/(owner)/presence-widget.tsx",
     "app/(owner)/layout.module.css"
   ],
   "referenced_by": []

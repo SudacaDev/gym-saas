@@ -1,0 +1,12 @@
+{
+  "id": "db/schema/staff-attendance.ts",
+  "community": "db",
+  "references": [
+    "db/schema/tenants.ts",
+    "db/schema/staff-members.ts"
+  ],
+  "referenced_by": [
+    "db/schema/index.ts",
+    "db/schema/relations.ts"
+  ]
+}

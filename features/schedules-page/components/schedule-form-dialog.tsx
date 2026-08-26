@@ -32,7 +32,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { DAY_LABELS_SHORT, DAY_ORDER } from "../day-labels";
+import { DAY_LABELS_SHORT, DAY_ORDER } from "../lib/day-labels";
 import styles from "./schedule-form-dialog.module.css";
 
 type DayOfWeek = ScheduleInput["dayOfWeek"];

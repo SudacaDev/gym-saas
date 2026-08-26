@@ -1,0 +1,17 @@
+@reference "../../../app/globals.css";
+
+.periodTag {
+  @apply h-5 w-20 rounded-full;
+}
+
+.name {
+  @apply h-5 w-32;
+}
+
+.price {
+  @apply mt-auto h-9 w-28;
+}
+
+.button {
+  @apply h-7 w-16 rounded-lg;
+}

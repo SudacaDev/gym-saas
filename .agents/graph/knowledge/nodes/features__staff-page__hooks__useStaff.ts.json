@@ -1,0 +1,10 @@
+{
+  "id": "features/staff-page/hooks/useStaff.ts",
+  "community": "features",
+  "references": [
+    "features/staff-page/types.ts"
+  ],
+  "referenced_by": [
+    "features/staff-page/index.tsx"
+  ]
+}

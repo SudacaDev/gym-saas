@@ -1,0 +1,8 @@
+{
+  "id": "features/schedules-page/components/schedule-kanban-view.module.css",
+  "community": "features",
+  "references": [],
+  "referenced_by": [
+    "features/schedules-page/components/schedule-kanban-view.tsx"
+  ]
+}

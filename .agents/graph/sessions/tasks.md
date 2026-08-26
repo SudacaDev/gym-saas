@@ -22,15 +22,182 @@
 
 ## Backlog del proyecto
 ### Tareas pendientes
-- [ ] Convención de ubicación para helpers no-hook extraídos de un feature (`format.ts`/`calendar.ts`/`sparkline.ts` de `dashboard-page`)
-    - id: T-20260826-001
-    - type: refactor
-    - contexto: al aplicar el skill `react-architecture` a `features/dashboard-page/index.tsx` (Server Component sin hooks de React), se extrajeron 3 archivos de funciones/tipos puros de formateo y cálculo (`format.ts`, `calendar.ts`, `sparkline.ts`) sueltos en la raíz del feature — mismo patrón que `schedules-page/day-labels.ts` ya usa en este proyecto. El skill define `hooks/` explícitamente para hooks de React (`useXxx`, patrón `use-<name>.ts`), pero no tiene una categoría propia para helpers puros feature-scoped que no son hooks ni componentes — no corresponde meterlos en `hooks/` porque no lo son.
-    - open_question (no asumir, resolver antes de `#run`): ¿los helpers no-hook quedan sueltos en la raíz del feature (como están ahora, consistente con `day-labels.ts`), o se agrupan en una subcarpeta (ej. `lib/`) dentro de cada feature? Si se elige subcarpeta, esta tarea también deberría mover `schedules-page/day-labels.ts` para no dejar dos convenciones convivendo.
-    - severity_flag: `low` — reorganización de archivos, sin cambio de comportamiento.
+- [ ] Sección de necesidades operativas para administrativo (insumos, mantenimiento)
+    - id: T-20260826-010
+    - type: schema+feature
+    - contexto: plan "Equipo", 2026-08-26. Administrativo reporta necesidades de la sucursal — ej. "faltan elementos de limpieza", "esta máquina necesita mantenimiento". El owner va a tener su propia versión, pero **explícitamente confirmado que queda para más adelante** — no incluirlo en esta tarea.
+    - alcance mínimo razonable (a confirmar en el `#run`, no bloqueante): tabla nueva tipo `operational_requests` (tenant_id + RLS estándar, quién la reportó, descripción, categoría opcional insumos/mantenimiento, estado abierto/resuelto), formulario simple de carga + listado — sin flujo de aprobación ni notificaciones todavía, eso sería sobre-alcance sin que el usuario lo haya pedido.
+    - severity_flag: `high` (schema+migración nueva, mismo criterio que toda tabla nueva en este proyecto)
+    - depends_on: T-20260826-006 (completada)
+
+- [ ] Cupos y reservas de clases grupales ("camadas"): aforo máximo, lista de espera, presente/ausente
+    - id: T-20260826-011
+    - type: schema+feature
+    - contexto: plan "Equipo"/producto, 2026-08-26 (imagen de referencia de un SaaS de gimnasios: "Current Group Class" con lista de asistentes y waitlist). El usuario describe la dinámica real: clases grupales llenan cupo de golpe (ej. 30 personas a las 18:00); si llega alguien sin reserva y está lleno, hay que poder rechazarlo o bajar a un ausente para darle el lugar.
+    - requiere, como mínimo: aforo máximo por `class_schedules` (o por ocurrencia — ver open_question), tabla de reservas/inscripciones por socio y clase, lista de espera cuando se llena, marcar presente/ausente, lógica de "bajar a un ausente y subir al que espera".
+    - open_questions grandes, sin resolver — **esta es la tarea más grande y menos cerrada de todo el plan, no debería `#run`earse sin una vuelta de scoping propia** (recomendado convocar `uiux-designer`+`backend-developer` como se hizo con T-007/T-20260824-003):
+      1. `class_schedules` es una recurrencia semanal sin fecha concreta (confirmado en T-20260821-004: "no hay modelo de startDate/endDate/exception"). ¿El cupo/lista de espera es por OCURRENCIA real (ej. "lunes 25/08 a las 18:00" específico) o por el slot recurrente en general? Si es por ocurrencia, esto probablemente fuerza a modelar ocurrencias reales de clase por primera vez — cambio de schema más grande de lo que parece a primera vista.
+      2. ¿Quién reserva — el socio mismo (no tiene login, ver PRODUCT.md) o siempre staff en su nombre desde el mostrador?
+      3. ¿"Bajar a un ausente" es automático (el sistema lo hace) o una acción manual de staff?
+    - severity_flag: `high`
+    - depends_on: T-20260826-006 (completada)
+
+- [ ] Cobro rápido / mostrador (kiosco): venta de productos y pases diarios
+    - id: T-20260826-012
+    - type: schema+feature
+    - contexto: plan "Equipo"/producto, 2026-08-26. Venta de productos de mostrador (agua, barras de proteína, remeras) y pases diarios para gente de paso, desde una pantalla rápida tipo punto de venta.
+    - open_questions sin resolver:
+      1. ¿Hace falta control de stock real (cantidad disponible por producto) desde esta primera vuelta, o alcanza con un catálogo de productos con precio fijo, sin inventario?
+      2. Pase diario: ¿genera un registro de `payments`/`checkins` existente (una especie de membership de un solo día) o es un concepto nuevo separado?
+    - severity_flag: `high` (schema+migración nueva — catálogo de productos, ventas)
+    - depends_on: T-20260826-006 (completada)
+
+- [ ] Captura de leads (prospectos que preguntan en el mostrador)
+    - id: T-20260826-013
+    - type: schema+feature
+    - contexto: plan "Equipo"/producto, 2026-08-26. Alguien entra a preguntar, se le cargan nombre + WhatsApp, se le explica el plan, se le regala una clase de prueba.
+    - alcance mínimo razonable (a confirmar en el `#run`): tabla `leads` (tenant_id + RLS, nombre, whatsapp, fecha, nota opcional, estado tipo "nuevo"/"convertido"/"perdido"), formulario simple de carga + listado. Sin automatizaciones de seguimiento (WhatsApp/email) en esta primera vuelta — eso ya está anotado aparte en el backlog de producto grande (recordatorios/automatizaciones).
+    - severity_flag: `high` (schema+migración nueva)
+    - depends_on: T-20260826-006 (completada)
+
+- [ ] Permisos por `department` dentro de administrativo (recepción vs. gerencia)
+    - id: T-20260826-014
+    - type: feature
+    - contexto: plan "Equipo", 2026-08-26. El usuario detalló permisos específicos de recepción: SÍ puede cobrar cuotas, vender productos, dar de alta socio, marcar presente/ausente, abrir caja, ver deudores. NO puede crear planes, cambiar precios, borrar pagos históricos, ver facturación mensual, ni liquidar sueldos.
+    - **cambio de modelo, no solo una tarea de UI:** hoy `staff_members.department` (recepción/ventas/contabilidad/gerencia) es metadata puramente descriptiva — no controla nada (confirmado explícitamente en el análisis de `backend-developer` para T-20260821-007: "no repetir esto acá, es un cambio de arquitectura real que amerita su propia discusión"). Esta tarea es exactamente esa discusión que se dijo que iba a llegar en algún momento.
+    - open_question grande: la lista de "SÍ/NO puede" del usuario está pensada específicamente para recepción — falta definir qué puede ver/hacer ventas, contabilidad y gerencia. No asumir, no está en lo que el usuario dictó.
+    - recomendado: convocar `backend-developer` (modelo de permisos, cómo extender `requireRole`/`lib/auth/require-role.ts` de "por rol" a "por rol+department" sin romper todos los call sites existentes) antes de `#run`.
+    - severity_flag: `high` (cambio de modelo de autorización, toca todos los endpoints existentes potencialmente)
+    - depends_on: T-20260826-006 (completada), recomendado resolver después de T-20260826-012 (cobro rápido) ya que gran parte de esta lista de permisos es sobre esa pantalla
+
+- [ ] Rediseño de la pantalla de Check-in inspirado en la referencia (feed en vivo + clase actual con lista de espera + punto de venta rápido), con el sistema de diseño propio de BoxFlow
+    - id: T-20260826-015
+    - type: ui
+    - contexto: usuario compartió una captura de un SaaS de gimnasios (layout de 3 columnas: feed de check-ins en vivo, clase actual con lista de asistentes/waitlist, punto de venta rápido) pidiendo adaptar ese orden/estructura manteniendo la identidad visual propia de BoxFlow (Volt, dark, pill — ver `DESIGN.md`), no copiar el estilo de la referencia.
+    - **depende funcionalmente de que existan las piezas que ese layout muestra** — no tiene sentido construir esta pantalla antes que los datos que va a mostrar:
+      - la columna de "clase actual con lista de espera" necesita T-20260826-011 (cupos/reservas).
+      - la columna de "punto de venta rápido" necesita T-20260826-012 (cobro rápido/mostrador).
+    - severity_flag: sin definir todavía (UI, pero depende de dos tareas de schema grandes — no evaluable en aislado)
+    - depends_on: T-20260826-011, T-20260826-012 (ninguna de las dos completada todavía — esta tarea queda bloqueada hasta entonces)
+
+### Tareas en curso
+
+### Tareas completadas (referenciar en `progress.md`)
+- [x] Perfil propio del staff, editable por categoría
+    - id: T-20260826-009
+    - type: feature
+    - contexto: plan "Equipo", 2026-08-26. Pantalla nueva "Mi perfil" — staff no tenía ninguna vista propia. Campos editables según categoría: administrativo (email, password, teléfono); profesores (+ título/certificación, clases); limpieza (sin perfil propio, coherente con T-20260826-007).
+    - decisión ya confirmada antes de este `#run`: "clases" en el perfil de profesores tiene el mismo alcance que `ScheduleFormDialog` hoy (owner+staff, sin distinción de categoría) — resuelto sin construir un segundo editor: la sección "Clases" del perfil solo linkea a `/schedules`, donde ese acceso ya existe tal cual.
+    - path: `lib/staff/resolve-own-staff-member.ts` (extendido con el shape completo — antes solo devolvía `id`/`staffCategory`), `lib/validations/staff-profile.schema.ts` (nuevo), `app/api/v1/staff/me/route.ts` (nuevo, GET+PATCH), `app/(owner)/profile/page.tsx` (nuevo, guard server-side), `features/profile-page/**` (nuevo — `index.tsx`, `hooks/useProfile.ts`, `components/profile-{business,password,email}-form.tsx` + `.module.css`), `app/(owner)/presence-widget.tsx` (`PresenceUser` gana `category`), `app/(owner)/layout.tsx` (resuelve la categoría propia para staff), `app/(owner)/owner-nav.tsx` (`NAV_LINKS` pasa de `ownerOnly: boolean` a `visible(user)`, agrega "Mi perfil").
+    - description: `GET`/`PATCH /api/v1/staff/me` — self-service, nunca toma un id, siempre "quién soy yo" (mismo patrón que T-007/T-008, reusa `resolveOwnStaffMember`). PATCH acepta `phone` para todos y `certifications`/`certificationExpiresAt` solo si `staffCategory === "instructor"` (ignorado en silencio para el resto). Email y password **no pasan por esta API** — van directo del cliente a `supabase.auth.updateUser()` (misma razón que login/logout: es una operación sobre la sesión propia, no necesita el admin client). Password se aplica al toque; email dispara el flujo de confirmación estándar de Supabase (ver gap abajo). El guard de `/profile` redirige a `/dashboard` si el rol no es `staff` o si la categoría es `cleaning`, igual que `layout.tsx` redirige a `/` por rol. Nav: "Mi perfil" visible solo para `staff` no-`cleaning`.
+    - **Gap señalado explícitamente en el código y acá, no resuelto por decisión propia (no inventar infraestructura que no se pidió):** el cambio de email de Supabase no aplica al instante — manda un link de confirmación a la dirección nueva. Este proyecto no tiene ninguna ruta `/auth/callback`, así que aunque Supabase sí termina aplicando el cambio en `auth.users` una vez confirmado, la columna espejo local `users.email` (que hoy solo se escribe una vez, al crear la cuenta) **no se re-sincroniza sola** — queda desactualizada hasta que algo la vuelva a leer/escribir. Documentado en el propio componente, no se construyó un webhook/callback nuevo para esto sin que el usuario lo haya pedido.
+    - `tsc --noEmit`: limpio. `eslint .` (repo completo, por el alcance de archivos tocados en nav/layout): limpio. Detector de `impeccable` sobre `features/profile-page` y `app/(owner)`: limpio. `test:unit`: **34/34 verde**.
+    - gate: `graph/gates/pending/T-20260826-009.md` — `medium`/async (`severity_flag` de la propia tarea).
+    - **Gap conocido adicional:** sin verificación funcional end-to-end (cargar el perfil, guardar teléfono, cambiar password, intentar cambiar email) con una cuenta staff real — no hay sesión de prueba disponible.
+    - depends_on: T-20260826-006 (completada)
+
+### Tareas completadas (referenciar en `progress.md`)
+- [x] Alta de staff: administrativo puede dar de alta a profesores y limpieza (antes era owner-only)
+    - id: T-20260826-008
+    - type: feature
+    - contexto: plan "Equipo", 2026-08-26. Extiende `POST /api/v1/staff` (antes `requireRole(["owner"])`) para que `staff` con `staffCategory: "administrative"` también pueda crear cuentas.
+    - decisión confirmada con el usuario (2026-08-26): **sí, administrativo puede dar de alta a cualquier categoría, incluido otro administrativo** — el gate es tener la categoría "administrativo" en sí, no una lista acotada de categorías que puede crear.
+    - **aprobación síncrona explícita antes de tocar código** (severity_flag `high` de la propia tarea — mismo nivel que T-20260821-007/T-20260825-002, crea cuentas reales de Supabase Auth): confirmado por el usuario vía `AskUserQuestion` ("Sí, correla"), 2026-08-26.
+    - nota de alcance: no confundir con permisos por `department` dentro de administrativo (recepción/ventas/contabilidad/gerencia) — ese es un eje distinto, ver T-20260826-014.
+    - path: `lib/staff/resolve-own-staff-member.ts` (nuevo — compartido con T-20260826-007), `app/api/v1/staff/route.ts`, `app/api/v1/staff/me/attendance/route.ts` (refactor para usar el helper nuevo, sin cambio de comportamiento ahí).
+    - description: `requireRole()` no puede expresar "staff, pero solo esta categoría" — solo conoce `role`, no `staffCategory` — así que el chequeo de categoría es un segundo gate explícito en el `POST`: `requireRole(["owner","staff"])` y, si el caller es `staff`, `resolveOwnStaffMember(context)` debe devolver `staffCategory === "administrative"` o tira `ForbiddenError`. Se extrajo `resolveOwnStaffMember` (antes vivía inline y duplicada en `staff/me/attendance/route.ts`, T-007) a un helper compartido en `lib/staff/` — mismo resultado, sin duplicar la query de "quién soy yo como staff".
+    - **Gap señalado explícitamente en el código (comentario) y acá, no resuelto por decisión propia de no expandir alcance:** esto solo amplía el endpoint de creación. `GET /api/v1/staff` (el roster) y el link de nav "Equipo" siguen siendo owner-only (T-20260825-001) — un administrativo puede llamar este `POST` directo, pero hoy no tiene ningún punto de entrada en la UI para llegar a él (no ve el botón "Invitar"). No se tocó porque es exactamente el tipo de permiso "rol+categoría" que T-20260826-014 reserva para su propia discusión — abrir la visibilidad acá hubiera sido asumir esa decisión sin que el usuario la haya tomado todavía.
+    - `tsc --noEmit`, `eslint` (los 3 archivos tocados): limpios. `test:unit`: **34/34 verde**.
+    - gate: `graph/gates/pending/T-20260826-008.md` — `high`/**síncrono, aprobado por SudacaDev** (`AskUserQuestion`, 2026-08-26).
+    - depends_on: T-20260826-006 (completada)
+
+### Tareas completadas (referenciar en `progress.md`)
+- [x] Login/logout = fichaje automático para staff (entrada al loguearse, salida al cerrar sesión)
+    - id: T-20260826-007
+    - type: feature
+    - contexto: plan "Equipo" dictado por el usuario a mano, 2026-08-26. Reemplaza el modelo de fichaje manual (T-20260825-005) por uno automático para todo staff que se loguea normalmente: iniciar sesión genera la entrada en `staff_attendance`, cerrar sesión genera la salida. Limpieza queda excluida (tiene cuenta real pero no se loguea a fichar la suya propia — administrativo/owner la manejan a mano, el botón manual sigue siendo suyo).
+    - decisiones ya resueltas antes de este `#run` (ver mensaje del usuario en la sesión): limpieza con cuenta real sin auto-fichaje; botón manual se acota a `staffCategory === "cleaning"`; sesión cortada sin logout explícito queda fichada como presente sin timeout automático (mismo criterio que `checkins.checkedOutAt`).
+    - path: `app/api/v1/staff/me/attendance/route.ts` (nuevo), `features/sign-in-page/components/sign-in-form.tsx`, `app/(owner)/presence-widget.tsx`, `features/staff-page/index.tsx`.
+    - description: Nuevo endpoint self-service `POST`/`PATCH /api/v1/staff/me/attendance` — a diferencia de `staff/[id]/attendance/**`, nunca toma un `staffMemberId` del caller: siempre resuelve "quién soy yo" desde la sesión (`users.authUserId` → `staffMembers.userId`), así que un staff solo puede ficharse a sí mismo, nunca a otro. Ambos handlers son best-effort e idempotentes — no-op silencioso (`{skipped:true}`, 200) si el rol no es `staff`, si no hay `staffMembers` row, si ya hay una entrada abierta (POST) o si no hay nada abierto para cerrar (PATCH). `sign-in-form.tsx` dispara el `POST` fire-and-forget después de un login exitoso (no bloquea la navegación ni el UX de login si falla). `presence-widget.tsx` hace `await` del `PATCH` **antes** de `supabase.auth.signOut()` — tiene que correr mientras la cookie de sesión todavía es válida, si no `getTenantContext()` no tendría con qué resolver quién está saliendo. `staff-page/index.tsx`: el botón manual "Fichar entrada/salida" ahora solo se renderiza para `staffCategory === "cleaning"`.
+    - `tsc --noEmit`, `eslint` (los 4 archivos tocados) y el detector de `impeccable` sobre `features/staff-page`: limpios. `test:unit`: **34/34 verde**.
+    - gate: `graph/gates/pending/T-20260826-007.md` — `medium`/async (mismo `severity_flag` que la propia tarea traía).
+    - **Gap conocido:** sin verificación funcional end-to-end con una cuenta staff real (login → fichaje → logout → fichaje cerrado) — no hay sesión de prueba disponible en esta sesión. El diseño idempotente/best-effort busca que, si algo falla, falle silencioso y no bloquee login/logout, pero eso mismo significa que un fallo real (ej. un bug en la query de resolución) podría pasar desapercibido hasta que alguien note que su fichaje nunca se abrió — vale la pena confirmarlo en vivo.
+    - depends_on: T-20260826-006 (completada)
+
+### Tareas completadas (referenciar en `progress.md`)
+- [x] Permitir que `staff` acceda a `/dashboard` (y al resto del grupo de rutas `(owner)` que le corresponda) — `app/(owner)/layout.tsx` lo bloqueaba y lo mandaba al index
+    - id: T-20260826-006
+    - type: bugfix
+    - contexto: usuario reportó que el botón "Ir al dashboard" de la home (`features/home-page/index.tsx`) lo mandaba de vuelta al index en vez de dejarlo entrar. Diagnóstico: `HomePage` solo chequea `supabase.auth.getUser()` (sin mirar rol) para mostrar el CTA; `middleware.ts` lo deja pasar a `/dashboard` (tiene `tenant_id`/`role` en `app_metadata`); pero `app/(owner)/layout.tsx` hacía `requireRole(context, ["owner"])` — cualquier rol que no fuera `owner` tiraba `ForbiddenError`, atrapado por el layout con `redirect("/")`.
+    - **Investigación previa a aplicar el fix (resolvió la open_question de la propia tarea):** se leyó el comentario original de `layout.tsx` ("out of scope for this phase; /dashboard below is owner-only") — decisión deliberada en su momento, no un descuido. Pero quedó desactualizada por trabajo posterior: se verificó con `Grep` (no `reducto`, búsqueda de string literal exacto en varios archivos — caso fuera de lo que Reducto resuelve bien) que `members`, `checkins`, `checkins/self` y el GET de `plans` ya son `requireRole(["owner","staff"])` a nivel API; el POST de `plans` es la única excepción owner-only explícita ("pricing is the owner's call, not front desk's"), y `GET /api/v1/staff` es owner-only desde T-20260825-001 (roster de personal). `owner-nav.tsx` ya filtra el link "Equipo" como `ownerOnly: true` y deja el resto (`Dashboard`/`Socios`/`Planes`/`Horarios`/`Check-in`) en `ownerOnly: false` — la UI ya asumía este acceso, solo el guard del layout no se había actualizado.
+    - path: `app/(owner)/layout.tsx`.
+    - description: `requireRole(context, ["owner"])` → `requireRole(context, ["owner", "staff"])`. Docstring reescrito: ya no dice "owner-only area", explica que las distinciones owner-vs-staff (pricing de planes, roster de staff) se aplican por operación en cada API route, no en este guard — este solo decide quién pasa la puerta de entrada. `member` (o cualquier otro rol) sigue redirigido a `/`, sin cambios ahí.
+    - `tsc --noEmit`, `eslint "app/(owner)/layout.tsx"`: limpios. `test:unit`: **34/34 verde** (el `TypeError` de conexión a la base de la tarea anterior no se repitió).
+    - gate: `graph/gates/pending/T-20260826-006.md` — `medium`/async (`edit_non_prod_file` — cambio de código reversible, sin tocar datos ni cuentas reales; las restricciones finas por operación ya existían a nivel API y quedan intactas).
+    - **Gap conocido:** sin verificación visual/funcional con una cuenta `staff` real en navegador (mismo gap estructural de siempre — no hay sesión autenticada disponible). El razonamiento se apoya en lectura de código (nav ya filtra, APIs ya aceptan `staff`), no en probarlo en vivo.
     - depends_on: ninguna
 
 ### Tareas en curso
+
+### Tareas completadas (referenciar en `progress.md`)
+- [x] Skeleton en la página de Planes (`plans-page`) para reemplazar el texto "Cargando..." — misma estructura que la grilla de cards con datos, pero con placeholders skeleton
+    - id: T-20260826-005
+    - type: ui
+    - contexto: mismo pedido que T-20260826-004 pero para `plans-page`. A diferencia de `member-detail-page` (early-return completo), acá `loading` era un condicional inline: el header (`Planes` + botón "Nuevo plan") ya se renderizaba siempre, real e interactivo, sin depender de `plans` — solo el área de la grilla cambiaba entre "Cargando...", vacío o la grilla de cards real.
+    - path: `features/plans-page/components/plan-card-skeleton.tsx` (nuevo) + `.module.css` (nuevo), `features/plans-page/index.tsx` (rama `loading` del condicional).
+    - description: `PlanCardSkeleton` reusa `pageStyles.card` (la clase real de la card, ya con el radio cappeado `min(var(--radius-xl),20px)` documentado contra el bug óvalo de T-20260825-010 — no se reinventó el contenedor) y reemplaza por `<Skeleton>` los 4 elementos que dependen de datos: `periodTag` (pill), `cardName`, `cardPrice` y los 2 botones de `cardActions`. `index.tsx` renderiza 3 `PlanCardSkeleton` dentro del mismo `styles.grid` que usa la vista real, en vez de `<p>Cargando...</p>`. No hizo falta crear el primitivo `Skeleton` de nuevo — ya existía desde T-20260826-004.
+    - `tsc --noEmit`, `eslint features/plans-page` y el detector de `impeccable`: los 3 limpios. `test:unit`: 23/34 verdes — **5 archivos de integración fallaron por un error de conexión a la base** (`checkin-checkout`, `checkin-requires-active-membership`, `dashboard-metrics`, `member-soft-delete`, `payment-extends-membership`), ninguno relacionado a `plans-page` ni a ningún archivo tocado por esta tarea — mismo patrón ambiental de fallas de DB documentado repetidamente en sesiones anteriores (antes como `PostgresError 53300`, esta vez como `TypeError` en el cleanup por tenant no creado), no investigado de nuevo.
+    - `reducto context` post-tarea: 83% de tokens ahorrados en la sesión.
+    - gate: `graph/gates/pending/T-20260826-005.md` — `medium`/async (`edit_non_prod_file`, UI pura).
+    - **Gap conocido:** sin verificación visual en navegador (mismo gap estructural de siempre).
+    - depends_on: ninguna
+
+### Tareas en curso
+
+### Tareas completadas (referenciar en `progress.md`)
+- [x] Skeleton en la página de ficha de socio (`member-detail-page`) para reemplazar el texto "Cargando..." — misma estructura que la vista con datos, pero con placeholders skeleton
+    - id: T-20260826-004
+    - type: ui
+    - contexto: hoy el estado `loading` de `useMemberDetail()` retornaba solo `<p>Cargando...</p>` (`styles.loadingText`). El usuario pidió que en su lugar se replique el layout real de la página (header/hero de socio, tablas de membresías/pagos/check-ins/recordatorios) pero con cada dato en versión skeleton.
+    - open_question resuelta durante `#run`: no había componente `Skeleton` genérico en `components/ui/` — se creó uno (decisión propia, no bloqueante: es el primitivo estándar shadcn, bajo riesgo, mismo patrón `cn()`/`className` que `Button`/`Input`).
+    - path: `components/ui/skeleton.tsx` (nuevo), `features/member-detail-page/components/member-detail-skeleton.tsx` (nuevo) + `.module.css` (nuevo), `features/member-detail-page/index.tsx` (usa `MemberDetailSkeleton` en el early-return de `loading`), `features/member-detail-page/index.module.css` (`.loadingText` eliminada, ya sin uso).
+    - description: `MemberDetailSkeleton` reutiliza los componentes reales (`Table`/`TableHeader`/`TableRow`/`TableHead`/`TableCell`, labels/títulos de sección estáticos como "Membresías"/"Pagos"/"Check-ins"/"Recordatorios", mismas columnas) y solo reemplaza por `<Skeleton>` lo que depende de datos aún no cargados: nombre del socio, los 6 valores de la lista `dl` (Código/Email/Teléfono/Nacimiento/DNI/Certificado médico — las dos filas condicionales quedan afuera, su existencia misma depende de datos), los botones de acción de cada sección (dependen de props que todavía no existen: `memberId`/`plans`/`currentMembership`) y 3 filas placeholder por tabla. El link "← Volver a socios" queda real e interactivo (no depende de datos). Reusar `Table` en vez de un `<div>` a mano evita a propósito el bug de radio-pill-en-container-ancho que documentó T-20260825-010 (`Table` ya cappea su radio via `min(var(--radius-md),12px)`).
+    - `tsc --noEmit`, `eslint features/member-detail-page components/ui/skeleton.tsx` y el detector mecánico de `impeccable` (paso obligatorio del skill tras UI): los 3 limpios, sin advisories. `test:unit`: **34/34 verde**.
+    - `reducto context` tras el `#run`: 83% de tokens ahorrados en la sesión (confirma que T-20260826-003 funciona — `reducto query "<path>" --resolve --view skeleton` acepta un path de archivo directamente como query, sin necesitar filtro nativo; cierra ese gap que había quedado abierto en el gate de T-003).
+    - gate: `graph/gates/pending/T-20260826-004.md` — `medium`/async (`edit_non_prod_file`, UI pura, sin tocar base de datos — mismo criterio que T-20260825-010).
+    - **Gap conocido:** sin verificación visual en navegador (requiere sesión real autenticada, mismo gap estructural de sesiones anteriores).
+    - depends_on: ninguna
+
+### Tareas completadas (referenciar en `progress.md`)
+- [x] Reducto: resolver solo el subgrafo relevante de la tarea en curso durante `#run`, no el grafo entero
+    - id: T-20260826-003
+    - type: process
+    - contexto: `reducto context` mostraba `Tokens saved: 0` pese a 5 queries — 2473/2473 nodos seguían `Unknown`, 0 `Known`/`Partial`. Causa: las queries corridas no usaban `--resolve`, así que nunca se cacheó contenido real y no había línea base contra la cual medir ahorro (ver `progress.md` de esta sesión para el diagnóstico completo). El usuario pidió que, al trabajar una tarea del backlog, se resuelva puntualmente solo esa porción del grafo — no una exploración a ciegas.
+    - path: `AGENTS.md` (paso 8, `#run`).
+    - description: Agregada una frase al final del paso 8 de `AGENTS.md`: antes de tocar código en cada tarea ejecutada vía `#run`/`#run-all`, correr `reducto query --resolve --view skeleton` scopeado — usando la metadata `path:` de la tarea si ya existe (más preciso que texto libre), o las keywords del título si la tarea es nueva y todavía no tiene `path:` resuelto. Explícitamente no se resuelve el grafo entero ni por curiosidad fuera del alcance de la tarea. No se renumeraron los pasos existentes (9/10/11 se mantienen intactos) porque `progress.md`/`tasks.md` ya referencian "`AGENTS.md` #11" en gates previos — renumerar hubiera roto esas referencias.
+    - gate: `graph/gates/pending/T-20260826-003.md` — `medium`/async.
+    - depends_on: ninguna
+
+### Tareas completadas (referenciar en `progress.md`)
+- [x] Convención de hooks de feature: `hooks/use<Nombre>.ts` (camelCase) — migrar `schedules-page` y extraer hooks nuevos en `staff-page`, `checkin-page`, `members-page`, `member-detail-page`
+    - id: T-20260826-002
+    - type: refactor
+    - contexto: usuario dejó `features/plans-page/hooks/usePlans.ts` como ejemplo explícito del patrón deseado (hook cliente con estado/fetch/handlers, ubicado en `hooks/`, nombrado `useXxx.ts` camelCase) y pidió aplicarlo al resto del proyecto. Conflicto detectado con lo existente: `features/schedules-page/use-schedules.ts` vivía en la raíz del feature con naming kebab-case (`use-schedules.ts`), no en `hooks/`.
+    - decisión confirmada con el usuario (`AskUserQuestion`, 2026-08-26): **migrar todo el proyecto ahora** — no solo documentar la convención.
+    - path: `features/schedules-page/hooks/useSchedules.ts` (movido desde la raíz), `features/staff-page/hooks/useStaff.ts` (nuevo), `features/checkin-page/hooks/useCheckin.ts` (nuevo), `features/members-page/hooks/useMembers.ts` (nuevo), `features/member-detail-page/hooks/useMemberDetail.ts` (nuevo) + los 5 `index.tsx` correspondientes.
+    - description: Ejecutado vía 5 subagentes `frontend-developer` en paralelo (archivos disjuntos entre sí, sin colisión). Cada `index.tsx` quedó solo con JSX + la llamada al hook; mismo estado/API calls/condiciones/handlers que antes, sin cambio de comportamiento. `member-detail-page` quedó como hook único (no partido) por decisión propia documentada en el gate — `currentMembership` es dependencia compartida entre el efecto de pagos y el envío de recordatorio, partir hubiera exigido prop-drilling o duplicar el memo. Verificación de reglas de hooks vía skill `react-architecture` (paso obligatorio de `AGENTS.md` #11): sin violaciones — discrepancia no bloqueante entre la convención kebab-case que documenta el skill y el camelCase que el usuario confirmó explícitamente, señalada en el gate. `tsc`/`eslint` (repo completo) limpios; `test:unit` **34/34 verde**.
+    - gate: `graph/gates/pending/T-20260826-002.md` — `medium`/async.
+    - depends_on: ninguna
+
+### Tareas completadas (referenciar en `progress.md`)
+- [x] Convención de ubicación para helpers no-hook extraídos de un feature (`format.ts`/`calendar.ts`/`sparkline.ts` de `dashboard-page`)
+    - id: T-20260826-001
+    - type: refactor
+    - decisión confirmada con el usuario (`AskUserQuestion`, 2026-08-26): agrupar en subcarpeta `lib/` dentro de cada feature (no dejarlos sueltos en la raíz).
+    - path: `features/dashboard-page/lib/{format,calendar,sparkline}.ts` (movidos vía `git mv` desde la raíz del feature), `features/dashboard-page/index.tsx` (3 imports actualizados). Consistencia de convención: `features/schedules-page/day-labels.ts` → `features/schedules-page/lib/day-labels.ts`, con sus 3 importadores (`schedule-table-view.tsx`, `schedule-kanban-view.tsx`, `schedule-form-dialog.tsx`) actualizados.
+    - description: Pura reorganización de archivos — cero cambio de contenido salvo las líneas de import movidas. Fija la convención de proyecto para helpers puros no-hook feature-scoped (categoría que el skill `react-architecture` no cubre explícitamente, distinta de `hooks/`). `tsc`/`eslint` limpios; `test:unit` 23/34 verde, 11 fallas por `PostgresError 53300` (pool de conexiones, ambiental, sin relación a los archivos tocados — mismo patrón documentado en sesiones anteriores).
+    - gate: `graph/gates/pending/T-20260826-001.md` — `medium`/async.
+    - depends_on: ninguna
 
 ### Tareas descartadas (con motivo — no ejecutar, se conservan por trazabilidad)
 - [ ] ~~Horarios (vista Tabla): botón "+ Agregar franja horaria" para crear una fila nueva a demanda~~ — **superseded por T-20260825-009**

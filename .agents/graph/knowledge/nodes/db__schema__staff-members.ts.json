@@ -8,6 +8,7 @@
   ],
   "referenced_by": [
     "db/schema/index.ts",
-    "db/schema/relations.ts"
+    "db/schema/relations.ts",
+    "db/schema/staff-attendance.ts"
   ]
 }

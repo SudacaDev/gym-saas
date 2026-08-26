@@ -7,7 +7,7 @@ import { ScheduleFormDialog } from "./components/schedule-form-dialog";
 import { ScheduleTableView } from "./components/schedule-table-view";
 import { ScheduleKanbanView } from "./components/schedule-kanban-view";
 import { ScheduleCalendarView } from "./components/schedule-calendar-view";
-import { useSchedules } from "./use-schedules";
+import { useSchedules } from "./hooks/useSchedules";
 import styles from "./index.module.css";
 
 type ScheduleView = "tabla" | "kanban" | "calendario";

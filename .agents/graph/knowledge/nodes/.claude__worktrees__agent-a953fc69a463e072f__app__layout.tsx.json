@@ -1,0 +1,8 @@
+{
+  "id": ".claude/worktrees/agent-a953fc69a463e072f/app/layout.tsx",
+  "community": ".claude",
+  "references": [
+    ".claude/worktrees/agent-a953fc69a463e072f/app/globals.css"
+  ],
+  "referenced_by": []
+}

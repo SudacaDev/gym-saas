@@ -3,6 +3,8 @@
   "community": "features",
   "references": [],
   "referenced_by": [
+    "features/schedules-page/components/schedule-kanban-view.tsx",
+    "features/schedules-page/components/schedule-table-view.tsx",
     "features/schedules-page/index.tsx"
   ]
 }

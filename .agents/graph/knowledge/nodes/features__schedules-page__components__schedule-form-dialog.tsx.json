@@ -2,10 +2,13 @@
   "id": "features/schedules-page/components/schedule-form-dialog.tsx",
   "community": "features",
   "references": [
-    "features/schedules-page/day-labels.ts",
+    "features/schedules-page/lib/day-labels.ts",
     "features/schedules-page/components/schedule-form-dialog.module.css"
   ],
   "referenced_by": [
+    "features/schedules-page/components/schedule-calendar-view.tsx",
+    "features/schedules-page/components/schedule-kanban-view.tsx",
+    "features/schedules-page/components/schedule-table-view.tsx",
     "features/schedules-page/index.tsx"
   ]
 }

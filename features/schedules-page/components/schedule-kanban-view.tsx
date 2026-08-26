@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import { ScheduleFormDialog } from "./schedule-form-dialog";
 import type { ScheduleViewProps } from "./schedule-view-props";
-import { DAY_ORDER, DAY_LABELS } from "../day-labels";
+import { DAY_ORDER, DAY_LABELS } from "../lib/day-labels";
 import indexStyles from "../index.module.css";
 import styles from "./schedule-kanban-view.module.css";
 

@@ -2,6 +2,9 @@
   "id": "features/dashboard-page/index.tsx",
   "community": "features",
   "references": [
+    "features/dashboard-page/lib/format.ts",
+    "features/dashboard-page/lib/calendar.ts",
+    "features/dashboard-page/lib/sparkline.ts",
     "features/dashboard-page/index.module.css"
   ],
   "referenced_by": []

@@ -1,0 +1,8 @@
+{
+  "id": "features/plans-page/hooks/usePlans.ts",
+  "community": "features",
+  "references": [],
+  "referenced_by": [
+    "features/plans-page/index.tsx"
+  ]
+}

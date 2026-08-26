@@ -1,0 +1,6 @@
+{
+  "id": "db/policies/0007_staff_attendance_rls.sql",
+  "community": "db",
+  "references": [],
+  "referenced_by": []
+}

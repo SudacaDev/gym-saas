@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { eq, isNull, sql } from "drizzle-orm";
 import { getTenantContext } from "@/lib/auth/get-tenant-context";
-import { requireRole } from "@/lib/auth/require-role";
+import { requireRole, ForbiddenError } from "@/lib/auth/require-role";
+import { resolveOwnStaffMember } from "@/lib/staff/resolve-own-staff-member";
 import { withTenantContext } from "@/db/rls-context";
 import { schema } from "@/db/client";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -64,18 +65,38 @@ export async function GET() {
   }
 }
 
-// Owner-only: creating a real Supabase Auth account is HR-sensitive, same
-// tier as the money-adjacent owner-only writes elsewhere (plans POST).
+// Owner, or a staff member whose OWN staffCategory is "administrative"
+// (T-20260826-008 — confirmed with the user: the gate is having that
+// category, not an allowlist of which categories an administrative can
+// create; they can create any category, including another administrative
+// account). Creating a real Supabase Auth account is still HR-sensitive,
+// same tier as the money-adjacent owner-only writes elsewhere (plans
+// POST) — this widens WHO can do it, not how carefully it's done.
 //
-// As of T-20260825-002, the owner defines the account's email+password
-// directly in the form (admin.auth.admin.createUser, email_confirm: true)
-// — this REPLACES the invite-by-email design from T-20260821-007, where
-// Supabase sent an invite and the new hire set their own password. The
-// owner now knows the employee's credential, a known security tradeoff
-// confirmed explicitly by the user (see gate T-20260825-002). Login stays
-// single-factor (email+password) — no design choice here hardcodes that
-// assumption in a way that would block adding 2FA later; 2FA itself is
-// out of scope for this pass.
+// requireRole() alone can't express "staff, but only this category" (it
+// only knows about role, not staffCategory), so the category check is a
+// second gate here via resolveOwnStaffMember() — same helper
+// app/api/v1/staff/me/attendance/route.ts uses to resolve "who am I".
+//
+// NOTE: this only widens the create endpoint. GET /api/v1/staff (the
+// roster) and the "Equipo" nav link stay owner-only (T-20260825-001) —
+// an administrative staff member can call this POST directly, but has no
+// UI entry point to reach it yet (no "Invitar" button visible to them).
+// Deliberately not addressed here: it's staffCategory-scoped visibility,
+// the same kind of "role+category" permission modeling T-20260826-014
+// scopes out as its own discussion, not assumed as a side effect of this
+// task.
+//
+// As of T-20260825-002, whoever creates the account defines its
+// email+password directly in the form (admin.auth.admin.createUser,
+// email_confirm: true) — this REPLACES the invite-by-email design from
+// T-20260821-007, where Supabase sent an invite and the new hire set
+// their own password. The creator now knows the employee's credential, a
+// known security tradeoff confirmed explicitly by the user (see gate
+// T-20260825-002) — now also true for an administrative creator, not
+// just the owner. Login stays single-factor (email+password) — no design
+// choice here hardcodes that assumption in a way that would block adding
+// 2FA later; 2FA itself is out of scope for this pass.
 //
 // Transactional-with-compensation: the Supabase Auth account is created
 // first, then the local `users`/`staff_members` rows. If either DB insert
@@ -84,7 +105,14 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const context = await getTenantContext();
-    requireRole(context, ["owner"]);
+    requireRole(context, ["owner", "staff"]);
+
+    if (context.role === "staff") {
+      const ownStaffMember = await resolveOwnStaffMember(context);
+      if (ownStaffMember?.staffCategory !== "administrative") {
+        throw new ForbiddenError(context.role, ["owner"]);
+      }
+    }
 
     const body = await request.json();
     const parsed = staffMemberSchema.safeParse(body);

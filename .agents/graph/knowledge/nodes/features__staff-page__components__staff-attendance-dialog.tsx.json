@@ -1,0 +1,11 @@
+{
+  "id": "features/staff-page/components/staff-attendance-dialog.tsx",
+  "community": "features",
+  "references": [
+    "features/staff-page/types.ts",
+    "features/staff-page/components/staff-attendance-dialog.module.css"
+  ],
+  "referenced_by": [
+    "features/staff-page/index.tsx"
+  ]
+}

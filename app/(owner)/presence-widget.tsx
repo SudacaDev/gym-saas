@@ -12,6 +12,12 @@ export interface PresenceUser {
   id: string;
   name: string;
   role: "owner" | "staff";
+  /**
+   * staffMembers.staffCategory, or null for an owner (no staffMembers
+   * row). Only used by owner-nav.tsx to decide "Mi perfil" visibility
+   * (T-20260826-009) — presence tracking/display itself doesn't care.
+   */
+  category?: "instructor" | "administrative" | "cleaning" | null;
 }
 
 interface PresenceWidgetProps {
@@ -77,6 +83,11 @@ export function PresenceWidget({ tenantId, currentUser }: PresenceWidgetProps) {
 
   async function handleSignOut() {
     setSigningOut(true);
+    // Best-effort auto clock-out (T-20260826-007) — must run BEFORE
+    // signOut() clears the session: getTenantContext() needs the still-
+    // valid auth cookies to resolve who's clocking out. No-ops
+    // server-side for non-staff.
+    await fetch("/api/v1/staff/me/attendance", { method: "PATCH" }).catch(() => {});
     const supabase = createClient();
     await supabase.auth.signOut();
     router.push("/sign-in");

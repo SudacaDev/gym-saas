@@ -1,0 +1,11 @@
+{
+  "id": "app/(owner)/presence-widget.tsx",
+  "community": "app",
+  "references": [
+    "app/(owner)/presence-widget.module.css"
+  ],
+  "referenced_by": [
+    "app/(owner)/layout.tsx",
+    "app/(owner)/owner-nav.tsx"
+  ]
+}

@@ -9,9 +9,9 @@ import {
   monthYearFormatter,
   relativeTime,
   activityLabel,
-} from "./format";
-import { CALENDAR_WEEKDAY_LABELS, buildCalendarWeeks } from "./calendar";
-import { SPARKLINE_X_POSITIONS, buildSparklinePoints } from "./sparkline";
+} from "./lib/format";
+import { CALENDAR_WEEKDAY_LABELS, buildCalendarWeeks } from "./lib/calendar";
+import { SPARKLINE_X_POSITIONS, buildSparklinePoints } from "./lib/sparkline";
 import styles from "./index.module.css";
 
 /**

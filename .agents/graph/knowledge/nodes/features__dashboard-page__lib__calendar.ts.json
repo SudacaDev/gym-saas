@@ -1,0 +1,10 @@
+{
+  "id": "features/dashboard-page/lib/calendar.ts",
+  "community": "features",
+  "references": [
+    "features/dashboard-page/lib/format.ts"
+  ],
+  "referenced_by": [
+    "features/dashboard-page/index.tsx"
+  ]
+}

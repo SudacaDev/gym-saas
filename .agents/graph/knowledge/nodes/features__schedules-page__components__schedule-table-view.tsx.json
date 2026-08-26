@@ -1,0 +1,13 @@
+{
+  "id": "features/schedules-page/components/schedule-table-view.tsx",
+  "community": "features",
+  "references": [
+    "features/schedules-page/components/schedule-form-dialog.tsx",
+    "features/schedules-page/components/schedule-view-props.ts",
+    "features/schedules-page/lib/day-labels.ts",
+    "features/schedules-page/index.module.css"
+  ],
+  "referenced_by": [
+    "features/schedules-page/index.tsx"
+  ]
+}

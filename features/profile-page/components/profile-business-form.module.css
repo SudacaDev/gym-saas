@@ -1,0 +1,14 @@
+@reference "../../../app/globals.css";
+
+.form {
+  @apply space-y-4;
+}
+.field {
+  @apply space-y-1;
+}
+.errorText {
+  @apply text-sm text-destructive;
+}
+.successText {
+  @apply text-sm text-status-success-fg;
+}

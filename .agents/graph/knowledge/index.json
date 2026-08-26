@@ -1,10 +1,10 @@
 {
   "status": "indexed",
-  "last_indexed": "2026-08-25T14:45:25Z",
+  "last_indexed": "2026-08-26T14:23:48Z",
   "method": "built-in structural indexer (regex-based imports, folder-based communities) — not full AST, not a third-party tool",
   "stats": {
-    "nodes": 190,
-    "edges": 100,
-    "communities": 9
+    "nodes": 279,
+    "edges": 145,
+    "communities": 10
   }
 }

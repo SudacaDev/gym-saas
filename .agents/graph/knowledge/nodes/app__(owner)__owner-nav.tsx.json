@@ -2,6 +2,7 @@
   "id": "app/(owner)/owner-nav.tsx",
   "community": "app",
   "references": [
+    "app/(owner)/presence-widget.tsx",
     "app/(owner)/owner-nav.module.css"
   ],
   "referenced_by": [

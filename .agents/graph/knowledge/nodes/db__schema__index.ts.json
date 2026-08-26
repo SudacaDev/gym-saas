@@ -13,6 +13,7 @@
     "db/schema/class-schedules.ts",
     "db/schema/activities.ts",
     "db/schema/staff-members.ts",
+    "db/schema/staff-attendance.ts",
     "db/schema/email-send-log.ts",
     "db/schema/webhook-events.ts",
     "db/schema/relations.ts"

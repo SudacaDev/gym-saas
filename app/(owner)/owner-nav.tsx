@@ -8,23 +8,45 @@ import {
   IdCardIcon,
   LayoutDashboardIcon,
   ScanLineIcon,
+  UserIcon,
   UsersIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PresenceWidget, type PresenceUser } from "./presence-widget";
 import styles from "./owner-nav.module.css";
 
+// Each link decides its own visibility from the current user (role, and
+// for "Mi perfil", category) instead of a single ownerOnly boolean — that
+// stopped being expressive enough once T-20260826-009 needed a
+// staff-and-category-specific link alongside the existing owner-only one.
+//
 // "Equipo" is owner-only: it's the staff roster (GET /api/v1/staff is
 // enforced owner-only server-side too, see app/api/v1/staff/route.ts) —
 // hiding the link keeps a staff user from even seeing it's there, same
 // pattern dashboard-page/index.tsx uses to hide the revenue block.
+//
+// "Mi perfil" is staff-only, minus "cleaning" (T-20260826-007/-009: they
+// don't self-service anything) — app/(owner)/profile/page.tsx enforces
+// the same rule server-side, this is just keeping the link from even
+// showing to someone who'd hit a redirect.
 const NAV_LINKS = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboardIcon, ownerOnly: false },
-  { href: "/members", label: "Socios", icon: UsersIcon, ownerOnly: false },
-  { href: "/staff", label: "Equipo", icon: IdCardIcon, ownerOnly: true },
-  { href: "/plans", label: "Planes", icon: CreditCardIcon, ownerOnly: false },
-  { href: "/schedules", label: "Horarios", icon: CalendarDaysIcon, ownerOnly: false },
-  { href: "/checkin", label: "Check-in", icon: ScanLineIcon, ownerOnly: false },
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboardIcon, visible: () => true },
+  { href: "/members", label: "Socios", icon: UsersIcon, visible: () => true },
+  {
+    href: "/staff",
+    label: "Equipo",
+    icon: IdCardIcon,
+    visible: (user: PresenceUser) => user.role === "owner",
+  },
+  { href: "/plans", label: "Planes", icon: CreditCardIcon, visible: () => true },
+  { href: "/schedules", label: "Horarios", icon: CalendarDaysIcon, visible: () => true },
+  { href: "/checkin", label: "Check-in", icon: ScanLineIcon, visible: () => true },
+  {
+    href: "/profile",
+    label: "Mi perfil",
+    icon: UserIcon,
+    visible: (user: PresenceUser) => user.role === "staff" && user.category !== "cleaning",
+  },
 ] as const;
 
 function DumbbellIcon() {
@@ -57,7 +79,7 @@ interface OwnerNavProps {
 
 export function OwnerNav({ tenantId, currentUser }: OwnerNavProps) {
   const pathname = usePathname();
-  const links = NAV_LINKS.filter((link) => !link.ownerOnly || currentUser.role === "owner");
+  const links = NAV_LINKS.filter((link) => link.visible(currentUser));
 
   return (
     <aside className={styles.sidebar}>

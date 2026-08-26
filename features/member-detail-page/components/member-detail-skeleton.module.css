@@ -1,0 +1,17 @@
+@reference "../../../app/globals.css";
+
+.name {
+  @apply mt-2 h-9 w-56;
+}
+
+.infoValue {
+  @apply h-4 w-20;
+}
+
+.button {
+  @apply h-7 w-32 rounded-lg;
+}
+
+.cell {
+  @apply h-4 w-16;
+}

@@ -1,0 +1,26 @@
+@reference "../../app/globals.css";
+
+.loadingText {
+  @apply text-sm text-muted-foreground;
+}
+.errorText {
+  @apply text-sm text-destructive;
+}
+.container {
+  @apply space-y-8;
+}
+.title {
+  @apply font-heading text-3xl uppercase tracking-tight;
+}
+.subtitle {
+  @apply mt-1 text-sm text-muted-foreground;
+}
+.section {
+  @apply max-w-md space-y-3;
+}
+.sectionTitle {
+  @apply text-xs font-bold tracking-widest text-muted-foreground uppercase;
+}
+.emptyText {
+  @apply text-sm text-muted-foreground;
+}

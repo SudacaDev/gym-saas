@@ -4,7 +4,9 @@
   "references": [
     "features/member-detail-page/components/membership-form-dialog.tsx",
     "features/member-detail-page/components/payment-form-dialog.tsx",
-    "features/member-detail-page/index.module.css"
+    "features/member-detail-page/components/member-detail-skeleton.tsx",
+    "features/member-detail-page/index.module.css",
+    "features/member-detail-page/hooks/useMemberDetail.ts"
   ],
   "referenced_by": []
 }

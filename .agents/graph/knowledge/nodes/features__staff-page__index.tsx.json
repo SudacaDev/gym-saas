@@ -3,8 +3,10 @@
   "community": "features",
   "references": [
     "features/staff-page/components/staff-form-dialog.tsx",
+    "features/staff-page/components/staff-attendance-dialog.tsx",
     "features/staff-page/types.ts",
-    "features/staff-page/index.module.css"
+    "features/staff-page/index.module.css",
+    "features/staff-page/hooks/useStaff.ts"
   ],
   "referenced_by": []
 }

@@ -1,9 +1,5 @@
 @reference "../../app/globals.css";
 
-.loadingText {
-  @apply text-sm text-muted-foreground;
-}
-
 .notFoundContainer {
   @apply space-y-4;
 }

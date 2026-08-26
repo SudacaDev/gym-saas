@@ -3,7 +3,8 @@
   "community": "features",
   "references": [
     "features/members-page/components/member-form-dialog.tsx",
-    "features/members-page/index.module.css"
+    "features/members-page/index.module.css",
+    "features/members-page/hooks/useMembers.ts"
   ],
   "referenced_by": []
 }

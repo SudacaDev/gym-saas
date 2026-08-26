@@ -36,6 +36,11 @@ export function SignInForm() {
       return;
     }
 
+    // Best-effort auto clock-in (T-20260826-007) — a staff member's
+    // attendance record, not the login itself, so a hiccup here must
+    // never block navigation. No-ops server-side for non-staff.
+    void fetch("/api/v1/staff/me/attendance", { method: "POST" }).catch(() => {});
+
     router.push(searchParams.get("redirect_to") ?? "/dashboard");
     router.refresh();
   }

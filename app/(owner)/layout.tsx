@@ -2,6 +2,7 @@ import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { getTenantContext } from "@/lib/auth/get-tenant-context";
 import { requireRole, ForbiddenError } from "@/lib/auth/require-role";
+import { resolveOwnStaffMember } from "@/lib/staff/resolve-own-staff-member";
 import { withTenantContext } from "@/db/rls-context";
 import { schema } from "@/db/client";
 import { OwnerNav } from "./owner-nav";
@@ -9,16 +10,18 @@ import type { PresenceUser } from "./presence-widget";
 import styles from "./layout.module.css";
 
 /**
- * Server-side guard for the owner-only area (Planes, Socios management).
- * middleware.ts already guarantees a signed-in, onboarded request reaches
- * here with valid tenant context (see get-tenant-context.ts) — this layer
- * only adds the role check middleware.ts doesn't do, since it has no
- * concept of per-route role requirements.
+ * Server-side guard for the owner/staff work area. middleware.ts already
+ * guarantees a signed-in, onboarded request reaches here with valid tenant
+ * context (see get-tenant-context.ts) — this layer only adds the role
+ * check middleware.ts doesn't do, since it has no concept of per-route
+ * role requirements.
  *
- * A non-owner (staff/member) is redirected to "/" — the placeholder
- * landing route. There's no staff-facing home yet (out of scope for this
- * phase; /dashboard below is owner-only), so "/" is the only sane
- * fallback for them.
+ * "member" (or any other non-owner/staff role) is redirected to "/" — the
+ * placeholder landing route, since there's no member-facing home yet.
+ * owner vs. staff distinctions *within* this area (e.g. plan pricing is
+ * owner-only, the staff roster is owner-only) are enforced per-operation
+ * by each API route, not here — this guard only decides who gets past the
+ * front door.
  */
 export default async function OwnerLayout({
   children,
@@ -26,7 +29,7 @@ export default async function OwnerLayout({
   const context = await getTenantContext();
 
   try {
-    requireRole(context, ["owner"]);
+    requireRole(context, ["owner", "staff"]);
   } catch (error) {
     if (error instanceof ForbiddenError) {
       redirect("/");
@@ -57,10 +60,18 @@ export default async function OwnerLayout({
     localUser?.email ||
     "Vos";
 
+  // Only staff has a staffMembers row to resolve a category from (T-20260826-009,
+  // used by OwnerNav to decide "Mi perfil" visibility — cleaning doesn't get it).
+  const category =
+    context.role === "staff"
+      ? ((await resolveOwnStaffMember(context))?.staffCategory ?? null)
+      : null;
+
   const currentUser: PresenceUser = {
     id: localUser?.id ?? context.userId,
     name: displayName,
     role: context.role === "staff" ? "staff" : "owner",
+    category,
   };
 
   return (

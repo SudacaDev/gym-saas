@@ -1,10 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
 import type { Plan } from "@/db/schema/plans";
 import { Button } from "@/components/ui/button";
 import { PlanFormDialog } from "./components/plan-form-dialog";
+import { PlanCardSkeleton } from "./components/plan-card-skeleton";
 import styles from "./index.module.css";
+import { usePlans } from "./hooks/usePlans";
 
 const PERIOD_LABELS: Record<Plan["period"], string> = {
   monthly: "Mensual",
@@ -24,50 +25,7 @@ const currencyFormatter = new Intl.NumberFormat("es-AR", {
 });
 
 export function PlansPage() {
-  const [plans, setPlans] = useState<Plan[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const loadPlans = useCallback(async () => {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/v1/plans");
-      if (res.ok) {
-        setPlans(await res.json());
-      }
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    loadPlans();
-  }, [loadPlans]);
-
-  function handleSaved(saved: Plan) {
-    setError(null);
-    setPlans((prev) => {
-      const exists = prev.some((p) => p.id === saved.id);
-      return exists
-        ? prev.map((p) => (p.id === saved.id ? saved : p))
-        : [...prev, saved];
-    });
-  }
-
-  async function handleDelete(plan: Plan) {
-    setError(null);
-    if (!confirm(`¿Borrar el plan "${plan.name}"?`)) return;
-
-    const res = await fetch(`/api/v1/plans/${plan.id}`, { method: "DELETE" });
-    if (!res.ok) {
-      const body = await res.json().catch(() => null);
-      setError(
-        typeof body?.error === "string" ? body.error : "No se pudo borrar el plan",
-      );
-      return;
-    }
-    setPlans((prev) => prev.filter((p) => p.id !== plan.id));
-  }
+  const { plans, loading, error, handleSaved, handleDelete } = usePlans();
 
   return (
     <div className={styles.container}>
@@ -79,7 +37,11 @@ export function PlansPage() {
       {error && <p className={styles.errorText}>{error}</p>}
 
       {loading ? (
-        <p className={styles.emptyText}>Cargando...</p>
+        <div className={styles.grid}>
+          {Array.from({ length: 3 }, (_, i) => (
+            <PlanCardSkeleton key={i} />
+          ))}
+        </div>
       ) : plans.length === 0 ? (
         <p className={styles.emptyText}>Todavía no hay planes.</p>
       ) : (
