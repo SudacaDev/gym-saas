@@ -22,6 +22,13 @@
 
 ## Backlog del proyecto
 ### Tareas pendientes
+- [ ] Convención de ubicación para helpers no-hook extraídos de un feature (`format.ts`/`calendar.ts`/`sparkline.ts` de `dashboard-page`)
+    - id: T-20260826-001
+    - type: refactor
+    - contexto: al aplicar el skill `react-architecture` a `features/dashboard-page/index.tsx` (Server Component sin hooks de React), se extrajeron 3 archivos de funciones/tipos puros de formateo y cálculo (`format.ts`, `calendar.ts`, `sparkline.ts`) sueltos en la raíz del feature — mismo patrón que `schedules-page/day-labels.ts` ya usa en este proyecto. El skill define `hooks/` explícitamente para hooks de React (`useXxx`, patrón `use-<name>.ts`), pero no tiene una categoría propia para helpers puros feature-scoped que no son hooks ni componentes — no corresponde meterlos en `hooks/` porque no lo son.
+    - open_question (no asumir, resolver antes de `#run`): ¿los helpers no-hook quedan sueltos en la raíz del feature (como están ahora, consistente con `day-labels.ts`), o se agrupan en una subcarpeta (ej. `lib/`) dentro de cada feature? Si se elige subcarpeta, esta tarea también deberría mover `schedules-page/day-labels.ts` para no dejar dos convenciones convivendo.
+    - severity_flag: `low` — reorganización de archivos, sin cambio de comportamiento.
+    - depends_on: ninguna
 
 ### Tareas en curso
 
@@ -44,7 +51,6 @@
     - gate: `graph/gates/pending/T-20260825-009.md` — `low/medium`/async.
     - commit: `7d18c07`
     - depends_on: T-20260825-007 (completada)
-
 - [x] Rediseño de acento/forma: naranja → Volt (verde lima) + radio pill en todo el sistema
     - id: T-20260825-010
     - type: ui
@@ -63,7 +69,6 @@
     - **Gap conocido:** sin verificación visual propia en navegador en ningún momento — la sesión de Claude no tiene la sesión autenticada del usuario (redirige a `/sign-in`), y no se usaron credenciales. Ambas rondas de corrección se basaron en capturas que mandó el usuario, no en inspección propia.
     - severity_flag: `medium` (mismo criterio que T-20260824-001, UI pura, no toca base de datos)
     - depends_on: ninguna
-
 - [x] Fichaje de staff: registrar horario de entrada/salida (clock-in/clock-out)
     - id: T-20260825-005
     - type: schema+feature
@@ -73,7 +78,6 @@
     - gate: `graph/gates/pending/T-20260825-005.md` — `medium`/async, aprobado por SudacaDev. `npm run db:migrate` corrido y **verificado contra la base real** (2026-08-26): tabla `staff_attendance` y policy `tenant_isolation` presentes.
     - commit: `25ebac7`
     - depends_on: T-20260825-002 (completada)
-
 - [x] Horarios (vista Tabla): click en un bloque vacío de la grilla día×hora abre el diálogo de "Nuevo horario" con día/hora ya cargados
     - id: T-20260825-007
     - type: ui
@@ -84,7 +88,6 @@
     - gate: `graph/gates/pending/T-20260825-007.md` — `medium`/async, sin bloquear.
     - **Gap conocido:** sin verificación visual en navegador (requiere sesión real autenticada).
     - depends_on: ninguna
-
 - [x] Horarios: 3 vistas — tabla / kanban / calendario
     - id: T-20260825-006
     - type: ui
@@ -94,7 +97,6 @@
     - gate: `graph/gates/pending/T-20260825-006.md` — `low/medium`/async.
     - commit: `502949e`
     - depends_on: T-20260821-004 (completada)
-
 - [x] Header de sesión: presencia en tiempo real + botón de salir, nav "Equipo" restringido a owner (datos y UI)
     - id: T-20260825-001
     - type: ui+feature
@@ -104,7 +106,6 @@
     - gate: `graph/gates/pending/T-20260825-001.md` — `medium`/async, **aprobado por SudacaDev** (instrucción directa en el chat, 2026-08-25). Sin migración — nada más pendiente de ejecutar.
     - commit: `7ce6d9a`
     - depends_on: ninguna
-
 - [x] Alta de staff: usuario+contraseña definidos por el owner (reemplaza invitación por email)
     - id: T-20260825-002
     - type: schema+feature
@@ -114,7 +115,6 @@
     - gate: `graph/gates/pending/T-20260825-002.md` — `high`/síncrono, **aprobado por SudacaDev** (`AskUserQuestion`, 2026-08-25). **Incidente durante la aplicación (resuelto):** entre la aprobación y la ejecución apareció 1 fila real en `staff_members` — la migración original (`ADD COLUMN username NOT NULL` sin backfill) fallaba silenciosamente contra esa fila; corregida con un backfill (mismo patrón que `short_code`/`checkin_code`) antes de aplicar. `npm run db:migrate` corrido y **verificado contra la base real** (2026-08-25): `username` `NOT NULL` presente, unique index presente, la fila existente backfillada sin error.
     - commit: `3fae426` (implementación) + `d571683` (fix del backfill de la migración)
     - depends_on: T-20260821-007 (completada — esta tarea la modifica)
-
 - [x] Check-in: ID visual corto para socios (`short_code`)
     - id: T-20260825-003
     - type: feature+schema
@@ -124,7 +124,6 @@
     - gate: `graph/gates/pending/T-20260825-003.md` — `medium`/async (subido de `low` por el backfill de filas reales), aprobado por SudacaDev. `npm run db:migrate` corrido y **verificado contra la base real** (2026-08-25): `short_code` `NOT NULL` presente.
     - commit: `77064f4`
     - depends_on: ninguna
-
 - [x] Check-in manual por código de 6 dígitos (auto-check-in, `checkin_code`)
     - id: T-20260825-004
     - type: schema+feature
@@ -134,7 +133,6 @@
     - gate: `graph/gates/pending/T-20260825-004.md` — `medium`/async, aprobado por SudacaDev. `npm run db:migrate` corrido y **verificado contra la base real** (2026-08-25): `checkin_code` `NOT NULL` presente, `checkin_method` incluye `self_code`.
     - commit: `62a1aa1`
     - depends_on: ninguna
-
 - [x] Alta de staff: flujo real de creación de cuenta + formulario especializado por categoría (profesores / administrativos / limpieza)
     - id: T-20260821-007
     - type: schema+feature
@@ -145,7 +143,6 @@
     - **Gaps conocidos:** sin extender `tests/integration/tenant-isolation/rls-policies.test.ts` para `staff_members` (mismo gap que en `email_send_log` de T-003); el soft delete no revoca el acceso real de Supabase Auth, solo oculta el registro de RR.HH.; ninguna cuenta real fue creada — eso ocurre recién cuando un owner complete el formulario en producción, y depende de que el envío de invitación de Supabase Auth esté configurado (no verificado en esta sesión).
     - severity_flag: `high` (crea cuentas reales de Supabase Auth) — gate síncrono `graph/gates/pending/T-20260821-007.md`, aprobado por SudacaDev (`AskUserQuestion`, 2026-08-25).
     - depends_on: ninguna
-
 - [x] Pantalla "Equipo/Staff": tabla de personas (nombre, email, rol/estado, fecha alta) + búsqueda + botón Invitar
     - id: T-20260824-002
     - type: ui
@@ -167,7 +164,6 @@
     - **Gaps conocidos, no resueltos en este pass:** no se extendió `tests/integration/tenant-isolation/rls-policies.test.ts` para sembrar `email_send_log` (a diferencia de lo que sí se hizo para `activities`/`class_schedules` en T-003/T-008) — solo hay unit tests puros para la lógica de ventana/template. Sin verificación visual en navegador del botón/tabla nuevos en la ficha de socio (requiere sesión real). El cron no manda ningún mail real todavía: falta configurar `CRON_SECRET` en el deploy de Vercel y, si no está ya, verificar un dominio propio en Resend (mismo requisito que ya tenía el recibo de pago).
     - severity_flag: `high` — gate síncrono `graph/gates/pending/T-20260824-003.md`, aprobado por SudacaDev ("si apruebo", 2026-08-24) y ejecutado.
     - depends_on: ninguna
-
 - [x] Catálogo de actividades (para no escribir el nombre a mano en Horarios)
     - id: T-20260821-008
     - type: schema+feature
