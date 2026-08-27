@@ -1,0 +1,50 @@
+@reference "../../app/globals.css";
+
+.container {
+  @apply space-y-8;
+}
+.header {
+  @apply flex items-center justify-between;
+}
+.title {
+  @apply font-heading text-3xl uppercase tracking-tight;
+}
+.todayTotal {
+  @apply mt-1 text-sm font-bold text-muted-foreground;
+}
+.errorText {
+  @apply text-sm text-destructive;
+}
+.successText {
+  @apply text-sm text-status-success-fg;
+}
+.section {
+  @apply space-y-3;
+}
+.sectionTitle {
+  @apply text-xs font-bold tracking-widest text-muted-foreground uppercase;
+}
+.emptyText {
+  @apply text-sm text-muted-foreground;
+}
+.grid {
+  @apply grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4;
+}
+.card {
+  @apply flex flex-col items-start gap-2 rounded-[min(var(--radius-xl),20px)] border border-border bg-card p-4;
+}
+.cardName {
+  @apply font-heading text-base uppercase tracking-tight;
+}
+.cardPrice {
+  @apply font-heading text-2xl leading-none tracking-tight;
+}
+.cardOwnerActions {
+  @apply flex gap-2;
+}
+.dayPassRow {
+  @apply flex flex-wrap items-end gap-3;
+}
+.field {
+  @apply w-48 space-y-1;
+}

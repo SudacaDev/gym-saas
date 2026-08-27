@@ -50,6 +50,7 @@ export async function POST(request: Request) {
             startTime: parsed.data.startTime,
             endTime: parsed.data.endTime,
             activityId: parsed.data.activityId,
+            capacity: parsed.data.capacity ?? null,
           })
           .returning(),
     );

@@ -4,10 +4,12 @@ import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react
 import type { Member } from "@/db/schema/members";
 import type { EffectiveMembershipStatus } from "@/lib/memberships/status";
 
-interface OpenCheckin {
+/** One row of GET /api/v1/checkins?today=true — see that route's docstring. */
+export interface CheckinFeedItem {
   id: string;
   memberId: string;
   timestamp: string;
+  checkedOutAt: string | null;
 }
 
 export type CheckinResult =
@@ -23,13 +25,19 @@ export type CheckinResult =
  * once they're done. See lib/memberships/status.ts for what "estado" means
  * here; the POST/PATCH themselves re-check server-side (this client-side
  * status is only to guide staff, never trusted as the actual gate).
+ *
+ * `feed` (today's check-ins, open AND closed — T-20260826-015's "feed en
+ * vivo" column) is the single source of truth this hook fetches; `open`/
+ * "who's inside now" is derived from it client-side instead of a second
+ * fetch, since ?today=true is already a superset of ?open=true for the
+ * same day (see app/api/v1/checkins/route.ts's docstring).
  */
 export const useCheckin = () => {
   const [members, setMembers] = useState<Member[]>([]);
   const [statusByMember, setStatusByMember] = useState<
     Record<string, EffectiveMembershipStatus>
   >({});
-  const [openCheckins, setOpenCheckins] = useState<OpenCheckin[]>([]);
+  const [feed, setFeed] = useState<CheckinFeedItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [query, setQuery] = useState("");
@@ -66,22 +74,22 @@ export const useCheckin = () => {
     }
   }, []);
 
-  const loadOpenCheckins = useCallback(async () => {
-    const res = await fetch("/api/v1/checkins?open=true");
+  const loadFeed = useCallback(async () => {
+    const res = await fetch("/api/v1/checkins?today=true");
     if (res.ok) {
-      const data: OpenCheckin[] = await res.json();
-      setOpenCheckins(data);
+      const data: CheckinFeedItem[] = await res.json();
+      setFeed(data);
     }
   }, []);
 
   useEffect(() => {
     loadMembers();
-    loadOpenCheckins();
-  }, [loadMembers, loadOpenCheckins]);
+    loadFeed();
+  }, [loadMembers, loadFeed]);
 
   const openByMemberId = useMemo(
-    () => new Map(openCheckins.map((c) => [c.memberId, c])),
-    [openCheckins],
+    () => new Map(feed.filter((c) => !c.checkedOutAt).map((c) => [c.memberId, c])),
+    [feed],
   );
 
   const filtered = useMemo(() => {
@@ -93,14 +101,6 @@ export const useCheckin = () => {
         member.shortCode.toLowerCase().includes(q),
     );
   }, [members, query]);
-
-  const insideNow = useMemo(
-    () =>
-      openCheckins
-        .slice()
-        .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()),
-    [openCheckins],
-  );
 
   async function handleCheckin(member: Member) {
     setPendingId(member.id);
@@ -127,9 +127,9 @@ export const useCheckin = () => {
       }
 
       const checkin = (await res.json()) as { id: string; timestamp: string };
-      setOpenCheckins((prev) => [
+      setFeed((prev) => [
+        { id: checkin.id, memberId: member.id, timestamp: checkin.timestamp, checkedOutAt: null },
         ...prev,
-        { id: checkin.id, memberId: member.id, timestamp: checkin.timestamp },
       ]);
       setResult({ kind: "success", action: "checkin", member, timestamp: checkin.timestamp });
     } finally {
@@ -161,7 +161,9 @@ export const useCheckin = () => {
       }
 
       const checkin = (await res.json()) as { checkedOutAt: string };
-      setOpenCheckins((prev) => prev.filter((c) => c.id !== open.id));
+      setFeed((prev) =>
+        prev.map((c) => (c.id === open.id ? { ...c, checkedOutAt: checkin.checkedOutAt } : c)),
+      );
       setResult({
         kind: "success",
         action: "checkout",
@@ -201,14 +203,14 @@ export const useCheckin = () => {
       }
 
       const { member, checkin } = body as { member: Member; checkin: { id: string; timestamp: string } };
-      setOpenCheckins((prev) => [
+      setFeed((prev) => [
+        { id: checkin.id, memberId: member.id, timestamp: checkin.timestamp, checkedOutAt: null },
         ...prev,
-        { id: checkin.id, memberId: member.id, timestamp: checkin.timestamp },
       ]);
       // The self-code flow can resolve a member that isn't in the
       // client's already-loaded `members` list yet (e.g. created after
-      // this page loaded) — merge it in so "En el gym ahora" can render
-      // their name instead of falling back to "Socio".
+      // this page loaded) — merge it in so the feed/list can render their
+      // name instead of falling back to "Socio".
       setMembers((prev) => (prev.some((m) => m.id === member.id) ? prev : [...prev, member]));
       setResult({ kind: "success", action: "checkin", member, timestamp: checkin.timestamp });
     } finally {
@@ -220,6 +222,7 @@ export const useCheckin = () => {
   return {
     members,
     statusByMember,
+    feed,
     loading,
     loadError,
     query,
@@ -230,7 +233,6 @@ export const useCheckin = () => {
     setCode,
     codePending,
     filtered,
-    insideNow,
     openByMemberId,
     handleCheckin,
     handleCheckout,

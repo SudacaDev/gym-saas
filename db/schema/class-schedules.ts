@@ -1,15 +1,17 @@
-import { pgTable, uuid, time, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, uuid, time, integer, timestamp } from "drizzle-orm/pg-core";
 import { tenants } from "./tenants";
 import { activities } from "./activities";
 import { dayOfWeekEnum } from "./enums";
 
 /**
  * A single recurring weekly slot in a tenant's class schedule (e.g. "Lunes
- * 18:00-19:00 CrossFit"). v1 is deliberately declarative-only — day, time
+ * 18:00-19:00 CrossFit"). v1 was deliberately declarative-only — day, time
  * range, activity — with no capacity, instructor, or booking/waitlist
- * concept. Those are a distinct, explicitly-scoped future decision, not an
- * incremental addition to this table (see T-20260821-004 in
- * .agents/graph/sessions/tasks.md for the product reasoning).
+ * concept (see T-20260821-004 for that original reasoning). T-20260826-011
+ * adds `capacity` as the default aforo for every occurrence of this slot;
+ * booking/waitlist itself lives in class_occurrences/class_reservations,
+ * not here — this table still only describes the recurring slot, never a
+ * specific date.
  *
  * `activityId` is a required FK to `activities` — the free-text
  * `activityName` column it replaced (T-20260821-008) is gone. That move
@@ -30,6 +32,10 @@ export const classSchedules = pgTable("class_schedules", {
   activityId: uuid("activity_id")
     .notNull()
     .references(() => activities.id, { onDelete: "restrict" }),
+  // Default aforo for every occurrence of this slot (T-20260826-011). Null
+  // = no cap enforced. A specific occurrence can override it — see
+  // class_occurrences.capacity.
+  capacity: integer("capacity"),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),

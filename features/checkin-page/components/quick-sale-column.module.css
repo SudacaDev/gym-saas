@@ -1,0 +1,41 @@
+@reference "../../../app/globals.css";
+
+.column {
+  @apply min-w-0 space-y-4;
+}
+
+.columnTitle {
+  @apply font-heading text-sm tracking-tight text-foreground uppercase;
+}
+
+.emptyText {
+  @apply text-sm text-muted-foreground;
+}
+
+.errorText {
+  @apply text-sm text-destructive;
+}
+
+.successText {
+  @apply text-sm text-status-success-fg;
+}
+
+.grid {
+  @apply grid grid-cols-2 gap-3;
+}
+
+.card {
+  @apply flex flex-col items-start gap-2 rounded-[min(var(--radius-xl),20px)] border border-border bg-card p-3;
+}
+
+.cardName {
+  @apply font-heading text-sm uppercase tracking-tight;
+}
+
+.cardPrice {
+  @apply font-heading text-xl leading-none tracking-tight;
+}
+
+.sellButton {
+  @apply w-full;
+}

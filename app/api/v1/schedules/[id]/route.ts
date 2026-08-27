@@ -33,6 +33,7 @@ export async function PATCH(request: Request, { params }: RouteParams) {
     if (parsed.data.endTime !== undefined) updates.endTime = parsed.data.endTime;
     if (parsed.data.activityId !== undefined)
       updates.activityId = parsed.data.activityId;
+    if (parsed.data.capacity !== undefined) updates.capacity = parsed.data.capacity ?? null;
 
     const [classSchedule] = await withTenantContext(
       context.tenantId,

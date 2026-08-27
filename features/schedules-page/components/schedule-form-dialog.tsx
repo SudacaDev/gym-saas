@@ -56,6 +56,7 @@ function defaultsFor(
       startTime: schedule.startTime.slice(0, 5),
       endTime: schedule.endTime.slice(0, 5),
       activityId: schedule.activityId,
+      capacity: schedule.capacity ?? undefined,
     };
   }
   if (initialValues) {
@@ -64,9 +65,10 @@ function defaultsFor(
       startTime: initialValues.startTime,
       endTime: initialValues.endTime,
       activityId: "",
+      capacity: undefined,
     };
   }
-  return { dayOfWeek: "monday", startTime: "", endTime: "", activityId: "" };
+  return { dayOfWeek: "monday", startTime: "", endTime: "", activityId: "", capacity: undefined };
 }
 
 interface ScheduleFormDialogProps {
@@ -399,6 +401,19 @@ export function ScheduleFormDialog({
               id="schedule-activity-error"
               message={errors.activityId?.message}
             />
+          </div>
+          <div className={styles.field}>
+            <Label htmlFor="schedule-capacity">Cupo máximo (opcional)</Label>
+            <Input
+              id="schedule-capacity"
+              type="number"
+              min={1}
+              placeholder="Sin límite"
+              aria-invalid={!!errors.capacity}
+              aria-describedby={errors.capacity ? "schedule-capacity-error" : undefined}
+              {...register("capacity")}
+            />
+            <FieldError id="schedule-capacity-error" message={errors.capacity?.message} />
           </div>
           {formError && (
             <p role="alert" className={styles.errorText}>

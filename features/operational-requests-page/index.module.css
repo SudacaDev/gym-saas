@@ -1,0 +1,33 @@
+@reference "../../app/globals.css";
+
+.container {
+  @apply space-y-6;
+}
+
+.header {
+  @apply flex items-center justify-between;
+}
+
+.title {
+  @apply font-heading text-3xl uppercase tracking-tight;
+}
+
+.errorText {
+  @apply text-sm text-destructive;
+}
+
+.emptyText {
+  @apply text-sm text-muted-foreground;
+}
+
+.descriptionCell {
+  @apply max-w-sm;
+}
+
+.actionsHead {
+  @apply text-right;
+}
+
+.actions {
+  @apply flex justify-end;
+}

@@ -4,11 +4,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   CalendarDaysIcon,
+  ClipboardListIcon,
   CreditCardIcon,
   IdCardIcon,
   LayoutDashboardIcon,
   ScanLineIcon,
+  ShoppingCartIcon,
   UserIcon,
+  UserPlusIcon,
   UsersIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -29,23 +32,56 @@ import styles from "./owner-nav.module.css";
 // don't self-service anything) — app/(owner)/profile/page.tsx enforces
 // the same rule server-side, this is just keeping the link from even
 // showing to someone who'd hit a redirect.
-const NAV_LINKS = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboardIcon, visible: () => true },
-  { href: "/members", label: "Socios", icon: UsersIcon, visible: () => true },
+//
+// Grouped into 3 sections (user request, 2026-08-26 — the list had grown
+// to 10 flat items under one "Gestión" label): Gestión (back-office/admin
+// config), User (people — socios/prospectos/la cuenta propia),
+// Check & Payments (front-desk daily transactions). "Planes" stays in
+// Check & Payments per the user's explicit call, not Gestión, despite
+// being pricing config — confirmed, not a default.
+const NAV_GROUPS = [
   {
-    href: "/staff",
-    label: "Equipo",
-    icon: IdCardIcon,
-    visible: (user: PresenceUser) => user.role === "owner",
+    label: "Gestión",
+    links: [
+      { href: "/dashboard", label: "Dashboard", icon: LayoutDashboardIcon, visible: () => true },
+      {
+        href: "/staff",
+        label: "Equipo",
+        icon: IdCardIcon,
+        visible: (user: PresenceUser) => user.role === "owner",
+      },
+      { href: "/schedules", label: "Horarios", icon: CalendarDaysIcon, visible: () => true },
+      {
+        href: "/operational-requests",
+        label: "Necesidades",
+        icon: ClipboardListIcon,
+        // Owner+staff — same tier as the rest of front-desk operational
+        // data (T-20260826-010); no staffCategory/department restriction,
+        // that axis is T-20260826-014 and isn't implemented yet.
+        visible: () => true,
+      },
+    ],
   },
-  { href: "/plans", label: "Planes", icon: CreditCardIcon, visible: () => true },
-  { href: "/schedules", label: "Horarios", icon: CalendarDaysIcon, visible: () => true },
-  { href: "/checkin", label: "Check-in", icon: ScanLineIcon, visible: () => true },
   {
-    href: "/profile",
-    label: "Mi perfil",
-    icon: UserIcon,
-    visible: (user: PresenceUser) => user.role === "staff" && user.category !== "cleaning",
+    label: "User",
+    links: [
+      { href: "/members", label: "Socios", icon: UsersIcon, visible: () => true },
+      { href: "/leads", label: "Prospectos", icon: UserPlusIcon, visible: () => true },
+      {
+        href: "/profile",
+        label: "Mi perfil",
+        icon: UserIcon,
+        visible: (user: PresenceUser) => user.role === "staff" && user.category !== "cleaning",
+      },
+    ],
+  },
+  {
+    label: "Check & Payments",
+    links: [
+      { href: "/checkin", label: "Check-in", icon: ScanLineIcon, visible: () => true },
+      { href: "/kiosk", label: "Cobro rápido", icon: ShoppingCartIcon, visible: () => true },
+      { href: "/plans", label: "Planes", icon: CreditCardIcon, visible: () => true },
+    ],
   },
 ] as const;
 
@@ -79,7 +115,6 @@ interface OwnerNavProps {
 
 export function OwnerNav({ tenantId, currentUser }: OwnerNavProps) {
   const pathname = usePathname();
-  const links = NAV_LINKS.filter((link) => link.visible(currentUser));
 
   return (
     <aside className={styles.sidebar}>
@@ -88,26 +123,39 @@ export function OwnerNav({ tenantId, currentUser }: OwnerNavProps) {
         <span className={styles.brandLabel}>BoxFlow</span>
       </Link>
       <nav className={styles.nav}>
-        <span className={styles.groupLabel}>Gestión</span>
-        <ul className={styles.navList}>
-          {links.map((link) => {
-            const active = pathname === link.href || pathname.startsWith(`${link.href}/`);
-            const Icon = link.icon;
-            return (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  title={link.label}
-                  aria-current={active ? "page" : undefined}
-                  className={cn(styles.navLink, active && styles.navLinkActive)}
-                >
-                  <Icon className={styles.navIcon} aria-hidden="true" />
-                  <span className={styles.navLabel}>{link.label}</span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+        {NAV_GROUPS.map((group) => {
+          const links = group.links.filter((link) => link.visible(currentUser));
+          // A group can end up empty for a given role (e.g. "Gestión" minus
+          // "Equipo" for non-owners still has other links today, but this
+          // guards future additions from leaving a bare, link-less header).
+          if (links.length === 0) return null;
+
+          return (
+            <div key={group.label}>
+              <span className={styles.groupLabel}>{group.label}</span>
+              <ul className={styles.navList}>
+                {links.map((link) => {
+                  const active =
+                    pathname === link.href || pathname.startsWith(`${link.href}/`);
+                  const Icon = link.icon;
+                  return (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        title={link.label}
+                        aria-current={active ? "page" : undefined}
+                        className={cn(styles.navLink, active && styles.navLinkActive)}
+                      >
+                        <Icon className={styles.navIcon} aria-hidden="true" />
+                        <span className={styles.navLabel}>{link.label}</span>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          );
+        })}
       </nav>
       <PresenceWidget tenantId={tenantId} currentUser={currentUser} />
     </aside>

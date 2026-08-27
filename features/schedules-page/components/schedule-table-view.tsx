@@ -4,6 +4,7 @@ import { Fragment } from "react";
 import { PlusIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScheduleFormDialog } from "./schedule-form-dialog";
+import { ClassOccurrenceDialog } from "./class-occurrence-dialog";
 import type { ScheduleViewProps } from "./schedule-view-props";
 import { DAY_ORDER, DAY_LABELS_SHORT } from "../lib/day-labels";
 import styles from "../index.module.css";
@@ -156,6 +157,18 @@ export function ScheduleTableView({
                         {activityNameById.get(schedule.activityId) ?? "—"}
                       </span>
                       <div className={styles.slotActions}>
+                        <ClassOccurrenceDialog
+                          schedule={schedule}
+                          activityName={activityNameById.get(schedule.activityId) ?? "—"}
+                          trigger={
+                            <button
+                              type="button"
+                              className={cn(styles.slotAction, styles.slotActionEdit)}
+                            >
+                              Reservas
+                            </button>
+                          }
+                        />
                         <ScheduleFormDialog
                           schedule={schedule}
                           activities={activities}

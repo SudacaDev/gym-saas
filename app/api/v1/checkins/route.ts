@@ -22,6 +22,14 @@ function startOfDayUTC(date: Date): Date {
 // ("who's in the gym right now"), for the check-in page's live panel.
 // Bounded to today so this stays a small, fast query regardless of how
 // much check-in history a tenant accumulates over time.
+//
+// ?today=true — today's check-ins regardless of check-out state (open AND
+// closed), for the check-in page's "feed en vivo" column (T-20260826-015):
+// unlike ?open=true this doesn't drop a visit the moment it's checked out,
+// so the feed keeps showing it for the rest of the day. Same today-only
+// bound as ?open=true, same reasoning. If both are passed, ?open=true wins
+// (it's the narrower filter) rather than silently ANDing two range
+// conditions that would already be redundant with each other.
 export async function GET(request: Request) {
   try {
     const context = await getTenantContext();
@@ -30,15 +38,16 @@ export async function GET(request: Request) {
     const url = new URL(request.url);
     const memberId = url.searchParams.get("memberId");
     const openOnly = url.searchParams.get("open") === "true";
+    const todayOnly = url.searchParams.get("today") === "true";
 
     const conditions: SQL[] = [];
     if (memberId) conditions.push(eq(schema.checkins.memberId, memberId));
-    if (openOnly) {
+    if (openOnly || todayOnly) {
       const todayStart = startOfDayUTC(new Date());
       const tomorrowStart = new Date(todayStart.getTime() + 24 * 60 * 60 * 1000);
-      conditions.push(isNull(schema.checkins.checkedOutAt));
       conditions.push(gte(schema.checkins.timestamp, todayStart));
       conditions.push(lt(schema.checkins.timestamp, tomorrowStart));
+      if (openOnly) conditions.push(isNull(schema.checkins.checkedOutAt));
     }
 
     const checkins = await withTenantContext(

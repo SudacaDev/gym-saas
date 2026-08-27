@@ -1,0 +1,62 @@
+@reference "../../../app/globals.css";
+
+.column {
+  @apply min-w-0 space-y-4;
+}
+
+.columnTitle {
+  @apply font-heading text-sm tracking-tight text-foreground uppercase;
+}
+
+.emptyText {
+  @apply text-sm text-muted-foreground;
+}
+
+.errorText {
+  @apply text-sm text-destructive;
+}
+
+.panel {
+  /* Container, not a control — capped radius, see DESIGN.md Shapes. */
+  @apply space-y-4 rounded-[min(var(--radius-xl),20px)] border border-border bg-card p-4;
+}
+
+.panelHeader {
+  @apply flex items-start justify-between gap-2 border-b border-border-subtle pb-3;
+}
+
+.activityName {
+  @apply font-heading text-base uppercase tracking-tight;
+}
+
+.timeRange {
+  @apply text-xs text-muted-foreground;
+}
+
+.capacityText {
+  @apply shrink-0 text-sm font-bold tabular-nums text-muted-foreground;
+}
+
+.section {
+  @apply space-y-2;
+}
+
+.sectionTitle {
+  @apply text-xs font-bold tracking-widest text-muted-foreground uppercase;
+}
+
+.list {
+  @apply space-y-1.5;
+}
+
+.row {
+  @apply flex flex-wrap items-center justify-between gap-2 rounded-[min(var(--radius-md),12px)] border border-border-subtle px-2.5 py-1.5 text-sm;
+}
+
+.name {
+  @apply text-sm;
+}
+
+.rowActions {
+  @apply flex items-center gap-1.5;
+}

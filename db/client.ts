@@ -41,21 +41,34 @@ function readUrl(envVar: string): string {
 // Lazily create the underlying postgres.js connection pools so that
 // importing this module never throws just because env vars aren't loaded
 // yet (e.g. at build time, or before Next.js has read .env.local).
-let _trustedClient: postgres.Sql | undefined;
-let _trustedDb: ReturnType<typeof drizzle<typeof schema>> | undefined;
-let _scopedClient: postgres.Sql | undefined;
-let _scopedDb: ReturnType<typeof drizzle<typeof schema>> | undefined;
+//
+// Cached on `globalThis`, not a plain module-level `let`: this project
+// connects on Postgres's direct port (:5432, not the Supabase pooler),
+// which has a low connection ceiling. In Next.js dev, `db/client.ts` gets
+// hot-reloaded on nearly every save — a plain `let` resets to `undefined`
+// on each reload, so every reload spun up a brand new pool (up to 10
+// connections each) without closing the previous one's sockets, silently
+// leaking connections across a long dev session until Postgres refused
+// new ones (`remaining connection slots are reserved for roles with the
+// SUPERUSER attribute`). `globalThis` survives module re-evaluation across
+// HMR, so the pool is created once per process either way.
+const globalForDb = globalThis as unknown as {
+  _trustedClient?: postgres.Sql;
+  _trustedDb?: ReturnType<typeof drizzle<typeof schema>>;
+  _scopedClient?: postgres.Sql;
+  _scopedDb?: ReturnType<typeof drizzle<typeof schema>>;
+};
 
 /** Elevated/trusted Drizzle instance — see module docstring for when. */
 export function getDb() {
-  if (!_trustedDb) {
-    _trustedClient ??= postgres(readUrl("DATABASE_TRUSTED_URL"), {
+  if (!globalForDb._trustedDb) {
+    globalForDb._trustedClient ??= postgres(readUrl("DATABASE_TRUSTED_URL"), {
       max: 10,
       prepare: true,
     });
-    _trustedDb = drizzle(_trustedClient, { schema });
+    globalForDb._trustedDb = drizzle(globalForDb._trustedClient, { schema });
   }
-  return _trustedDb;
+  return globalForDb._trustedDb;
 }
 
 /**
@@ -64,14 +77,14 @@ export function getDb() {
  * withTenantContext() instead of importing it directly.
  */
 export function getScopedDb() {
-  if (!_scopedDb) {
-    _scopedClient ??= postgres(readUrl("DATABASE_URL"), {
+  if (!globalForDb._scopedDb) {
+    globalForDb._scopedClient ??= postgres(readUrl("DATABASE_URL"), {
       max: 10,
       prepare: true,
     });
-    _scopedDb = drizzle(_scopedClient, { schema });
+    globalForDb._scopedDb = drizzle(globalForDb._scopedClient, { schema });
   }
-  return _scopedDb;
+  return globalForDb._scopedDb;
 }
 
 export type Db = ReturnType<typeof getDb>;

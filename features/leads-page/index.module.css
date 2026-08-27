@@ -1,0 +1,37 @@
+@reference "../../app/globals.css";
+
+.container {
+  @apply space-y-6;
+}
+
+.header {
+  @apply flex items-center justify-between;
+}
+
+.title {
+  @apply font-heading text-3xl uppercase tracking-tight;
+}
+
+.errorText {
+  @apply text-sm text-destructive;
+}
+
+.emptyText {
+  @apply text-sm text-muted-foreground;
+}
+
+.actionsHead {
+  @apply text-right;
+}
+
+.noteCell {
+  @apply max-w-xs truncate text-muted-foreground;
+}
+
+.whatsappLink {
+  @apply text-primary underline-offset-4 hover:underline;
+}
+
+.actions {
+  @apply flex justify-end gap-2;
+}

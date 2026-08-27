@@ -80,35 +80,52 @@
   @apply font-mono text-xs tracking-wide text-muted-foreground;
 }
 
-.insidePanel {
-  /* Same capped-radius rationale as .list above. */
-  @apply overflow-hidden rounded-[min(var(--radius-xl),20px)] border border-border;
+.columns {
+  @apply grid grid-cols-1 items-start gap-8 lg:grid-cols-3;
 }
 
-.insidePanelHeader {
-  @apply flex items-center justify-between border-b border-border-subtle bg-card px-4 py-3;
+.column {
+  @apply min-w-0 space-y-4;
 }
 
-.insidePanelTitle {
-  @apply font-heading text-xs tracking-widest text-muted-foreground uppercase;
+.columnTitle {
+  @apply font-heading text-sm tracking-tight text-foreground uppercase;
 }
 
-.insidePanelCount {
+/* "Actividad de hoy" feed (T-20260826-015) — each row is its own
+   bordered/capped-radius box (not a shared divide-y wrapper) specifically
+   so this list can scroll (`overflow-y-auto`) without the radius-clipping
+   bug DESIGN.md's Shapes section documents: a shared capped-radius
+   wrapper needs `overflow-hidden` to look clean, which can't coexist with
+   a scrollable list. */
+.feedPanel {
+  @apply space-y-2;
+}
+
+.feedPanelHeader {
+  @apply flex items-center justify-between;
+}
+
+.feedPanelTitle {
+  @apply text-xs font-bold tracking-widest text-muted-foreground uppercase;
+}
+
+.feedPanelCount {
   @apply font-heading text-lg text-primary;
 }
 
-.insideList {
-  @apply divide-y divide-border-subtle;
+.feedList {
+  @apply max-h-96 space-y-1.5 overflow-y-auto;
 }
 
-.insideRow {
-  @apply flex items-center justify-between bg-card px-4 py-2.5 text-sm;
+.feedRow {
+  @apply flex flex-wrap items-center justify-between gap-2 rounded-[min(var(--radius-md),12px)] border border-border-subtle bg-card px-3 py-2 text-sm;
 }
 
-.insideName {
+.feedName {
   @apply font-semibold;
 }
 
-.insideTime {
-  @apply text-muted-foreground;
+.feedMeta {
+  @apply shrink-0 text-xs text-muted-foreground;
 }

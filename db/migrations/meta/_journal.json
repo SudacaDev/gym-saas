@@ -99,6 +99,27 @@
       "when": 1787690230858,
       "tag": "0013_old_paladin",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1787764077201,
+      "tag": "0014_lazy_scarlet_witch",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1787764950082,
+      "tag": "0015_stormy_moonstone",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1787768485516,
+      "tag": "0016_soft_ender_wiggin",
+      "breakpoints": true
     }
   ]
 }
