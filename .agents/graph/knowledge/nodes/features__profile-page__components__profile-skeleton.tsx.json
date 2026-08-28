@@ -1,0 +1,12 @@
+{
+  "id": "features/profile-page/components/profile-skeleton.tsx",
+  "community": "features",
+  "references": [
+    "features/profile-page/index.module.css",
+    "features/profile-page/components/profile-business-form.module.css",
+    "features/profile-page/components/profile-skeleton.module.css"
+  ],
+  "referenced_by": [
+    "features/profile-page/index.tsx"
+  ]
+}

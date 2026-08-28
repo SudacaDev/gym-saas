@@ -1,0 +1,13 @@
+@reference "../../../app/globals.css";
+
+.cell {
+  @apply h-4 w-24;
+}
+
+.priceCell {
+  @apply h-4 w-16;
+}
+
+.iconButton {
+  @apply size-6 rounded-[10px];
+}

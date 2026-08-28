@@ -17,6 +17,11 @@ export const scheduleSchema = z.object({
   // un <input type="number"> de un form — mismo patrón que PlanFormDialog
   // usa para price.
   capacity: z.coerce.number().int().positive("Tiene que ser mayor a 0").optional(),
+  // Quién da la clase (T-20260827-007). Solo un valor propuesto por el
+  // cliente — la API fuerza esto a "uno mismo" cuando quien llama es un
+  // profesor (ver app/api/v1/schedules/route.ts), así que este campo solo
+  // tiene efecto real cuando lo manda el owner o un administrativo.
+  instructorId: z.string().uuid("Instructor inválido").optional().nullable(),
 });
 
 export type ScheduleInput = z.input<typeof scheduleSchema>;

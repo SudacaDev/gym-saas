@@ -20,11 +20,14 @@ import styles from "./schedule-kanban-view.module.css";
 export function ScheduleKanbanView({
   schedules,
   activities,
+  instructors,
+  selfInstructor,
   activityNameById,
   onSaved,
   onRemoved,
   onActivityCreated,
   onDelete,
+  deletingId,
 }: ScheduleViewProps) {
   return (
     <div className={styles.board}>
@@ -51,6 +54,8 @@ export function ScheduleKanbanView({
                     <ScheduleFormDialog
                       schedule={schedule}
                       activities={activities}
+                      instructors={instructors}
+                      selfInstructor={selfInstructor}
                       trigger={
                         <button
                           type="button"
@@ -65,10 +70,11 @@ export function ScheduleKanbanView({
                     />
                     <button
                       type="button"
+                      disabled={deletingId === schedule.id}
                       className={cn(indexStyles.slotAction, indexStyles.slotActionDelete)}
                       onClick={() => onDelete(schedule)}
                     >
-                      Borrar
+                      {deletingId === schedule.id ? "Borrando..." : "Borrar"}
                     </button>
                   </div>
                 </div>

@@ -1,0 +1,13 @@
+{
+  "id": "db/schema/class-occurrences.ts",
+  "community": "db",
+  "references": [
+    "db/schema/tenants.ts",
+    "db/schema/class-schedules.ts"
+  ],
+  "referenced_by": [
+    "db/schema/class-reservations.ts",
+    "db/schema/index.ts",
+    "db/schema/relations.ts"
+  ]
+}

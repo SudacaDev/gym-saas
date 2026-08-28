@@ -11,6 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import type { StaffAttendanceRow, StaffMemberRow } from "../types";
 import styles from "./staff-attendance-dialog.module.css";
 
@@ -30,6 +31,20 @@ function formatDate(value: Date | string): string {
 
 function formatTime(value: Date | string): string {
   return new Date(value).toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" });
+}
+
+/** Mirrors the real `.row` list item shape (date + times) while `loading`. */
+function AttendanceHistorySkeleton() {
+  return (
+    <ul className={styles.list}>
+      {Array.from({ length: 3 }, (_, rowIndex) => (
+        <li key={rowIndex} className={styles.row}>
+          <Skeleton className={styles.skeletonDate} />
+          <Skeleton className={styles.skeletonTimes} />
+        </li>
+      ))}
+    </ul>
+  );
 }
 
 /**
@@ -78,7 +93,7 @@ export function StaffAttendanceDialog({ trigger, member }: StaffAttendanceDialog
         {error && <p className={styles.errorText}>{error}</p>}
 
         {loading ? (
-          <p className={styles.emptyText}>Cargando...</p>
+          <AttendanceHistorySkeleton />
         ) : rows.length === 0 ? (
           <p className={styles.emptyText}>Todavía no hay fichajes registrados.</p>
         ) : (

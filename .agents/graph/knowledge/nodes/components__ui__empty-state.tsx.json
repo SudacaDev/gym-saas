@@ -1,0 +1,8 @@
+{
+  "id": "components/ui/empty-state.tsx",
+  "community": "components",
+  "references": [
+    "components/ui/empty-state.module.css"
+  ],
+  "referenced_by": []
+}

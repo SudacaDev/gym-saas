@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { ClassSchedule } from "@/db/schema/class-schedules";
 import type { ClassReservation } from "@/db/schema/class-reservations";
+import type { Member } from "@/db/schema/members";
 import { findCurrentSchedule, todayDateString } from "../lib/current-class";
 
 export type ReservationStatus = ClassReservation["status"];
@@ -55,6 +56,17 @@ export function useCurrentClass() {
   const [occurrenceLoading, setOccurrenceLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pendingReservationId, setPendingReservationId] = useState<string | null>(null);
+  // Paired with pendingReservationId only to tell "Presente"/"Ausente"
+  // apart for button text feedback (T-20260827-002) — both buttons on the
+  // same row already disable together via pendingReservationId, this just
+  // says which of the two was actually clicked.
+  const [pendingStatus, setPendingStatus] = useState<"attended" | "absent" | null>(null);
+  const [members, setMembers] = useState<Member[]>([]);
+  const [memberQuery, setMemberQuery] = useState("");
+  // Per-member pending flag for "Reservar" (T-20260827-002) — several
+  // filtered members can be on screen at once, only the one actually
+  // clicked should show "Reservando...".
+  const [addingMemberId, setAddingMemberId] = useState<string | null>(null);
 
   const now = useMemo(() => new Date(), []);
 
@@ -107,6 +119,39 @@ export function useCurrentClass() {
     loadOccurrence();
   }, [loadOccurrence]);
 
+  useEffect(() => {
+    fetch("/api/v1/members")
+      .then((res) => (res.ok ? res.json() : []))
+      .then(setMembers);
+  }, []);
+
+  // Mirrors class-occurrence-dialog.tsx's "Agregar reserva" — same request
+  // shape, same member-search UX, requested by the user as the missing
+  // piece to make this column an actual one-stop "modo rápido" (T-015
+  // originally left this out on purpose, reserving it for /schedules only).
+  async function handleAddReservation(memberId: string) {
+    if (!currentSchedule) return;
+    setError(null);
+    setAddingMemberId(memberId);
+    try {
+      const date = todayDateString(now);
+      const res = await fetch(`/api/v1/schedules/${currentSchedule.id}/occurrences/reservations`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ date, memberId }),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        setError(typeof body?.error === "string" ? body.error : "No se pudo agregar la reserva");
+        return;
+      }
+      setMemberQuery("");
+      await loadOccurrence();
+    } finally {
+      setAddingMemberId(null);
+    }
+  }
+
   async function handleStatusChange(
     reservation: CurrentClassReservation,
     status: "attended" | "absent",
@@ -114,6 +159,7 @@ export function useCurrentClass() {
     if (!currentSchedule) return;
     setError(null);
     setPendingReservationId(reservation.id);
+    setPendingStatus(status);
     try {
       const res = await fetch(
         `/api/v1/schedules/${currentSchedule.id}/occurrences/reservations/${reservation.id}`,
@@ -134,6 +180,7 @@ export function useCurrentClass() {
       await loadOccurrence();
     } finally {
       setPendingReservationId(null);
+      setPendingStatus(null);
     }
   }
 
@@ -145,6 +192,40 @@ export function useCurrentClass() {
     () => occurrence?.reservations.filter((r) => r.status === "waitlisted") ?? [],
     [occurrence],
   );
+  // "Presente"/"Ausente" moves a reservation OUT of `reserved` (its status
+  // stops being "reserved") — without this list that reservation vanishes
+  // from the column entirely, reading as if marking someone present had
+  // removed them from the class instead of recording attendance. Mirrors
+  // class-occurrence-dialog.tsx's "Historial" grouping (same 3 statuses).
+  const history = useMemo(
+    () =>
+      occurrence?.reservations.filter((r) =>
+        (["attended", "absent", "cancelled"] as ReservationStatus[]).includes(r.status),
+      ) ?? [],
+    [occurrence],
+  );
+
+  // Members with an active (non-cancelled) reservation for this occurrence
+  // don't show up in the search — matches the DB's own partial unique
+  // index, see db/schema/class-reservations.ts.
+  const reservedMemberIds = useMemo(
+    () =>
+      new Set(
+        (occurrence?.reservations ?? [])
+          .filter((r) => r.status !== "cancelled")
+          .map((r) => r.memberId),
+      ),
+    [occurrence],
+  );
+
+  const filteredMembers = useMemo(() => {
+    const query = memberQuery.trim().toLowerCase();
+    if (!query) return [];
+    return members
+      .filter((m) => !reservedMemberIds.has(m.id))
+      .filter((m) => `${m.firstName} ${m.lastName}`.toLowerCase().includes(query))
+      .slice(0, 8);
+  }, [members, memberQuery, reservedMemberIds]);
 
   return {
     loading,
@@ -157,7 +238,14 @@ export function useCurrentClass() {
     occurrence,
     reserved,
     waitlisted,
+    history,
     pendingReservationId,
+    pendingStatus,
     handleStatusChange,
+    memberQuery,
+    setMemberQuery,
+    filteredMembers,
+    addingMemberId,
+    handleAddReservation,
   };
 }

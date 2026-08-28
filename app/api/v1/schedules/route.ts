@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getTenantContext } from "@/lib/auth/get-tenant-context";
 import { requireRole } from "@/lib/auth/require-role";
+import { resolveInstructorId } from "@/lib/schedules/resolve-instructor-id";
 import { withTenantContext } from "@/db/rls-context";
 import { schema } from "@/db/client";
 import { scheduleSchema } from "@/lib/validations/schedule.schema";
@@ -38,6 +39,8 @@ export async function POST(request: Request) {
       );
     }
 
+    const { value: instructorId } = await resolveInstructorId(context, parsed.data.instructorId);
+
     const [classSchedule] = await withTenantContext(
       context.tenantId,
       context.role,
@@ -51,6 +54,7 @@ export async function POST(request: Request) {
             endTime: parsed.data.endTime,
             activityId: parsed.data.activityId,
             capacity: parsed.data.capacity ?? null,
+            instructorId,
           })
           .returning(),
     );

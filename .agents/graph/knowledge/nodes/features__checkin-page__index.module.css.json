@@ -3,6 +3,7 @@
   "community": "features",
   "references": [],
   "referenced_by": [
+    "features/checkin-page/components/checkin-list-skeleton.tsx",
     "features/checkin-page/index.tsx"
   ]
 }

@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useQuickSale } from "../hooks/useQuickSale";
+import { QuickSaleSkeleton } from "./quick-sale-skeleton";
 import styles from "./quick-sale-column.module.css";
 
 const currencyFormatter = new Intl.NumberFormat("es-AR", {
@@ -28,7 +29,7 @@ export function QuickSaleColumn() {
       {saleMessage && !error && <p className={styles.successText}>{saleMessage}</p>}
 
       {loading ? (
-        <p className={styles.emptyText}>Cargando...</p>
+        <QuickSaleSkeleton />
       ) : products.length === 0 ? (
         <p className={styles.emptyText}>Todavía no hay productos cargados.</p>
       ) : (

@@ -1,0 +1,10 @@
+{
+  "id": "features/leads-page/components/lead-form-dialog.tsx",
+  "community": "features",
+  "references": [
+    "features/leads-page/components/lead-form-dialog.module.css"
+  ],
+  "referenced_by": [
+    "features/leads-page/index.tsx"
+  ]
+}

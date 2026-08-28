@@ -1,0 +1,11 @@
+{
+  "id": "features/members-page/components/members-table-skeleton.tsx",
+  "community": "features",
+  "references": [
+    "features/members-page/index.module.css",
+    "features/members-page/components/members-table-skeleton.module.css"
+  ],
+  "referenced_by": [
+    "features/members-page/index.tsx"
+  ]
+}

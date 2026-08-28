@@ -1,0 +1,8 @@
+{
+  "id": "features/leads-page/hooks/useLeads.ts",
+  "community": "features",
+  "references": [],
+  "referenced_by": [
+    "features/leads-page/index.tsx"
+  ]
+}

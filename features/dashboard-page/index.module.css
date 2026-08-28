@@ -16,7 +16,7 @@
 
 .onboarding {
   /* Container, not a control — capped radius, see DESIGN.md Shapes. */
-  @apply rounded-[min(var(--radius-lg),20px)] border border-border bg-card px-8 py-16 text-center;
+  @apply rounded-cap-lg-20 border border-border bg-card px-8 py-16 text-center;
 }
 
 .onboardingEyebrow {

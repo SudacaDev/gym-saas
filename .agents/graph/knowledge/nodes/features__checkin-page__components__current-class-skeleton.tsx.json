@@ -1,0 +1,11 @@
+{
+  "id": "features/checkin-page/components/current-class-skeleton.tsx",
+  "community": "features",
+  "references": [
+    "features/checkin-page/components/current-class-column.module.css",
+    "features/checkin-page/components/current-class-skeleton.module.css"
+  ],
+  "referenced_by": [
+    "features/checkin-page/components/current-class-column.tsx"
+  ]
+}

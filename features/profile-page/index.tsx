@@ -6,6 +6,7 @@ import { CATEGORY_LABELS } from "../staff-page/types";
 import { ProfileBusinessForm } from "./components/profile-business-form";
 import { ProfilePasswordForm } from "./components/profile-password-form";
 import { ProfileEmailForm } from "./components/profile-email-form";
+import { ProfileSkeleton } from "./components/profile-skeleton";
 import styles from "./index.module.css";
 import { useProfile } from "./hooks/useProfile";
 
@@ -22,7 +23,7 @@ export function ProfilePage() {
   const { profile, loading, error, setProfile } = useProfile();
 
   if (loading) {
-    return <p className={styles.loadingText}>Cargando...</p>;
+    return <ProfileSkeleton />;
   }
 
   if (error || !profile) {

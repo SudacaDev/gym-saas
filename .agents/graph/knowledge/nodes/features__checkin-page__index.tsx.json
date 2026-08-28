@@ -2,6 +2,11 @@
   "id": "features/checkin-page/index.tsx",
   "community": "features",
   "references": [
+    "features/checkin-page/lib/relative-time.ts",
+    "features/checkin-page/components/current-class-column.tsx",
+    "features/checkin-page/components/quick-sale-column.tsx",
+    "features/checkin-page/components/checkin-list-skeleton.tsx",
+    "features/checkin-page/components/instructor-attendance-dialog.tsx",
     "features/checkin-page/index.module.css",
     "features/checkin-page/hooks/useCheckin.ts"
   ],

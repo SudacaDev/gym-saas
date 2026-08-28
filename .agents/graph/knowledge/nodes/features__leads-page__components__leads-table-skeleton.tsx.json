@@ -1,0 +1,11 @@
+{
+  "id": "features/leads-page/components/leads-table-skeleton.tsx",
+  "community": "features",
+  "references": [
+    "features/leads-page/index.module.css",
+    "features/leads-page/components/leads-table-skeleton.module.css"
+  ],
+  "referenced_by": [
+    "features/leads-page/index.tsx"
+  ]
+}

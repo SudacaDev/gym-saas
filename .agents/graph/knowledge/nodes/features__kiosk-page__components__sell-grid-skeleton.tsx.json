@@ -1,0 +1,11 @@
+{
+  "id": "features/kiosk-page/components/sell-grid-skeleton.tsx",
+  "community": "features",
+  "references": [
+    "features/kiosk-page/index.module.css",
+    "features/kiosk-page/components/sell-grid-skeleton.module.css"
+  ],
+  "referenced_by": [
+    "features/kiosk-page/index.tsx"
+  ]
+}

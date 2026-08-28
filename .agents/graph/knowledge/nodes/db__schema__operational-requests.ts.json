@@ -1,0 +1,13 @@
+{
+  "id": "db/schema/operational-requests.ts",
+  "community": "db",
+  "references": [
+    "db/schema/tenants.ts",
+    "db/schema/users.ts",
+    "db/schema/enums.ts"
+  ],
+  "referenced_by": [
+    "db/schema/index.ts",
+    "db/schema/relations.ts"
+  ]
+}

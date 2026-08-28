@@ -1,0 +1,9 @@
+{
+  "id": "features/profile-page/index.module.css",
+  "community": "features",
+  "references": [],
+  "referenced_by": [
+    "features/profile-page/components/profile-skeleton.tsx",
+    "features/profile-page/index.tsx"
+  ]
+}

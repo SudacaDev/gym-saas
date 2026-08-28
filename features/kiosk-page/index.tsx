@@ -1,10 +1,21 @@
 "use client";
 
 import { useState } from "react";
+import { Loader2Icon, PencilIcon, Trash2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { CatalogTableSkeleton } from "./components/catalog-table-skeleton";
 import { ProductFormDialog } from "./components/product-form-dialog";
+import { SellGridSkeleton } from "./components/sell-grid-skeleton";
 import styles from "./index.module.css";
 import { useKiosk } from "./hooks/useKiosk";
 
@@ -24,6 +35,11 @@ interface KioskPageProps {
  * (decisión confirmada con el usuario). "Ventas de hoy" es dato de
  * facturación — mismo criterio que dashboard-page ocultándolo a staff — y
  * viene ya resuelto server-side vía la prop `role` (app/(owner)/kiosk/page.tsx).
+ *
+ * Split into "Vender" (big tap targets, front-of-house) vs. "Catálogo"
+ * (compact table, owner-only back-office CRUD) per the design critique
+ * (.impeccable/critique) — the two used to share one card with Vender next
+ * to Editar/Borrar at equal weight, a real mis-tap risk mid-rush.
  */
 export function KioskPage({ role }: KioskPageProps) {
   const isOwner = role === "owner";
@@ -32,6 +48,7 @@ export function KioskPage({ role }: KioskPageProps) {
     loading,
     error,
     sellingId,
+    deletingId,
     todayTotal,
     saleMessage,
     handleProductSaved,
@@ -61,99 +78,147 @@ export function KioskPage({ role }: KioskPageProps) {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <div>
-          <h1 className={styles.title}>Cobro rápido</h1>
+      <h1 className={styles.title}>Cobro rápido</h1>
+
+      {error && <p className={styles.errorText}>{error}</p>}
+      {saleMessage && !error && <p className={styles.successText}>{saleMessage}</p>}
+
+      <section className={styles.venderPanel}>
+        <div className={styles.panelHeader}>
+          <h2 className={styles.panelTitle}>Vender</h2>
           {isOwner && todayTotal !== null && (
             <p className={styles.todayTotal}>
               Ventas de hoy: {currencyFormatter.format(todayTotal)}
             </p>
           )}
         </div>
-        {isOwner && (
-          <ProductFormDialog trigger={<Button>Nuevo producto</Button>} onSaved={handleProductSaved} />
-        )}
-      </div>
 
-      {error && <p className={styles.errorText}>{error}</p>}
-      {saleMessage && !error && <p className={styles.successText}>{saleMessage}</p>}
-
-      <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Productos</h2>
         {loading ? (
-          <p className={styles.emptyText}>Cargando...</p>
+          <SellGridSkeleton />
         ) : products.length === 0 ? (
           <p className={styles.emptyText}>
             {isOwner ? "Todavía no cargaste productos." : "Todavía no hay productos cargados."}
           </p>
         ) : (
-          <div className={styles.grid}>
+          <div className={styles.sellGrid}>
             {products.map((product) => (
-              <div key={product.id} className={styles.card}>
-                <span className={styles.cardName}>{product.name}</span>
-                <span className={styles.cardPrice}>{currencyFormatter.format(Number(product.price))}</span>
-                <Button
-                  size="sm"
-                  disabled={sellingId === product.id}
-                  onClick={() => sellProduct(product)}
-                >
+              <button
+                key={product.id}
+                type="button"
+                className={styles.sellTile}
+                disabled={sellingId === product.id}
+                onClick={() => sellProduct(product)}
+              >
+                <span className={styles.sellTileName}>{product.name}</span>
+                <span className={styles.sellTilePrice}>
+                  {currencyFormatter.format(Number(product.price))}
+                </span>
+                <span className={styles.sellTileCta}>
                   {sellingId === product.id ? "Vendiendo..." : "Vender"}
-                </Button>
-                {isOwner && (
-                  <div className={styles.cardOwnerActions}>
-                    <ProductFormDialog
-                      product={product}
-                      trigger={
-                        <Button variant="outline" size="xs">
-                          Editar
-                        </Button>
-                      }
-                      onSaved={handleProductSaved}
-                    />
-                    <Button
-                      variant="destructive"
-                      size="xs"
-                      onClick={() => handleProductDelete(product)}
-                    >
-                      Borrar
-                    </Button>
-                  </div>
-                )}
-              </div>
+                </span>
+              </button>
             ))}
           </div>
         )}
-      </section>
 
-      <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Pase diario</h2>
-        <div className={styles.dayPassRow}>
-          <div className={styles.field}>
-            <Label htmlFor="day-pass-label">Nombre (opcional)</Label>
-            <Input
-              id="day-pass-label"
-              value={dayPassLabel}
-              onChange={(e) => setDayPassLabel(e.target.value)}
-            />
+        <div className={styles.dayPassCard}>
+          <h3 className={styles.dayPassTitle}>Pase diario</h3>
+          <div className={styles.dayPassRow}>
+            <div className={styles.field}>
+              <Label htmlFor="day-pass-label">Nombre (opcional)</Label>
+              <Input
+                id="day-pass-label"
+                value={dayPassLabel}
+                onChange={(e) => setDayPassLabel(e.target.value)}
+              />
+            </div>
+            <div className={styles.field}>
+              <Label htmlFor="day-pass-amount">Monto</Label>
+              <Input
+                id="day-pass-amount"
+                type="number"
+                step="0.01"
+                value={dayPassAmount}
+                onChange={(e) => setDayPassAmount(e.target.value)}
+              />
+            </div>
+            <Button
+              disabled={sellingDayPass || !dayPassAmount}
+              onClick={handleSellDayPass}
+            >
+              {sellingDayPass ? "Vendiendo..." : "Vender pase"}
+            </Button>
           </div>
-          <div className={styles.field}>
-            <Label htmlFor="day-pass-amount">Monto</Label>
-            <Input
-              id="day-pass-amount"
-              type="number"
-              step="0.01"
-              value={dayPassAmount}
-              onChange={(e) => setDayPassAmount(e.target.value)}
-            />
-          </div>
-          <Button
-            disabled={sellingDayPass || !dayPassAmount}
-            onClick={handleSellDayPass}
-          >
-            {sellingDayPass ? "Vendiendo..." : "Vender pase"}
-          </Button>
         </div>
       </section>
+
+      {isOwner && (
+        <section className={styles.catalogPanel}>
+          <div className={styles.catalogHeader}>
+            <h2 className={styles.catalogTitle}>Catálogo</h2>
+            <ProductFormDialog
+              trigger={
+                <Button variant="outline" size="sm">
+                  Nuevo producto
+                </Button>
+              }
+              onSaved={handleProductSaved}
+            />
+          </div>
+
+          {loading && <CatalogTableSkeleton />}
+
+          {!loading && products.length === 0 && (
+            <p className={styles.emptyText}>Agregá productos para que aparezcan en Vender.</p>
+          )}
+
+          {!loading && products.length > 0 && (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Nombre</TableHead>
+                  <TableHead>Precio</TableHead>
+                  <TableHead className={styles.actionsHead}>Acciones</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {products.map((product) => (
+                  <TableRow key={product.id}>
+                    <TableCell>{product.name}</TableCell>
+                    <TableCell>{currencyFormatter.format(Number(product.price))}</TableCell>
+                    <TableCell>
+                      <div className={styles.catalogActions}>
+                        <ProductFormDialog
+                          product={product}
+                          trigger={
+                            <Button variant="outline" size="icon-xs" aria-label={`Editar ${product.name}`}>
+                              <PencilIcon />
+                            </Button>
+                          }
+                          onSaved={handleProductSaved}
+                        />
+                        <Button
+                          variant="destructive"
+                          size="icon-xs"
+                          aria-label={`Borrar ${product.name}`}
+                          disabled={deletingId === product.id}
+                          onClick={() => handleProductDelete(product)}
+                        >
+                          {deletingId === product.id ? (
+                            <Loader2Icon className="animate-spin" />
+                          ) : (
+                            <Trash2Icon />
+                          )}
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
+        </section>
+      )}
     </div>
   );
 }

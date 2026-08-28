@@ -25,7 +25,7 @@
 }
 
 .card {
-  @apply flex flex-col items-start gap-2 rounded-[min(var(--radius-xl),20px)] border border-border bg-card p-3;
+  @apply flex flex-col items-start gap-2 rounded-cap-xl-20 border border-border bg-card p-3;
 }
 
 .cardName {

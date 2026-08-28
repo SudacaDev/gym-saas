@@ -3,6 +3,7 @@
   "community": "features",
   "references": [],
   "referenced_by": [
+    "features/members-page/components/members-table-skeleton.tsx",
     "features/members-page/index.tsx"
   ]
 }

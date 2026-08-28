@@ -1,0 +1,10 @@
+{
+  "id": "features/checkin-page/components/instructor-attendance-dialog.tsx",
+  "community": "features",
+  "references": [
+    "features/checkin-page/components/instructor-attendance-dialog.module.css"
+  ],
+  "referenced_by": [
+    "features/checkin-page/index.tsx"
+  ]
+}

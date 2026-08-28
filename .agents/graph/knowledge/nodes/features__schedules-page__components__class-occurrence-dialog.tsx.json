@@ -1,0 +1,13 @@
+{
+  "id": "features/schedules-page/components/class-occurrence-dialog.tsx",
+  "community": "features",
+  "references": [
+    "features/schedules-page/lib/day-labels.ts",
+    "features/schedules-page/types.ts",
+    "features/schedules-page/components/class-occurrence-skeleton.tsx",
+    "features/schedules-page/components/class-occurrence-dialog.module.css"
+  ],
+  "referenced_by": [
+    "features/schedules-page/components/schedule-table-view.tsx"
+  ]
+}

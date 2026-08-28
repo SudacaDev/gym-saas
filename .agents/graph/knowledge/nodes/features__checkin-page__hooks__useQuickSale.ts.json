@@ -1,0 +1,8 @@
+{
+  "id": "features/checkin-page/hooks/useQuickSale.ts",
+  "community": "features",
+  "references": [],
+  "referenced_by": [
+    "features/checkin-page/components/quick-sale-column.tsx"
+  ]
+}

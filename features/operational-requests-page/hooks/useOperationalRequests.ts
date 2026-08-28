@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { OperationalRequest } from "@/db/schema/operational-requests";
 
 // GET/POST both return this shape (app/api/v1/operational-requests/route.ts
@@ -10,11 +10,23 @@ export interface OperationalRequestRow extends OperationalRequest {
   reportedByLastName: string | null;
 }
 
+const STATUS_RANK: Record<OperationalRequest["status"], number> = {
+  open: 0,
+  resolved: 1,
+};
+
+function compareByUrgency(a: OperationalRequestRow, b: OperationalRequestRow): number {
+  const rankDiff = STATUS_RANK[a.status] - STATUS_RANK[b.status];
+  if (rankDiff !== 0) return rankDiff;
+  return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+}
+
 export function useOperationalRequests() {
   const [requests, setRequests] = useState<OperationalRequestRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [search, setSearch] = useState("");
 
   const loadRequests = useCallback(async () => {
     setLoading(true);
@@ -29,6 +41,21 @@ export function useOperationalRequests() {
   useEffect(() => {
     loadRequests();
   }, [loadRequests]);
+
+  const sortedRequests = useMemo(
+    () => [...requests].sort(compareByUrgency),
+    [requests],
+  );
+
+  const filteredRequests = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    if (!query) return sortedRequests;
+    return sortedRequests.filter((request) =>
+      `${request.description} ${request.reportedByFirstName ?? ""} ${request.reportedByLastName ?? ""}`
+        .toLowerCase()
+        .includes(query),
+    );
+  }, [sortedRequests, search]);
 
   function handleCreated(request: OperationalRequestRow) {
     setError(null);
@@ -62,9 +89,12 @@ export function useOperationalRequests() {
   }
 
   return {
-    requests,
+    requests: sortedRequests,
+    filteredRequests,
     loading,
     error,
+    search,
+    setSearch,
     updatingId,
     handleCreated,
     handleStatusChange,

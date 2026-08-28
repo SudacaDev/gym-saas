@@ -1,0 +1,21 @@
+@reference "../../../app/globals.css";
+
+.cell {
+  @apply h-4 w-24;
+}
+
+.noteCell {
+  @apply h-4 w-32;
+}
+
+.dateCell {
+  @apply h-4 w-16;
+}
+
+.pill {
+  @apply h-5 w-16 rounded-full;
+}
+
+.actionButton {
+  @apply h-7 w-20 rounded-lg;
+}

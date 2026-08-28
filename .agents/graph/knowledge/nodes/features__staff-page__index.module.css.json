@@ -3,6 +3,7 @@
   "community": "features",
   "references": [],
   "referenced_by": [
+    "features/staff-page/components/staff-table-skeleton.tsx",
     "features/staff-page/index.tsx"
   ]
 }

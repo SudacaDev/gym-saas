@@ -2,6 +2,7 @@
   "id": "features/schedules-page/components/schedule-form-dialog.tsx",
   "community": "features",
   "references": [
+    "features/schedules-page/hooks/useSchedules.ts",
     "features/schedules-page/lib/day-labels.ts",
     "features/schedules-page/components/schedule-form-dialog.module.css"
   ],

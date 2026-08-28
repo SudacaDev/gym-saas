@@ -1,0 +1,12 @@
+{
+  "id": "features/kiosk-page/index.tsx",
+  "community": "features",
+  "references": [
+    "features/kiosk-page/components/catalog-table-skeleton.tsx",
+    "features/kiosk-page/components/product-form-dialog.tsx",
+    "features/kiosk-page/components/sell-grid-skeleton.tsx",
+    "features/kiosk-page/index.module.css",
+    "features/kiosk-page/hooks/useKiosk.ts"
+  ],
+  "referenced_by": []
+}

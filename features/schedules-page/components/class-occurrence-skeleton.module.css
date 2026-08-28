@@ -1,0 +1,17 @@
+@reference "../../../app/globals.css";
+
+.name {
+  @apply h-4 w-28;
+}
+
+.actionButton {
+  @apply h-6 w-14 rounded-cap-md-10;
+}
+
+.pill {
+  @apply h-5 w-20 rounded-full;
+}
+
+.input {
+  @apply h-9 w-full rounded-cap-md-10;
+}

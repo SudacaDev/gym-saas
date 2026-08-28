@@ -4,13 +4,17 @@
   "references": [],
   "referenced_by": [
     "db/schema/checkins.ts",
+    "db/schema/class-reservations.ts",
     "db/schema/class-schedules.ts",
     "db/schema/email-send-log.ts",
     "db/schema/index.ts",
+    "db/schema/leads.ts",
     "db/schema/memberships.ts",
+    "db/schema/operational-requests.ts",
     "db/schema/payments.ts",
     "db/schema/plans.ts",
     "db/schema/staff-members.ts",
-    "db/schema/users.ts"
+    "db/schema/users.ts",
+    "db/schema/walk-in-sales.ts"
   ]
 }

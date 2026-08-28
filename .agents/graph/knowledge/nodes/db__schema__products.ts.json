@@ -1,0 +1,12 @@
+{
+  "id": "db/schema/products.ts",
+  "community": "db",
+  "references": [
+    "db/schema/tenants.ts"
+  ],
+  "referenced_by": [
+    "db/schema/index.ts",
+    "db/schema/relations.ts",
+    "db/schema/walk-in-sales.ts"
+  ]
+}

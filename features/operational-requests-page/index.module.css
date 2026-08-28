@@ -12,6 +12,10 @@
   @apply font-heading text-3xl uppercase tracking-tight;
 }
 
+.search {
+  @apply max-w-xs;
+}
+
 .errorText {
   @apply text-sm text-destructive;
 }

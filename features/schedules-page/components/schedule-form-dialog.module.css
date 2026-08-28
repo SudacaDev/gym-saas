@@ -30,3 +30,6 @@
 .dayChipSelected {
   @apply border-primary bg-primary text-primary-foreground hover:bg-primary-hover;
 }
+.selfInstructorNote {
+  @apply flex h-8 items-center rounded-full border border-border-subtle bg-muted px-2.5 text-sm text-muted-foreground;
+}

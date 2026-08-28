@@ -1,0 +1,11 @@
+{
+  "id": "features/schedules-page/components/class-occurrence-skeleton.tsx",
+  "community": "features",
+  "references": [
+    "features/schedules-page/components/class-occurrence-dialog.module.css",
+    "features/schedules-page/components/class-occurrence-skeleton.module.css"
+  ],
+  "referenced_by": [
+    "features/schedules-page/components/class-occurrence-dialog.tsx"
+  ]
+}

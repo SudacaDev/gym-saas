@@ -22,6 +22,46 @@
 
 ## Backlog del proyecto
 ### Tareas completadas (referenciar en `progress.md`)
+- [x] "Fichar profesor" desde /checkin: modal en el mostrador para que recepción registre la entrada/salida de un profesor
+    - id: T-20260827-008
+    - type: feature
+    - contexto: usuario preguntó "¿cómo le doy el checkin a un profesor?" — se le explicó que el fichaje de staff es automático al loguearse (T-20260826-007), salvo "Limpieza" que tiene un toggle manual en Equipo. Usuario respondió "habria que agregar un boton para que aparezca el modal y se pueda registrar el profesor" — el fichaje automático asume que cada persona loguea con su propia cuenta, pero `/checkin` es un dispositivo compartido de mostrador donde recepción es quien está logueada, no el profesor: su fichaje automático nunca dispara ahí.
+    - decisiones confirmadas con el usuario (`AskUserQuestion`): (1) el botón/modal va en `/checkin` (mostrador), no en Equipo. (2) alcance: solo Profesores, no todo el staff.
+    - implementado: `app/api/v1/staff/instructors/route.ts` extendido con `openAttendanceId` (mismo patrón de subquery correlacionada que `GET /api/v1/staff`, ver su docstring) — sin este dato el modal no podía saber si un profesor ya estaba fichado ni con qué id cerrar la salida. `features/checkin-page/components/instructor-attendance-dialog.tsx` + `.module.css` (nuevo) — reusa exactamente los mismos endpoints owner+staff (`POST`/`PATCH` de `app/api/v1/staff/[id]/attendance/**`) que ya usa el toggle de Limpieza en Equipo, sin backend nuevo más allá del campo agregado. Botón "Fichar profesor" agregado al header de `/checkin` (`features/checkin-page/index.tsx`, +`.header` en `index.module.css` — la página no tenía esa clase todavía, el `<h1>` estaba solo).
+    - path: `app/api/v1/staff/instructors/route.ts`, `features/checkin-page/components/instructor-attendance-dialog.tsx`, `features/checkin-page/components/instructor-attendance-dialog.module.css`, `features/checkin-page/index.tsx`, `features/checkin-page/index.module.css`.
+    - `tsc --noEmit`, `eslint features/checkin-page app/api/v1/staff/instructors`: limpios. Detector de `impeccable`: limpio (`[]`). `test:unit`: 49/49 verde — sin migración nueva (solo agrega una columna calculada al SELECT existente, ninguna tabla/columna nueva).
+    - **Gap conocido:** sin verificación visual en navegador (mismo gap estructural de siempre).
+    - severity_flag: `medium` (UI + campo agregado a un endpoint existente, sin schema nuevo — mismo criterio que T-20260827-006)
+    - depends_on: T-20260827-007 (completada, migración aplicada — el concepto "profesor" en `class_schedules` ya existía antes de esto, aunque esta tarea no lo usa directamente)
+- [x] Instructor por clase: el profesor carga/ve su horario y cuántos hay anotados
+    - id: T-20260827-007
+    - type: feature
+    - contexto: usuario preguntó "¿los profesores dónde cargan sus clases?" — se le explicó que hoy no existe ese concepto (confirmado leyendo `db/schema/class-schedules.ts`, decisión de v1 documentada ahí). Usuario pidió explícitamente: "el profesor si quiere ver su clase (que se la muestra la recepcionista) puede cargar su horario y ver cuantas personas hay anotadas en la clase."
+    - decisiones confirmadas con el usuario (`AskUserQuestion`): (1) el profesor se autoasigna al cargar su clase; owner/administrativo puede además asignar/reasignar a cualquier instructor. (2) para ver el cupo, alcanza con reusar el diálogo de reservas que ya existe (`ClassOccurrenceDialog`, T-011) — no hace falta pantalla nueva.
+    - **contexto cruzado con otra sesión:** T-20260827-006 (concurrente, mismo día) evaluó y descartó agregar esta misma columna para un pedido distinto ("qué profesor está activo" en `/checkin`) — no es contradictorio, son dos pedidos distintos del usuario resueltos cada uno según lo que pidió; detalle completo en el gate.
+    - implementado: `db/schema/class-schedules.ts` (+`instructorId`, nullable, FK a `staff_members`, `onDelete: set null`), `db/schema/relations.ts`, `lib/validations/schedule.schema.ts`, `lib/schedules/resolve-instructor-id.ts` (nuevo — fuerza autoasignación para `staffCategory: "instructor"`, respeta lo que mande el form para cualquier otro caller), `app/api/v1/schedules/route.ts`+`[id]/route.ts` (usan el resolver), `app/api/v1/staff/instructors/route.ts` (nuevo, picker mínimo `{id,firstName,lastName}`, deliberadamente más angosto que el roster owner-only de `GET /api/v1/staff`), `features/schedules-page/**` (picker de instructor en el form — reemplazado por nota estática "Vos" cuando el propio profesor mira —, filtro "Mis clases" en las 3 vistas, hook `useOwnStaffMember` nuevo reusando `GET /api/v1/staff/me`).
+    - **Migración aplicada y verificada contra la base real** (2026-08-27): `db/migrations/0017_stormy_felicia_hardy.sql` corrida vía `npm run db:migrate` — usuario reportó en vivo que `/schedules` había dejado de cargar por el mismatch schema/DB (exactamente lo que el gate anticipaba), aprobó de inmediato ("si lo apruebo"). Verificado con query directa a `information_schema.columns`: `class_schedules.instructor_id` (`uuid`, `nullable`) + FK `class_schedules_instructor_id_staff_members_id_fk` presentes.
+    - gate: `graph/gates/pending/T-20260827-007.md` — `high`/sync, **aprobado por SudacaDev el 2026-08-27**.
+    - `tsc`/`eslint`: limpios. Detector de `impeccable`: limpio. `test:unit`: **49/49 verde** (post-migración; antes de aplicar, `rls-policies.test.ts` fallaba exactamente por la columna faltante, confirmado como estado esperado, no regresión).
+    - **Gap conocido:** sin verificación visual en navegador (mismo gap estructural de siempre); el filtro "Mis clases" en Kanban/Calendario no tiene acceso directo al diálogo de reservas — solo la vista Tabla lo tiene (limitación preexistente de esas dos vistas, no algo que esta tarea haya introducido; el profesor cae en Tabla por default, que sí lo tiene).
+    - severity_flag: `high` (migración de schema contra la base real) — resuelta.
+    - depends_on: ninguna
+- [x] Critique + polish de diseño: Cobro rápido, Socios, Equipo, Prospectos, Necesidades
+    - id: T-20260827-001
+    - type: ui
+    - contexto: usuario compartió 5 capturas en vivo (Cobro rápido, Socios, Equipo) y dijo explícitamente "no me gusta el diseño en sí" / "¿entregarías un programa así?", comparando contra `/schedules` (Horarios), la única pantalla que sí le gusta. Confirmó `impeccable critique` + `polish` como método (`AskUserQuestion`).
+    - critique: doble sub-agente aislado (Assessment A diseño + Assessment B detector/browser-evidence, ambos bloqueados por falta de sesión autenticada). Score 19/40 (Poor). Persistido en `.impeccable/critique/2026-08-27T02-48-22Z__features-kiosk-page.md`. Usuario eligió alcance "las 5 pantallas" y prioridad "todo, en el orden del reporte".
+    - fixes aplicados en orden (secuencial, no en paralelo — varios tocaban los mismos archivos):
+      1. `components/ui/confirm-dialog.tsx` (nuevo, reutilizable) reemplaza `window.confirm()` en `useMembers.ts`/`useStaff.ts` ("Dar de baja") por el diálogo propio de la app.
+      2. Socios: `GET /api/v1/members` ahora joinea el estado de membresía (`getCurrentEffectiveStatus`/`getCurrentMembership` de `lib/memberships/status.ts`, mismo cálculo que el dashboard) — nueva columna Estado (`StatusPill`, alerta si vence ≤7 días) y orden por defecto por urgencia (`features/members-page/types.ts`).
+      3. Kiosco: separado en panel "Vender" (tiles grandes, todo el tile es el tap target, sin acciones de owner mezcladas) vs. panel "Catálogo" (owner-only, tabla compacta reutilizando `<Table>`) — atacaba el mis-tap Vender/Borrar que señaló el critique.
+      4. `components/ui/empty-state.tsx` (nuevo, reutilizable) aplicado en Socios/Equipo/Prospectos/Necesidades — Equipo conserva la distinción entre "sin datos" (EmptyState) y "sin resultados de búsqueda" (texto simple).
+      5. Búsqueda agregada a Socios (nombre/email/teléfono/código) y Necesidades (descripción/reportado por), reutilizando el patrón ya existente de Equipo; Prospectos ya tenía tabla y ahora suma búsqueda + orden por defecto "nuevo primero".
+      6. Polish: focus-visible en los tiles de Kiosco (faltaba, inconsistente con el resto de los controles), barrido final de `tsc`/`eslint`/`detect.mjs`/`vitest` (49/49) sobre todo lo tocado.
+    - path: `app/api/v1/members/route.ts`, `components/ui/confirm-dialog.tsx`, `components/ui/empty-state.tsx`, `features/{members,staff,leads,operational-requests,kiosk}-page/**`
+    - **Gap conocido:** sin verificación visual en navegador — mismo gap estructural de siempre (no hay sesión autenticada disponible para esta sesión de Claude); Assessment B del critique tampoco pudo entrar a ninguna de las 5 rutas por el mismo motivo.
+    - severity_flag: `medium` (cambios de UI/UX sobre pantallas ya en producción, sin tocar modelo de datos más allá de una lectura adicional en el GET de members)
+    - depends_on: ninguna
 - [x] Sidebar: agrupar los 10 ítems (todos bajo "Gestión") en 3 categorías — Gestión, User, Check & Payments
     - id: T-20260826-016
     - type: ui
@@ -35,10 +75,70 @@
     - depends_on: ninguna
 
 ### Tareas pendientes
+- [ ] Desde `/checkin`, el nombre de un socio lleva a su ficha (`/members/[memberId]`) — para poder agregar membresía sin salir del flujo de mostrador
+    - id: T-20260827-003
+    - type: ui
+    - contexto: usuario compartió una captura de `/checkin` funcionando (feed en vivo, clase actual, punto de venta — confirma que T-011/T-012/T-015 andan con datos reales) y pidió: "desde el nombre del socio podamos ir a su perfil y poder agregar una membresía".
+    - **verificado antes de registrar esto — no hace falta construir "agregar membresía" de nuevo:** `features/member-detail-page/components/membership-form-dialog.tsx` ya existe y ya lo permite; la ruta `/members/[memberId]` (`app/(owner)/members/[memberId]/page.tsx`) ya existe. El trabajo real de esta tarea es agregar la navegación (envolver el nombre en un `Link`), no la funcionalidad de membresía en sí.
+    - open_question (a resolver en el `#run`, no bloqueante): el nombre de un socio aparece en varios lugares de `/checkin` — feed "Actividad de hoy", la lista de check-in/check-out con buscador, y dentro de "Clase actual" (Reservados/Agregar reserva/Lista de espera/Historial). Default razonable: enlazar el nombre en los 3 lugares por consistencia, salvo que alguno tenga una razón concreta para no serlo (ej. la fila de "Agregar reserva" ya tiene el foco en el botón "Reservar" — un link ahí podría competir visualmente, evaluarlo al implementar).
+    - severity_flag: `medium` (UI pura, navegación — no toca modelo de datos)
+    - depends_on: ninguna
+
+- [ ] `/checkin`: mostrar qué profesor está activo en el gimnasio + reloj grande con la hora actual, lado derecho
+    - id: T-20260827-006
+    - type: feature
+    - contexto: usuario compartió una captura de `/checkin` (feed + "Clase actual: Indoor Cycling" + punto de venta), pidió: (1) mostrar qué profesor está activo en ese gym, (2) poner la hora actual "grande" en el lado derecho.
+    - **eje 1 — profesor activo, alcance confirmado con el usuario (`AskUserQuestion`, 2026-08-27):** "instructores fichados ahora, sin vínculo a la clase" — NO "quién da esta clase específica" (eso hubiera requerido agregar una columna de instructor a `class_schedules`, que hoy no existe — confirmado leyendo `db/schema/class-schedules.ts`, descartado explícitamente). Alcance real: listar instructores (`staffCategory === "instructor"`) con fichaje abierto ahora mismo (`staff_attendance`, fichaje automático por login/logout de T-20260826-007). `GET /api/v1/staff` ya devuelve `openAttendanceId` por staff member (T-20260825-005) pero es **owner-only** — `/checkin` lo usan owner+staff, así que hace falta un endpoint nuevo (o extender uno accesible a ambos) que exponga solo lo mínimo (nombre + fichado sí/no), no el roster completo con datos sensibles.
+    - **eje 2 — reloj grande, lado derecho:** UI pura. Ubicación exacta a confirmar al implementar (candidatos: header de la página junto a "CHECK-IN", o arriba de la columna "Punto de venta rápido" que hoy queda con espacio vacío debajo de los productos). Nota técnica: todo el resto de "ahora" en esta pantalla (`current-class.ts`) se calcula UNA VEZ por montaje, a propósito (T-20260826-015, sin polling). Un reloj visible que no avanza se notaría como roto — este sí necesita un `setInterval`/tick real (cada segundo o minuto), primer caso de este patrón en el proyecto.
+    - severity_flag: `medium` (UI + un endpoint nuevo de lectura, sin schema nuevo)
+    - depends_on: ninguna
+
+- [ ] Mostrar el `checkinCode` (6 dígitos) en la ficha del socio — hoy el self check-in de `/checkin` exige ese código pero no se muestra en ningún lugar de la UI
+    - id: T-20260827-009
+    - type: bug
+    - contexto: usuario preguntó qué hace el input "Código de 6 dígitos del socio" en `/checkin` (self check-in, `handleSelfCheckin` → `POST /api/v1/checkins/self`). Al explicarlo, señaló "el input solo recibe numeros, esta mal ese input" — se verificó que el filtro a solo-dígitos es correcto (`lib/members/generate-checkin-code.ts` genera `checkinCode` puramente numérico, campo `members_tenant_id_checkin_code_unique`, distinto de `shortCode` alfanumérico por decisión explícita de T-20260825-004). El problema real encontrado: `checkinCode` no se renderiza en ningún componente de la app (grep sobre `features/**` solo encuentra `shortCode` en `members-page`, `member-detail-page`, `checkin-page` — nunca `checkinCode`) — nadie (ni recepción ni el socio) puede ver el código que el self check-in les pide tipear.
+    - decisión confirmada con el usuario (`AskUserQuestion`): mostrar `checkinCode` en `features/member-detail-page/index.tsx`, junto al `shortCode` ya visible ahí.
+    - severity_flag: `medium` (`edit_non_prod_file`, UI pura — agrega un campo ya existente en `Member`/API al render, sin tocar schema ni endpoints)
+    - depends_on: ninguna
 
 ### Tareas en curso
 
 ### Tareas completadas (referenciar en `progress.md`)
+- [x] Bug de build: `rounded-[min(var(--radius-X),Ypx)]` roto cada vez que el editor reformatea el CSS — reemplazado por tokens `rounded-cap-*` de un solo token, sin coma
+    - id: T-20260827-005
+    - type: bugfix
+    - contexto: usuario reportó `Syntax error: tailwindcss: Cannot apply unknown utility class` en `schedules-page/index.module.css` **tres veces seguidas** — cada vez que el archivo se guardaba en su editor, algo (probablemente el formateador CSS por defecto de VS Code al guardar; no hay Prettier de proyecto ni `.vscode/settings.json` que lo cause) le agregaba un espacio después de la coma dentro de `min(var(--radius-xl), 20px)`. Los corchetes de valor arbitrario de Tailwind no toleran un espacio crudo — el espacio corta el token de clase justo ahí, produciendo exactamente el error reportado. Confirmado con `AskUserQuestion` que el usuario prefería el fix de raíz en código antes que una config de editor (que solo protege su máquina).
+    - alcance: 22 archivos con el patrón `rounded-[min(var(--radius-X),Ypx)]` (o `rounded-b-[...]`) en todo el proyecto — no solo `schedules-page`, todos usaban la misma sintaxis frágil.
+    - description: agregados 6 tokens nuevos a `app/globals.css` (`@theme inline`): `--radius-cap-md-10`, `--radius-cap-md-12`, `--radius-cap-lg-12`, `--radius-cap-lg-16`, `--radius-cap-lg-20`, `--radius-cap-xl-20` — cada uno pre-resuelve exactamente el mismo `min(var(--radius-X),Ypx)` que reemplaza (mismo base token + mismo cap px que tenía cada archivo, sin consolidar combinaciones distintas aunque hoy den el mismo resultado numérico bajo `--radius:9999px`, para no cambiar semántica futura si `--radius` alguna vez deja de ser pill). Dentro de una declaración de propiedad CSS normal, un espacio después de la coma en `min(a, b)` es sintaxis válida y nunca se rompe — el bug era específico de los corchetes de Tailwind, no de `min()` en sí. Tailwind v4 genera automáticamente la clase `rounded-cap-{base}-{px}` (+ variantes direccionales `rounded-t-`/`rounded-b-`/etc.) a partir de cada token, mismo mecanismo que ya usa `rounded-lg`/`rounded-xl`. Reemplazo mecánico (`sed`) de `rounded(-[tblr]{1,2})?-\[min\(var\(--radius-X\), ?Ypx\)\]` → `rounded\1-cap-X-Y` en los 22 archivos — ningún cambio de comportamiento, solo de sintaxis. `DESIGN.md` (sección Shapes) actualizado documentando la convención nueva y por qué existe, para que nadie vuelva a escribir la forma con corchetes.
+    - path: `app/globals.css`, `DESIGN.md`, + 22 archivos (`components/ui/{table,select,dialog,button,empty-state.module}.{tsx,css}`, y `.module.css` de `schedules-page` (+3 componentes), `checkin-page` (+2 componentes), `kiosk-page` (+1), `members-page`/`staff-page` (skeletons), `operational-requests-page`, `plans-page`, `dashboard-page`, `home-page`).
+    - verificación: `npx tsc --noEmit` limpio; `npx eslint .` limpio; **`npm run build` limpio de punta a punta** (36/36 rutas generadas, sin el error de Tailwind) — confirmado además leyendo el CSS compilado: `.rounded-cap-xl-20{border-radius:min(var(--radius-xl),20px)}`, mismo valor final que antes; `npm run test:unit` **34/34 verde**.
+    - **Gap conocido:** no se investigó ni se cambió la configuración del editor del usuario que causaba el reformateo — el fix elimina la clase de bug (ningún formateador puede romper un identificador de clase sin comas), pero si el editor sigue reformateando el archivo, cualquier `rounded-[...]` NUEVO que alguien escriba a mano (en vez de usar un token `rounded-cap-*` existente o agregar uno nuevo) seguiría siendo vulnerable — mitigado por la nota explícita en `DESIGN.md`, no por una regla técnica que lo impida.
+    - severity_flag: `medium` (bugfix de build/CSS puro, reversible, sin tocar datos ni lógica — pero rompía el build repetidamente, alta prioridad práctica)
+    - depends_on: ninguna
+
+- [x] Horarios (vista Tabla): botones "Editar"/"Borrar" de texto a solo-ícono, mismo funcionamiento
+    - id: T-20260827-004
+    - type: ui
+    - contexto: pedido del usuario, 2026-08-27 — mismo criterio ya aplicado hoy en el catálogo de `/kiosk` (T-20260827-002).
+    - path: `features/schedules-page/components/schedule-table-view.tsx`, `features/schedules-page/index.module.css` (+`.slotActionIcon`, `size-3.5`).
+    - description: "Editar" → `PencilIcon`; "Borrar" → `Trash2Icon`, reemplazado por `Loader2Icon` con `animate-spin` mientras `deletingId === schedule.id` (preserva el feedback "Borrando..." que ya existía, ahora como spinner en vez de texto — mismo patrón que el botón Borrar de `/kiosk`). Ambos con `aria-label` nuevo (antes el texto visible cumplía ese rol). Se mantuvieron los `<button>` planos con las clases `.slotAction*` existentes (no se migró a `Button`/`icon-xs` — el estilo ya es un link-button minimalista de 11px consistente con "Reservas", migrar a `Button` hubiera roto esa consistencia visual dentro del mismo slot). "Reservas" queda como texto — no estaba en el pedido.
+    - `tsc --noEmit`, `eslint features/schedules-page`: limpios.
+    - **No aplicado a `schedule-kanban-view.tsx`** (mismo par Editar/Borrar en texto ahí) — el usuario pidió específicamente "la tabla", se dejó fuera de esta pasada, señalado en el chat.
+    - severity_flag: `medium` (UI pura, mismo funcionamiento — no toca modelo de datos)
+    - depends_on: ninguna
+- [x] Feedback real de carga: loaders/estado pendiente en botones de acción + reemplazar todo "Cargando..." plano por skeletons que repliquen la estructura del componente/página
+    - id: T-20260827-002
+    - type: ui
+    - contexto: feedback del usuario, 2026-08-27, tras probar "Clase actual"/"Agregar reserva" en `/checkin`: "en los botones no tiene una interacción... que muestre un loader o un cargando en el texto, ya que una vez que se hace algo hay que esperar que cambie directamente todo" — más el pedido explícito de reemplazar todo "Cargando..." por skeleton.
+    - ejecutada vía 4 subagentes `frontend-developer` en paralelo, sobre carpetas disjuntas (`#run T-20260827-002`, 2026-08-27): (1) `schedules-page`, (2) `checkin-page`, (3) `members-page`+`staff-page`+`member-detail-page`, (4) `leads-page`+`operational-requests-page`+`kiosk-page`+`profile-page`. Cada uno releyó el estado actual de sus archivos antes de tocar nada — otra sesión había corrido un `critique`+`polish` de diseño horas antes sobre varias de estas mismas carpetas (ver T-20260827-001), así que no se podía asumir el código descripto en tareas viejas.
+    - **Eje 1 — Skeleton estructural** (reemplaza "Cargando..." plano, mismo patrón que `member-detail-skeleton.tsx`/`plan-card-skeleton.tsx` de T-20260826-004/005: reusar componentes/clases reales de layout, `<Skeleton>` solo donde depende de datos): 10 skeletons nuevos — `schedule-table-skeleton.tsx`, `class-occurrence-skeleton.tsx`, `checkin-list-skeleton.tsx`, `current-class-skeleton.tsx`, `quick-sale-skeleton.tsx`, `members-table-skeleton.tsx`, `staff-table-skeleton.tsx` (+ `AttendanceHistorySkeleton` local en `staff-attendance-dialog.tsx`), `leads-table-skeleton.tsx`, `operational-requests-table-skeleton.tsx`, `sell-grid-skeleton.tsx` + `catalog-table-skeleton.tsx` (kiosk), `profile-skeleton.tsx`. `dashboard-page` no tiene loading client-side (datos server-side) — no aplicaba. `member-detail-page` ya tenía skeleton propio (T-004), confirmado sin gaps nuevos.
+    - **Eje 2 — Feedback de pendiente en botones de acción** (deshabilitar + cambiar texto/ícono mientras la request está en vuelo — los "Guardar" de diálogos de formulario ya tenían `isSubmitting`/"Guardando..." en toda la app, fuera de alcance): agregado a Presente/Ausente/Cancelar/Reservar (schedules + checkin), Borrar de horarios (tabla y kanban), Fichar entrada/salida (staff), Reactivar/Pausar/Cancelar membresía (member-detail, hallazgo propio no listado explícitamente), Convertido/Perdido (leads), toggle abierto/resuelto (necesidades), Borrar producto de catálogo (kiosk — ícono-only, usa `Loader2Icon` girando en vez de texto porque el botón no tiene texto que cambiar).
+    - path: ver los 4 gates listados abajo para el detalle completo de archivos por lote.
+    - `tsc --noEmit`, `eslint .` (repo completo, corrida final consolidando los 4 lotes): limpios. Detector de `impeccable` sobre las 4 áreas: limpio, sin hallazgos nuevos (1 advisory preexistente no relacionado en `schedule-calendar-view.module.css`, ya documentado en sesiones previas). `test:unit`: **34/34 verde** en la corrida final consolidada, sin las fallas ambientales de pool de Postgres que documentaron sesiones anteriores.
+    - gates: `graph/gates/pending/T-20260827-002-schedules.md`, `T-20260827-002-checkin.md`, `T-20260827-002-members-staff.md`, `T-20260827-002-leads-requests-kiosk-profile.md` — los 4 `medium`/async, sin aprobar todavía (no bloqueante).
+    - **Gaps conocidos:** sin verificación visual en navegador (mismo gap estructural de siempre); `profile-skeleton.tsx` no cubre la sección "Clases"/certificaciones de instructor (no se conoce `staffCategory` durante el loading); grafo (`knowledge/`) sin reindexar tras ~20 archivos nuevos/tocados.
+    - depends_on: ninguna
+
 - [x] Rediseño de la pantalla de Check-in a 3 columnas (feed en vivo + clase actual con lista de espera + punto de venta rápido), con el sistema de diseño propio de BoxFlow
     - id: T-20260826-015
     - type: ui

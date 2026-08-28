@@ -1,0 +1,9 @@
+{
+  "id": "features/leads-page/index.module.css",
+  "community": "features",
+  "references": [],
+  "referenced_by": [
+    "features/leads-page/components/leads-table-skeleton.tsx",
+    "features/leads-page/index.tsx"
+  ]
+}

@@ -1,0 +1,33 @@
+@reference "../../../app/globals.css";
+
+.errorText {
+  @apply text-sm text-destructive;
+}
+
+.emptyText {
+  @apply text-sm text-muted-foreground;
+}
+
+.list {
+  @apply divide-y divide-border-subtle overflow-hidden rounded-cap-lg-16 border border-border;
+}
+
+.row {
+  @apply flex flex-wrap items-center justify-between gap-3 bg-card px-3 py-3;
+}
+
+.instructorInfo {
+  @apply flex flex-wrap items-center gap-2;
+}
+
+.name {
+  @apply text-sm font-semibold;
+}
+
+.skeletonName {
+  @apply h-4 w-32;
+}
+
+.skeletonButton {
+  @apply h-7 w-24 rounded-full;
+}

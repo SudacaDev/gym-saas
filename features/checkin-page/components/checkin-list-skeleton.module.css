@@ -1,0 +1,17 @@
+@reference "../../../app/globals.css";
+
+.name {
+  @apply h-5 w-32;
+}
+
+.code {
+  @apply h-3 w-14;
+}
+
+.pill {
+  @apply h-5 w-16 rounded-full;
+}
+
+.button {
+  @apply h-9 w-24 rounded-lg;
+}

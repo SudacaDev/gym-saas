@@ -1,0 +1,11 @@
+{
+  "id": "features/profile-page/components/profile-business-form.tsx",
+  "community": "features",
+  "references": [
+    "features/profile-page/types.ts",
+    "features/profile-page/components/profile-business-form.module.css"
+  ],
+  "referenced_by": [
+    "features/profile-page/index.tsx"
+  ]
+}

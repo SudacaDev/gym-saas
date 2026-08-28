@@ -58,6 +58,22 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  /* Capped radius for multi-row/multi-cell containers (see DESIGN.md
+     Shapes) — pre-resolved `min(var(--radius-X),Ypx)` combos as single
+     theme tokens instead of Tailwind arbitrary-value brackets. The bracket
+     form (`rounded-[min(var(--radius-xl),20px)]`) kept breaking builds
+     because any CSS formatter that adds a space after the comma inside
+     `min(...)` produces an unparseable Tailwind class — brackets can't
+     contain a raw space. A single token (`rounded-cap-xl-20`) can't be
+     reformatted into something broken. Named `-{base}-{px}` after the
+     token/cap pair each replaces — add a new one here rather than
+     reaching for the bracket form again if a new combo is needed. */
+  --radius-cap-md-10: min(var(--radius-md), 10px);
+  --radius-cap-md-12: min(var(--radius-md), 12px);
+  --radius-cap-lg-12: min(var(--radius-lg), 12px);
+  --radius-cap-lg-16: min(var(--radius-lg), 16px);
+  --radius-cap-lg-20: min(var(--radius-lg), 20px);
+  --radius-cap-xl-20: min(var(--radius-xl), 20px);
 }
 
 /*

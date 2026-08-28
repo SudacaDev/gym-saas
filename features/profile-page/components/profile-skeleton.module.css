@@ -1,0 +1,17 @@
+@reference "../../../app/globals.css";
+
+.subtitle {
+  @apply mt-1 h-4 w-48;
+}
+
+.input {
+  @apply h-9 w-full;
+}
+
+.currentEmail {
+  @apply h-4 w-40;
+}
+
+.button {
+  @apply h-7 w-28 rounded-lg;
+}

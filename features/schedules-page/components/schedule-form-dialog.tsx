@@ -10,6 +10,7 @@ import {
 } from "@/lib/validations/schedule.schema";
 import type { ClassSchedule } from "@/db/schema/class-schedules";
 import type { Activity } from "@/db/schema/activities";
+import type { InstructorOption } from "../hooks/useSchedules";
 import { Button } from "@/components/ui/button";
 import { FieldError } from "@/components/ui/field-error";
 import { Input } from "@/components/ui/input";
@@ -38,6 +39,11 @@ import styles from "./schedule-form-dialog.module.css";
 type DayOfWeek = ScheduleInput["dayOfWeek"];
 
 const NEW_ACTIVITY_VALUE = "__new__";
+const NO_INSTRUCTOR_VALUE = "__none__";
+
+function instructorLabel(instructor: InstructorOption): string {
+  return [instructor.firstName, instructor.lastName].filter(Boolean).join(" ") || "(sin nombre)";
+}
 
 /** Prefill for create mode when opened from an empty grid slot (T-20260825-007) — day/time only, never an activity (that's still a deliberate pick). */
 export interface ScheduleInitialValues {
@@ -49,6 +55,7 @@ export interface ScheduleInitialValues {
 function defaultsFor(
   schedule?: ClassSchedule,
   initialValues?: ScheduleInitialValues,
+  selfInstructorId?: string,
 ): ScheduleInput {
   if (schedule) {
     return {
@@ -57,6 +64,7 @@ function defaultsFor(
       endTime: schedule.endTime.slice(0, 5),
       activityId: schedule.activityId,
       capacity: schedule.capacity ?? undefined,
+      instructorId: schedule.instructorId ?? undefined,
     };
   }
   if (initialValues) {
@@ -66,9 +74,17 @@ function defaultsFor(
       endTime: initialValues.endTime,
       activityId: "",
       capacity: undefined,
+      instructorId: selfInstructorId,
     };
   }
-  return { dayOfWeek: "monday", startTime: "", endTime: "", activityId: "", capacity: undefined };
+  return {
+    dayOfWeek: "monday",
+    startTime: "",
+    endTime: "",
+    activityId: "",
+    capacity: undefined,
+    instructorId: selfInstructorId,
+  };
 }
 
 interface ScheduleFormDialogProps {
@@ -84,6 +100,15 @@ interface ScheduleFormDialogProps {
   initialValues?: ScheduleInitialValues;
   /** Tenant's activity catalog, for the picker. */
   activities: Activity[];
+  /** Instructor picker options — see GET /api/v1/staff/instructors. */
+  instructors: InstructorOption[];
+  /**
+   * Present only when the viewer is themselves a profesor (T-20260827-007):
+   * the API always self-assigns their writes regardless of what this form
+   * sends, so showing them a picker they could "change" would be
+   * misleading — this renders a static "vos" note instead.
+   */
+  selfInstructor?: { id: string; name: string };
   onSaved: (schedule: ClassSchedule) => void;
   /**
    * Called when editing removes the slot's original day (the row is
@@ -108,6 +133,8 @@ export function ScheduleFormDialog({
   schedule,
   initialValues,
   activities,
+  instructors,
+  selfInstructor,
   onSaved,
   onRemoved,
   onActivityCreated,
@@ -131,7 +158,7 @@ export function ScheduleFormDialog({
     formState: { errors, isSubmitting },
   } = useForm<ScheduleInput, unknown, ScheduleOutput>({
     resolver: zodResolver(scheduleSchema),
-    defaultValues: defaultsFor(schedule, initialValues),
+    defaultValues: defaultsFor(schedule, initialValues, selfInstructor?.id),
   });
 
   function handleOpenChange(next: boolean) {
@@ -143,7 +170,7 @@ export function ScheduleFormDialog({
       );
       setIsAddingActivity(false);
       setNewActivityName("");
-      reset(defaultsFor(schedule, initialValues));
+      reset(defaultsFor(schedule, initialValues, selfInstructor?.id));
     }
   }
 
@@ -414,6 +441,49 @@ export function ScheduleFormDialog({
               {...register("capacity")}
             />
             <FieldError id="schedule-capacity-error" message={errors.capacity?.message} />
+          </div>
+          <div className={styles.field}>
+            <Label htmlFor="schedule-instructor">Instructor (opcional)</Label>
+            {selfInstructor ? (
+              <p className={styles.selfInstructorNote}>Vos ({selfInstructor.name})</p>
+            ) : (
+              <Controller
+                control={control}
+                name="instructorId"
+                render={({ field }) => (
+                  <Select
+                    value={field.value ?? NO_INSTRUCTOR_VALUE}
+                    onValueChange={(value) =>
+                      field.onChange(value === NO_INSTRUCTOR_VALUE ? null : value)
+                    }
+                  >
+                    <SelectTrigger id="schedule-instructor">
+                      <SelectValue placeholder="Sin instructor asignado">
+                        {(value: string | null) =>
+                          value && value !== NO_INSTRUCTOR_VALUE
+                            ? (instructorLabel(
+                                instructors.find((i) => i.id === value) ?? {
+                                  id: value,
+                                  firstName: null,
+                                  lastName: null,
+                                },
+                              ))
+                            : "Sin instructor asignado"
+                        }
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value={NO_INSTRUCTOR_VALUE}>Sin instructor asignado</SelectItem>
+                      {instructors.map((instructor) => (
+                        <SelectItem key={instructor.id} value={instructor.id}>
+                          {instructorLabel(instructor)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+            )}
           </div>
           {formError && (
             <p role="alert" className={styles.errorText}>

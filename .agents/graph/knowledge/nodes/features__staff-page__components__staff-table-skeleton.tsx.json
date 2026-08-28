@@ -1,0 +1,11 @@
+{
+  "id": "features/staff-page/components/staff-table-skeleton.tsx",
+  "community": "features",
+  "references": [
+    "features/staff-page/index.module.css",
+    "features/staff-page/components/staff-table-skeleton.module.css"
+  ],
+  "referenced_by": [
+    "features/staff-page/index.tsx"
+  ]
+}

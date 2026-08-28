@@ -1,16 +1,10 @@
 @reference "../../app/globals.css";
 
 .container {
-  @apply space-y-8;
-}
-.header {
-  @apply flex items-center justify-between;
+  @apply space-y-6;
 }
 .title {
   @apply font-heading text-3xl uppercase tracking-tight;
-}
-.todayTotal {
-  @apply mt-1 text-sm font-bold text-muted-foreground;
 }
 .errorText {
   @apply text-sm text-destructive;
@@ -18,33 +12,77 @@
 .successText {
   @apply text-sm text-status-success-fg;
 }
-.section {
-  @apply space-y-3;
-}
-.sectionTitle {
-  @apply text-xs font-bold tracking-widest text-muted-foreground uppercase;
-}
 .emptyText {
   @apply text-sm text-muted-foreground;
 }
-.grid {
-  @apply grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4;
+
+/* "Vender" — the primary, front-of-house panel. Charcoal Panel background
+   (bg-card) makes it read as one grouped surface instead of bare sections
+   floating on the page background, per DESIGN.md's Cards/Containers spec. */
+.venderPanel {
+  @apply space-y-5 rounded-cap-xl-20 border border-border bg-card p-5 sm:p-6;
 }
-.card {
-  @apply flex flex-col items-start gap-2 rounded-[min(var(--radius-xl),20px)] border border-border bg-card p-4;
+.panelHeader {
+  @apply flex flex-wrap items-start justify-between gap-2;
 }
-.cardName {
+.panelTitle {
+  @apply font-heading text-xl uppercase tracking-tight;
+}
+.todayTotal {
+  @apply text-sm font-bold text-muted-foreground;
+}
+
+.sellGrid {
+  @apply grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3;
+}
+
+/* The whole tile is the tap target — no separate small "Vender" button
+   competing with Editar/Borrar at the same weight (that was the P1 finding:
+   a fast tap mid-rush could land on the wrong control). Catalog management
+   lives in its own quieter panel below instead. Soot background
+   (bg-secondary) sits one tonal step above the panel's Charcoal Panel, same
+   background->panel->tile layering DESIGN.md uses for depth. */
+.sellTile {
+  @apply flex w-full flex-col items-start gap-2 rounded-cap-lg-16 border border-border-subtle bg-secondary p-5 text-left outline-none transition-all hover:border-primary/50 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:translate-y-px disabled:pointer-events-none disabled:opacity-50;
+}
+.sellTileName {
   @apply font-heading text-base uppercase tracking-tight;
 }
-.cardPrice {
-  @apply font-heading text-2xl leading-none tracking-tight;
+.sellTilePrice {
+  @apply font-heading text-3xl leading-none tracking-tight;
 }
-.cardOwnerActions {
-  @apply flex gap-2;
+.sellTileCta {
+  @apply mt-1 inline-flex items-center justify-center self-stretch rounded-full bg-primary px-3 py-1.5 text-xs font-bold tracking-wide text-primary-foreground uppercase;
+}
+
+.dayPassCard {
+  @apply space-y-3 rounded-cap-lg-16 border border-border-subtle bg-secondary p-4;
+}
+.dayPassTitle {
+  @apply text-xs font-bold tracking-widest text-muted-foreground uppercase;
 }
 .dayPassRow {
   @apply flex flex-wrap items-end gap-3;
 }
 .field {
   @apply w-48 space-y-1;
+}
+
+/* "Catálogo" — deliberately quiet: no panel background, a compact Table
+   (the same one Socios/Equipo use) instead of the big Vender tiles, so
+   back-office CRUD reads as secondary to the counter-speed action above. */
+.catalogPanel {
+  @apply space-y-3;
+}
+.catalogHeader {
+  @apply flex items-center justify-between;
+}
+.catalogTitle {
+  @apply text-xs font-bold tracking-widest text-muted-foreground uppercase;
+}
+.actionsHead {
+  @apply text-right;
+}
+.catalogActions {
+  @apply flex justify-end gap-2;
 }

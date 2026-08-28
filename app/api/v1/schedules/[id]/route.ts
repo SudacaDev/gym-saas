@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { getTenantContext } from "@/lib/auth/get-tenant-context";
 import { requireRole } from "@/lib/auth/require-role";
+import { resolveInstructorId } from "@/lib/schedules/resolve-instructor-id";
 import { withTenantContext } from "@/db/rls-context";
 import { schema } from "@/db/client";
 import type { NewClassSchedule } from "@/db/schema/class-schedules";
@@ -34,6 +35,9 @@ export async function PATCH(request: Request, { params }: RouteParams) {
     if (parsed.data.activityId !== undefined)
       updates.activityId = parsed.data.activityId;
     if (parsed.data.capacity !== undefined) updates.capacity = parsed.data.capacity ?? null;
+
+    const instructorResolution = await resolveInstructorId(context, parsed.data.instructorId);
+    if (instructorResolution.shouldSet) updates.instructorId = instructorResolution.value;
 
     const [classSchedule] = await withTenantContext(
       context.tenantId,

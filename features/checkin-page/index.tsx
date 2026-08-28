@@ -11,6 +11,8 @@ import { cn } from "@/lib/utils";
 import { relativeTime } from "./lib/relative-time";
 import { CurrentClassColumn } from "./components/current-class-column";
 import { QuickSaleColumn } from "./components/quick-sale-column";
+import { CheckinListSkeleton } from "./components/checkin-list-skeleton";
+import { InstructorAttendanceDialog } from "./components/instructor-attendance-dialog";
 import styles from "./index.module.css";
 import { useCheckin, type CheckinResult } from "./hooks/useCheckin";
 
@@ -69,7 +71,16 @@ export function CheckinPage() {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Check-in</h1>
+      <div className={styles.header}>
+        <h1 className={styles.title}>Check-in</h1>
+        <InstructorAttendanceDialog
+          trigger={
+            <Button variant="outline" size="sm">
+              Fichar profesor
+            </Button>
+          }
+        />
+      </div>
 
       {result && (
         <div
@@ -126,7 +137,7 @@ export function CheckinPage() {
           {loadError && <p className={styles.errorText}>{loadError}</p>}
 
           {loading ? (
-            <p className={styles.emptyText}>Cargando...</p>
+            <CheckinListSkeleton />
           ) : filtered.length === 0 ? (
             <p className={styles.emptyText}>
               {members.length === 0 ? "Todavía no hay socios." : "Sin resultados."}
@@ -139,30 +150,41 @@ export function CheckinPage() {
                 return (
                   <li key={member.id} className={styles.listItem}>
                     <div className={styles.memberInfo}>
-                      <span className={styles.memberName}>
-                        {member.firstName} {member.lastName}
-                      </span>
-                      <span className={styles.memberShortCode}>{member.shortCode}</span>
-                      <StatusPill tone={MEMBERSHIP_STATUS_TONES[status]}>
-                        {MEMBERSHIP_STATUS_LABELS[status]}
-                      </StatusPill>
-                      {open && (
-                        <StatusPill tone="info">
-                          En el gym · {timeFormatter.format(new Date(open.timestamp))}
-                        </StatusPill>
-                      )}
+                      <div className="flex items-center gap-2">
+                        <span className={styles.memberName}>
+                          {member.firstName} {member.lastName}
+                        </span>
+                        <span className={styles.memberShortCode}>{member.shortCode}</span>
+                      </div>
+                      <div className="flex items-center justify-between gap-2 w-full">
+
+                        <div className="flex items-center">
+
+                          <StatusPill tone={MEMBERSHIP_STATUS_TONES[status]}>
+                            {MEMBERSHIP_STATUS_LABELS[status]}
+                          </StatusPill>
+                          {open && (
+                            <StatusPill tone="info">
+                              En el gym · {timeFormatter.format(new Date(open.timestamp))}
+                            </StatusPill>
+                          )}
+                        </div>
+                        <Button
+                          variant={open ? "secondary" : status === "active" ? "default" : "outline"}
+                          disabled={pendingId === member.id}
+                          onClick={() => (open ? handleCheckout(member) : handleCheckin(member))}
+                        >
+                          {pendingId === member.id
+                            ? "Registrando..."
+                            : open
+                              ? "Check-out"
+                              : "Check-in"}
+                        </Button>
+                      </div>
+
+
                     </div>
-                    <Button
-                      variant={open ? "secondary" : status === "active" ? "default" : "outline"}
-                      disabled={pendingId === member.id}
-                      onClick={() => (open ? handleCheckout(member) : handleCheckin(member))}
-                    >
-                      {pendingId === member.id
-                        ? "Registrando..."
-                        : open
-                          ? "Check-out"
-                          : "Check-in"}
-                    </Button>
+
                   </li>
                 );
               })}

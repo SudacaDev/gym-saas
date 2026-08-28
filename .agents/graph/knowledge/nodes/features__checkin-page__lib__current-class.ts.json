@@ -1,0 +1,8 @@
+{
+  "id": "features/checkin-page/lib/current-class.ts",
+  "community": "features",
+  "references": [],
+  "referenced_by": [
+    "features/checkin-page/hooks/useCurrentClass.ts"
+  ]
+}

@@ -126,6 +126,10 @@ export const classSchedulesRelations = relations(classSchedules, ({ one, many })
     fields: [classSchedules.activityId],
     references: [activities.id],
   }),
+  instructor: one(staffMembers, {
+    fields: [classSchedules.instructorId],
+    references: [staffMembers.id],
+  }),
   occurrences: many(classOccurrences),
 }));
 

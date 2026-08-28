@@ -8,7 +8,9 @@ import { memberSchema } from "@/lib/validations/member.schema";
 import { handleApiError, isUniqueViolation } from "@/lib/api/handle-api-error";
 import { generateShortCode } from "@/lib/members/generate-short-code";
 import { generateCheckinCode } from "@/lib/members/generate-checkin-code";
+import { getCurrentMembership, getCurrentEffectiveStatus } from "@/lib/memberships/status";
 import type { Member } from "@/db/schema/members";
+import type { MemberWithStatus } from "@/features/members-page/types";
 
 // Small collision-retry budget shared by both generated per-tenant codes
 // (T-20260825-003's shortCode, T-20260825-004's checkinCode) — see their
@@ -26,17 +28,52 @@ export async function GET() {
     const context = await getTenantContext();
     requireRole(context, ["owner", "staff"]);
 
-    const members = await withTenantContext(
+    const { members, membershipsByMember } = await withTenantContext(
       context.tenantId,
       context.role,
-      (tx) =>
-        tx
+      async (tx) => {
+        const members = await tx
           .select()
           .from(schema.members)
-          .where(isNull(schema.members.deletedAt)),
+          .where(isNull(schema.members.deletedAt));
+
+        // Same "current membership per member, joined in JS" approach as
+        // lib/dashboard/metrics.ts's activeMembers count — reuses the exact
+        // getCurrentEffectiveStatus logic this app centralizes there instead
+        // of re-deriving "active"/"expired" as a separate SQL condition.
+        const membershipRows = await tx
+          .select({
+            memberId: schema.memberships.memberId,
+            status: schema.memberships.status,
+            startDate: schema.memberships.startDate,
+            endDate: schema.memberships.endDate,
+            createdAt: schema.memberships.createdAt,
+          })
+          .from(schema.memberships);
+
+        const membershipsByMember = new Map<string, typeof membershipRows>();
+        for (const membership of membershipRows) {
+          const list = membershipsByMember.get(membership.memberId) ?? [];
+          list.push(membership);
+          membershipsByMember.set(membership.memberId, list);
+        }
+
+        return { members, membershipsByMember };
+      },
     );
 
-    return NextResponse.json(members);
+    const now = new Date();
+    const membersWithStatus: MemberWithStatus[] = members.map((member) => {
+      const history = membershipsByMember.get(member.id) ?? [];
+      const current = getCurrentMembership(history);
+      return {
+        ...member,
+        membershipStatus: getCurrentEffectiveStatus(history, now),
+        membershipEndDate: current?.endDate ?? null,
+      };
+    });
+
+    return NextResponse.json(membersWithStatus);
   } catch (error) {
     return handleApiError(error);
   }

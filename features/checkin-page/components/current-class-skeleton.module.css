@@ -1,0 +1,25 @@
+@reference "../../../app/globals.css";
+
+.activityName {
+  @apply h-5 w-32;
+}
+
+.timeRange {
+  @apply mt-1.5 h-3 w-20;
+}
+
+.capacity {
+  @apply h-4 w-10;
+}
+
+.rowName {
+  @apply h-4 w-24;
+}
+
+.rowButton {
+  @apply h-6 w-14 rounded-lg;
+}
+
+.rowPill {
+  @apply h-5 w-16 rounded-full;
+}

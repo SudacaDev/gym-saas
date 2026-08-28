@@ -1,0 +1,29 @@
+@reference "../../../app/globals.css";
+
+.name {
+  @apply h-4 w-28;
+}
+
+.email {
+  @apply h-4 w-32;
+}
+
+.category {
+  @apply h-4 w-20;
+}
+
+.pill {
+  @apply h-5 w-16 rounded-full;
+}
+
+.date {
+  @apply h-4 w-20;
+}
+
+.actionButton {
+  @apply h-7 w-14 rounded-cap-md-12;
+}
+
+.actionButtonWide {
+  @apply h-7 w-20 rounded-cap-md-12;
+}

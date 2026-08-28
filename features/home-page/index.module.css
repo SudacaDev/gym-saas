@@ -74,7 +74,7 @@
 .browserFrame {
   /* Wraps a screenshot + toolbar, clipped by overflow-hidden — capped
      radius, same rationale as checkin-page's .list. */
-  @apply overflow-hidden rounded-[min(var(--radius-xl),20px)] border border-border bg-muted;
+  @apply overflow-hidden rounded-cap-xl-20 border border-border bg-muted;
 }
 
 .browserBar {
@@ -105,7 +105,7 @@
 .benefitsGrid {
   /* Multi-cell grid clipped by overflow-hidden — capped radius, same
      rationale as checkin-page's .list. */
-  @apply mx-auto grid max-w-5xl grid-cols-1 gap-px overflow-hidden rounded-[min(var(--radius-xl),20px)] border border-border-subtle bg-border-subtle sm:grid-cols-2 lg:grid-cols-4;
+  @apply mx-auto grid max-w-5xl grid-cols-1 gap-px overflow-hidden rounded-cap-xl-20 border border-border-subtle bg-border-subtle sm:grid-cols-2 lg:grid-cols-4;
 }
 
 .benefitCard {

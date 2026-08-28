@@ -1,0 +1,10 @@
+{
+  "id": "features/profile-page/components/profile-email-form.tsx",
+  "community": "features",
+  "references": [
+    "features/profile-page/components/profile-email-form.module.css"
+  ],
+  "referenced_by": [
+    "features/profile-page/index.tsx"
+  ]
+}

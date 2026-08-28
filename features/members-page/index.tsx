@@ -1,7 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { UsersIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Input } from "@/components/ui/input";
+import { StatusPill } from "@/components/status-pill";
 import {
   Table,
   TableBody,
@@ -11,11 +16,25 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { MemberFormDialog } from "./components/member-form-dialog";
+import { MembersTableSkeleton } from "./components/members-table-skeleton";
 import styles from "./index.module.css";
 import { useMembers } from "./hooks/useMembers";
+import { membershipDisplay } from "./types";
 
 export function MembersPage() {
-  const { members, loading, error, handleSaved, handleDelete } = useMembers();
+  const {
+    members,
+    filteredMembers,
+    loading,
+    error,
+    search,
+    setSearch,
+    pendingDelete,
+    handleSaved,
+    requestDelete,
+    confirmDelete,
+    cancelDelete,
+  } = useMembers();
 
   return (
     <div className={styles.container}>
@@ -27,19 +46,39 @@ export function MembersPage() {
         />
       </div>
 
+      <Input
+        placeholder="Buscar por nombre, email, teléfono o código..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className={styles.search}
+      />
+
       {error && <p className={styles.errorText}>{error}</p>}
 
       {loading ? (
-        <p className={styles.emptyText}>Cargando...</p>
-      ) : members.length === 0 ? (
-        <p className={styles.emptyText}>
-          Todavía no hay socios.
-        </p>
+        <MembersTableSkeleton />
+      ) : filteredMembers.length === 0 ? (
+        members.length === 0 ? (
+          <EmptyState
+            icon={UsersIcon}
+            title="Todavía no hay socios"
+            description="Los socios que des de alta van a aparecer acá, con su estado de membresía a la vista."
+            action={
+              <MemberFormDialog
+                trigger={<Button>Dar de alta tu primer socio</Button>}
+                onSaved={handleSaved}
+              />
+            }
+          />
+        ) : (
+          <p className={styles.emptyText}>No hay resultados.</p>
+        )
       ) : (
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Nombre</TableHead>
+              <TableHead>Estado</TableHead>
               <TableHead>Código</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Teléfono</TableHead>
@@ -47,10 +86,15 @@ export function MembersPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {members.map((member) => (
+            {filteredMembers.map((member) => {
+              const status = membershipDisplay(member);
+              return (
               <TableRow key={member.id}>
                 <TableCell>
                   {member.firstName} {member.lastName}
+                </TableCell>
+                <TableCell>
+                  <StatusPill tone={status.tone}>{status.label}</StatusPill>
                 </TableCell>
                 <TableCell className={styles.shortCodeCell}>{member.shortCode}</TableCell>
                 <TableCell>{member.email ?? "—"}</TableCell>
@@ -77,17 +121,32 @@ export function MembersPage() {
                     <Button
                       variant="destructive"
                       size="sm"
-                      onClick={() => handleDelete(member)}
+                      onClick={() => requestDelete(member)}
                     >
                       Dar de baja
                     </Button>
                   </div>
                 </TableCell>
               </TableRow>
-            ))}
+              );
+            })}
           </TableBody>
         </Table>
       )}
+
+      <ConfirmDialog
+        open={pendingDelete !== null}
+        onOpenChange={(open) => !open && cancelDelete()}
+        title="Dar de baja al socio"
+        description={
+          pendingDelete
+            ? `¿Dar de baja a ${pendingDelete.firstName} ${pendingDelete.lastName}? Vas a poder darlo de alta de nuevo más adelante si hace falta.`
+            : ""
+        }
+        confirmLabel="Dar de baja"
+        confirmingLabel="Dando de baja..."
+        onConfirm={confirmDelete}
+      />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment } from "react";
-import { PlusIcon } from "lucide-react";
+import { Loader2Icon, PencilIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScheduleFormDialog } from "./schedule-form-dialog";
 import { ClassOccurrenceDialog } from "./class-occurrence-dialog";
@@ -59,11 +59,14 @@ function hourLabel(hour: number): string {
 export function ScheduleTableView({
   schedules,
   activities,
+  instructors,
+  selfInstructor,
   activityNameById,
   onSaved,
   onRemoved,
   onActivityCreated,
   onDelete,
+  deletingId,
 }: ScheduleViewProps) {
   const minStartMinutes = schedules.reduce(
     (min, s) => Math.min(min, timeToMinutes(s.startTime)),
@@ -104,100 +107,114 @@ export function ScheduleTableView({
         {timeRows.map((hour) => {
           const time = hourLabel(hour);
           return (
-          <Fragment key={time}>
-            <div className={styles.timeLabel}>{time}</div>
-            {DAY_ORDER.map((day) => {
-              // Bucket by hour, not exact `startTime` equality: rows are now
-              // synthetic hour-aligned slots (T-20260825-009), and the
-              // native `<input type="time">` in ScheduleFormDialog has no
-              // step restriction, so a real schedule can start mid-hour
-              // (e.g. "18:30"). Matching by hour keeps it visible in its
-              // row instead of silently disappearing because no generated
-              // row's label equals its exact startTime string anymore.
-              const cellSchedules = schedules.filter(
-                (s) =>
-                  s.dayOfWeek === day &&
-                  Math.floor(timeToMinutes(s.startTime) / 60) === hour,
-              );
+            <Fragment key={time}>
+              <div className={styles.timeLabel}>{time}</div>
+              {DAY_ORDER.map((day) => {
+                // Bucket by hour, not exact `startTime` equality: rows are now
+                // synthetic hour-aligned slots (T-20260825-009), and the
+                // native `<input type="time">` in ScheduleFormDialog has no
+                // step restriction, so a real schedule can start mid-hour
+                // (e.g. "18:30"). Matching by hour keeps it visible in its
+                // row instead of silently disappearing because no generated
+                // row's label equals its exact startTime string anymore.
+                const cellSchedules = schedules.filter(
+                  (s) =>
+                    s.dayOfWeek === day &&
+                    Math.floor(timeToMinutes(s.startTime) / 60) === hour,
+                );
 
-              if (cellSchedules.length === 0) {
+                if (cellSchedules.length === 0) {
+                  return (
+                    <div key={day} className={styles.cell}>
+                      <ScheduleFormDialog
+                        activities={activities}
+                        instructors={instructors}
+                        selfInstructor={selfInstructor}
+                        initialValues={{
+                          dayOfWeek: day,
+                          startTime: time,
+                          endTime: addOneHour(time),
+                        }}
+                        trigger={
+                          <button
+                            type="button"
+                            className={styles.cellEmpty}
+                            aria-label={`Agregar horario: ${DAY_LABELS_SHORT[day]} ${time}`}
+                          >
+                            <PlusIcon className={styles.cellEmptyIcon} />
+                          </button>
+                        }
+                        onSaved={onSaved}
+                        onActivityCreated={onActivityCreated}
+                      />
+                    </div>
+                  );
+                }
+
                 return (
                   <div key={day} className={styles.cell}>
-                    <ScheduleFormDialog
-                      activities={activities}
-                      initialValues={{
-                        dayOfWeek: day,
-                        startTime: time,
-                        endTime: addOneHour(time),
-                      }}
-                      trigger={
-                        <button
-                          type="button"
-                          className={styles.cellEmpty}
-                          aria-label={`Agregar horario: ${DAY_LABELS_SHORT[day]} ${time}`}
-                        >
-                          <PlusIcon className={styles.cellEmptyIcon} />
-                        </button>
-                      }
-                      onSaved={onSaved}
-                      onActivityCreated={onActivityCreated}
-                    />
+                    {cellSchedules.map((schedule) => (
+                      <div key={schedule.id} className={styles.slot}>
+                        <span className={styles.slotTime}>
+                          {schedule.startTime.slice(0, 5)}–{schedule.endTime.slice(0, 5)}
+                        </span>
+                        <span className={styles.slotActivity}>
+                          {activityNameById.get(schedule.activityId) ?? "—"}
+                        </span>
+                        <div className={styles.slotActions}>
+                          <ClassOccurrenceDialog
+                            schedule={schedule}
+                            activityName={activityNameById.get(schedule.activityId) ?? "—"}
+                            trigger={
+                              <button
+                                type="button"
+                                className={cn(styles.slotAction, styles.slotActionEdit)}
+                              >
+                                Reservas
+                              </button>
+                            }
+                          />
+
+                          <div className={styles.slotActionsGroup}>
+                            <ScheduleFormDialog
+                              schedule={schedule}
+                              activities={activities}
+                              instructors={instructors}
+                              selfInstructor={selfInstructor}
+                              trigger={
+                                <button
+                                  type="button"
+                                  className={cn(styles.slotAction, styles.slotActionEdit)}
+                                  aria-label="Editar horario"
+                                >
+                                  <PencilIcon className={styles.slotActionIcon} />
+                                </button>
+                              }
+                              onSaved={onSaved}
+                              onRemoved={onRemoved}
+                              onActivityCreated={onActivityCreated}
+                            />
+                            <button
+                              type="button"
+                              disabled={deletingId === schedule.id}
+                              className={cn(styles.slotAction, styles.slotActionDelete)}
+                              aria-label="Borrar horario"
+                              onClick={() => onDelete(schedule)}
+                            >
+                              {deletingId === schedule.id ? (
+                                <Loader2Icon className={cn(styles.slotActionIcon, "animate-spin")} />
+                              ) : (
+                                <Trash2Icon className={styles.slotActionIcon} />
+                              )}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 );
-              }
-
-              return (
-                <div key={day} className={styles.cell}>
-                  {cellSchedules.map((schedule) => (
-                    <div key={schedule.id} className={styles.slot}>
-                      <span className={styles.slotTime}>
-                        {schedule.startTime.slice(0, 5)}–{schedule.endTime.slice(0, 5)}
-                      </span>
-                      <span className={styles.slotActivity}>
-                        {activityNameById.get(schedule.activityId) ?? "—"}
-                      </span>
-                      <div className={styles.slotActions}>
-                        <ClassOccurrenceDialog
-                          schedule={schedule}
-                          activityName={activityNameById.get(schedule.activityId) ?? "—"}
-                          trigger={
-                            <button
-                              type="button"
-                              className={cn(styles.slotAction, styles.slotActionEdit)}
-                            >
-                              Reservas
-                            </button>
-                          }
-                        />
-                        <ScheduleFormDialog
-                          schedule={schedule}
-                          activities={activities}
-                          trigger={
-                            <button
-                              type="button"
-                              className={cn(styles.slotAction, styles.slotActionEdit)}
-                            >
-                              Editar
-                            </button>
-                          }
-                          onSaved={onSaved}
-                          onRemoved={onRemoved}
-                          onActivityCreated={onActivityCreated}
-                        />
-                        <button
-                          type="button"
-                          className={cn(styles.slotAction, styles.slotActionDelete)}
-                          onClick={() => onDelete(schedule)}
-                        >
-                          Borrar
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              );
-            })}
-          </Fragment>
+              })}
+            </Fragment>
           );
         })}
       </div>

@@ -1,0 +1,10 @@
+{
+  "id": "features/profile-page/hooks/useProfile.ts",
+  "community": "features",
+  "references": [
+    "features/profile-page/types.ts"
+  ],
+  "referenced_by": [
+    "features/profile-page/index.tsx"
+  ]
+}

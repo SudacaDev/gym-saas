@@ -9,6 +9,7 @@
     "db/schema/email-send-log.ts",
     "db/schema/index.ts",
     "db/schema/members.ts",
+    "db/schema/operational-requests.ts",
     "db/schema/relations.ts",
     "db/schema/staff-members.ts"
   ]

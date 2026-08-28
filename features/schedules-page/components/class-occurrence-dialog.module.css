@@ -28,7 +28,7 @@
   @apply space-y-1;
 }
 .row {
-  @apply flex items-center justify-between gap-2 rounded-[min(var(--radius-md),10px)] border border-border-subtle px-2.5 py-1.5;
+  @apply flex items-center justify-between gap-2 rounded-cap-md-10 border border-border-subtle px-2.5 py-1.5;
 }
 .name {
   @apply text-sm;

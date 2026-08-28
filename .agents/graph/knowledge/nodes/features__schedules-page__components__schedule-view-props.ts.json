@@ -1,7 +1,9 @@
 {
   "id": "features/schedules-page/components/schedule-view-props.ts",
   "community": "features",
-  "references": [],
+  "references": [
+    "features/schedules-page/hooks/useSchedules.ts"
+  ],
   "referenced_by": [
     "features/schedules-page/components/schedule-calendar-view.tsx",
     "features/schedules-page/components/schedule-kanban-view.tsx",

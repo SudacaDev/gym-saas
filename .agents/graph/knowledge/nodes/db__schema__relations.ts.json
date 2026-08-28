@@ -10,7 +10,13 @@
     "db/schema/payments.ts",
     "db/schema/checkins.ts",
     "db/schema/class-schedules.ts",
+    "db/schema/class-occurrences.ts",
+    "db/schema/class-reservations.ts",
     "db/schema/activities.ts",
+    "db/schema/products.ts",
+    "db/schema/walk-in-sales.ts",
+    "db/schema/operational-requests.ts",
+    "db/schema/leads.ts",
     "db/schema/email-send-log.ts",
     "db/schema/staff-members.ts",
     "db/schema/staff-attendance.ts"

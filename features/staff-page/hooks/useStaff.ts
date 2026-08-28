@@ -9,6 +9,7 @@ export const useStaff = () => {
     const [search, setSearch] = useState("");
     const [attendanceError, setAttendanceError] = useState<string | null>(null);
     const [togglingId, setTogglingId] = useState<string | null>(null);
+    const [pendingDelete, setPendingDelete] = useState<StaffMemberRow | null>(null);
 
     const loadStaff = useCallback(async () => {
         setLoading(true);
@@ -44,19 +45,24 @@ export const useStaff = () => {
         });
     }
 
-    async function handleDelete(member: StaffMemberRow) {
+    function requestDelete(member: StaffMemberRow) {
         setError(null);
-        if (!confirm(`¿Dar de baja a ${member.firstName} ${member.lastName}?`)) return;
+        setPendingDelete(member);
+    }
 
-        const res = await fetch(`/api/v1/staff/${member.id}`, { method: "DELETE" });
+    async function confirmDelete() {
+        if (!pendingDelete) return;
+        const res = await fetch(`/api/v1/staff/${pendingDelete.id}`, { method: "DELETE" });
         if (!res.ok) {
             const body = await res.json().catch(() => null);
             setError(
                 typeof body?.error === "string" ? body.error : "No se pudo dar de baja a la persona",
             );
+            setPendingDelete(null);
             return;
         }
-        setStaff((prev) => prev.filter((s) => s.id !== member.id));
+        setStaff((prev) => prev.filter((s) => s.id !== pendingDelete.id));
+        setPendingDelete(null);
     }
 
     // Clocks a staff member in/out (T-20260825-005). Toggles based on
@@ -117,10 +123,13 @@ export const useStaff = () => {
         setSearch,
         attendanceError,
         togglingId,
+        pendingDelete,
         filteredStaff,
         loadStaff,
         handleSaved,
-        handleDelete,
+        requestDelete,
+        confirmDelete,
+        cancelDelete: () => setPendingDelete(null),
         handleToggleAttendance,
     }
 }

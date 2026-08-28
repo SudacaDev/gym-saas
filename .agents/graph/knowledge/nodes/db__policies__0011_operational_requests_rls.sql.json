@@ -1,0 +1,6 @@
+{
+  "id": "db/policies/0011_operational_requests_rls.sql",
+  "community": "db",
+  "references": [],
+  "referenced_by": []
+}

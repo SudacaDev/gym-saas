@@ -8,6 +8,7 @@ export function useKiosk(role: "owner" | "staff") {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [sellingId, setSellingId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [todayTotal, setTodayTotal] = useState<number | null>(null);
   const [saleMessage, setSaleMessage] = useState<string | null>(null);
 
@@ -48,13 +49,19 @@ export function useKiosk(role: "owner" | "staff") {
 
   async function handleProductDelete(product: Product) {
     if (!confirm(`¿Borrar "${product.name}"?`)) return;
-    const res = await fetch(`/api/v1/products/${product.id}`, { method: "DELETE" });
-    if (!res.ok) {
-      const body = await res.json().catch(() => null);
-      setError(typeof body?.error === "string" ? body.error : "No se pudo borrar el producto");
-      return;
+    setError(null);
+    setDeletingId(product.id);
+    try {
+      const res = await fetch(`/api/v1/products/${product.id}`, { method: "DELETE" });
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        setError(typeof body?.error === "string" ? body.error : "No se pudo borrar el producto");
+        return;
+      }
+      setProducts((prev) => prev.filter((p) => p.id !== product.id));
+    } finally {
+      setDeletingId(null);
     }
-    setProducts((prev) => prev.filter((p) => p.id !== product.id));
   }
 
   async function sellProduct(product: Product) {
@@ -101,6 +108,7 @@ export function useKiosk(role: "owner" | "staff") {
     loading,
     error,
     sellingId,
+    deletingId,
     todayTotal,
     saleMessage,
     handleProductSaved,

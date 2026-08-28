@@ -1,6 +1,9 @@
 "use client";
 
+import { IdCardIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { EmptyState } from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
 import { StatusPill } from "@/components/status-pill";
 import {
@@ -13,6 +16,7 @@ import {
 } from "@/components/ui/table";
 import { StaffFormDialog } from "./components/staff-form-dialog";
 import { StaffAttendanceDialog } from "./components/staff-attendance-dialog";
+import { StaffTableSkeleton } from "./components/staff-table-skeleton";
 import { CATEGORY_LABELS } from "./types";
 import styles from "./index.module.css";
 import { useStaff } from "./hooks/useStaff";
@@ -26,9 +30,12 @@ export function StaffPage() {
     setSearch,
     attendanceError,
     togglingId,
+    pendingDelete,
     filteredStaff,
     handleSaved,
-    handleDelete,
+    requestDelete,
+    confirmDelete,
+    cancelDelete,
     handleToggleAttendance,
   } = useStaff();
 
@@ -50,11 +57,20 @@ export function StaffPage() {
       {attendanceError && <p className={styles.errorText}>{attendanceError}</p>}
 
       {loading ? (
-        <p className={styles.emptyText}>Cargando...</p>
+        <StaffTableSkeleton />
       ) : filteredStaff.length === 0 ? (
-        <p className={styles.emptyText}>
-          {staff.length === 0 ? "Todavía no invitaste a nadie." : "No hay resultados."}
-        </p>
+        staff.length === 0 ? (
+          <EmptyState
+            icon={IdCardIcon}
+            title="Todavía no invitaste a nadie"
+            description="Las personas que invites a tu equipo van a aparecer acá, con su categoría y estado."
+            action={<StaffFormDialog trigger={<Button>Invitar a la primera persona</Button>} onSaved={handleSaved} />}
+          />
+        ) : (
+          // Zero search matches, not zero data — stays a plain line so it
+          // reads as "narrow your search," not "nothing here yet."
+          <p className={styles.emptyText}>No hay resultados.</p>
+        )
       ) : (
         <Table>
           <TableHeader>
@@ -93,7 +109,11 @@ export function StaffPage() {
                         disabled={togglingId === member.id}
                         onClick={() => handleToggleAttendance(member)}
                       >
-                        {member.openAttendanceId ? "Fichar salida" : "Fichar entrada"}
+                        {togglingId === member.id
+                          ? "Fichando..."
+                          : member.openAttendanceId
+                            ? "Fichar salida"
+                            : "Fichar entrada"}
                       </Button>
                     )}
                     <StaffAttendanceDialog
@@ -116,7 +136,7 @@ export function StaffPage() {
                     <Button
                       variant="destructive"
                       size="sm"
-                      onClick={() => handleDelete(member)}
+                      onClick={() => requestDelete(member)}
                     >
                       Dar de baja
                     </Button>
@@ -127,6 +147,20 @@ export function StaffPage() {
           </TableBody>
         </Table>
       )}
+
+      <ConfirmDialog
+        open={pendingDelete !== null}
+        onOpenChange={(open) => !open && cancelDelete()}
+        title="Dar de baja a la persona"
+        description={
+          pendingDelete
+            ? `¿Dar de baja a ${pendingDelete.firstName} ${pendingDelete.lastName}? Vas a poder darla de alta de nuevo más adelante si hace falta.`
+            : ""
+        }
+        confirmLabel="Dar de baja"
+        confirmingLabel="Dando de baja..."
+        onConfirm={confirmDelete}
+      />
     </div>
   );
 }

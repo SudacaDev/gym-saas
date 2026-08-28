@@ -1,6 +1,7 @@
 import { pgTable, uuid, time, integer, timestamp } from "drizzle-orm/pg-core";
 import { tenants } from "./tenants";
 import { activities } from "./activities";
+import { staffMembers } from "./staff-members";
 import { dayOfWeekEnum } from "./enums";
 
 /**
@@ -20,6 +21,14 @@ import { dayOfWeekEnum } from "./enums";
  * pass A added `activityId` nullable alongside `activityName` and
  * backfilled it from existing rows; this pass drops `activityName` and
  * makes `activityId` `NOT NULL` now that every row has one.
+ *
+ * `instructorId` (T-20260827-007) reverses the earlier "no instructor
+ * concept" call above — nullable, since existing/legacy slots and any
+ * owner-run class have no instructor to assign. `onDelete: "set null"`
+ * rather than `"restrict"`/`"cascade"`: staff_members is soft-deleted
+ * (never a real DELETE — see its own docstring), but this still keeps the
+ * schedule row alive and instructor-less rather than erroring or vanishing
+ * a class if that ever changes.
  */
 export const classSchedules = pgTable("class_schedules", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -36,6 +45,9 @@ export const classSchedules = pgTable("class_schedules", {
   // = no cap enforced. A specific occurrence can override it — see
   // class_occurrences.capacity.
   capacity: integer("capacity"),
+  instructorId: uuid("instructor_id").references(() => staffMembers.id, {
+    onDelete: "set null",
+  }),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),

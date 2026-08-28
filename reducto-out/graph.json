@@ -2018,13 +2018,16 @@
       "file_path": "C:/Workspaces/SharedDocuments/gym-saas/.agents/graph/gates/pending/T-20260826-001.md",
       "start_line": 1,
       "end_line": 37,
-      "state": "unknown",
+      "state": "partial",
       "docstring": "",
       "raw_source": "",
       "file_hash": "aa6dbb0068c3dcd805d5c21f95dc25460cf9acda33c3ec5184f2709d741faa94",
       "body_start_line": 0,
       "body_end_line": 0,
-      "community": 17
+      "community": 17,
+      "views": {
+        "skeleton": "# Gate: T-20260826-001 \u00e2\u20ac\u201d Convenci\u00c3\u00b3n de ubicaci\u00c3\u00b3n para helpers no-hook extra\u00c3\u00addos de un feature\n\n- severity: medium (`edit_non_prod_file` en `gates/policy.yml` \u00e2\u20ac\u201d la tarea se auto-flageaba `low`, pero policy.yml no deja severidad sin clasificar por criterio propio de la tarea; `edit_non_prod_file` es la clasificaci\u00c3\u00b3n expl\u00c3\u00adcita que corresponde)\n- approval_mode: async (reorganizaci\u00c3\u00b3n de archivos + cambio de rutas de import, sin cambio de comportamiento ni de schema)\n- created: 2026-08-26\n\n## Qu\u00c3\u00a9 se hizo\n\nResuelta la `open_question` de la tarea v\u00c3\u00ada `AskUserQuestion`: **agrupar en subcarpeta `lib/`** (no dejar sueltos en la ra\u00c3\u00adz del feature).\n\n- `features/dashboard-page/{format,calendar,sparkline}.ts` \u00e2\u2020\u2019 `features/dashboard-page/lib/{format,calendar,sparkline}.ts` (`git mv`, contenido sin tocar).\n- `features/dashboard-page/index.tsx` \u00e2\u20ac\u201d 3 imports (`./format` \u00e2\u2020\u2019 `./lib/format`, `./calendar` \u00e2\u2020\u2019 `./lib/calendar`, `./sparkline` \u00e2\u2020\u2019 `./lib/sparkline`).\n- `features/dashboard-page/lib/calendar.ts` \u00e2\u20ac\u201d su propio import interno (`from \"./format\"`) queda igual: ambos archivos se movieron juntos a `lib/`, siguen siendo hermanos.\n- **Consistencia de convenci\u00c3\u00b3n (impl\u00c3\u00adcita en la open_question \u00e2\u20ac\u201d \"si se elige subcarpeta, esta tarea tambi\u00c3\u00a9n deber\u00c3\u00ada mover `day-labels.ts`\"):** `features/schedules-page/day-labels.ts` \u00e2\u2020\u2019 `features/schedules-page/lib/day-labels.ts` (`git mv`), con sus 3 importadores actualizados (`schedule-table-view.tsx`, `schedule-kanban-view.tsx`, `schedule-form-dialog.tsx`, los 3 en `components/`, ruta `../day-labels` \u00e2\u2020\u2019 `../lib/day-labels`).\n\nNing\u00c3\u00ban archivo cambia de contenido salvo las l\u00c3\u00adneas de import listadas arriba. Cero cambio de comportamiento.\n\n## Por qu\u00c3\u00a9 requiere revisi\u00c3\u00b3n\n\n- Fija una convenci\u00c3\u00b3n de proyecto (d\u00c3\u00b3nde viven los helpers puros no-hook, no-componente de un feature) que no exist\u00c3\u00ada documentada \u00e2\u20ac\u201d futuras extracciones similares (el skill `react-architecture` va a seguir generando este caso) van a seguir este mismo patr\u00c3\u00b3n.\n- Toca 8 archivos fuera del feature original de la tarea (los 3 importadores de `day-labels.ts` en `schedules-page`) para no dejar dos convenciones conviviendo \u00e2\u20ac\u201d alcance ligeramente mayor al literal de la tarea, documentado por transparencia.\n\n## Verificaci\u00c3\u00b3n\n\n- `npx tsc --noEmit`: limpio, sin salida.\n- `npx eslint features/dashboard-page features/schedules-page`: limpio, sin salida.\n- `npm run test:unit`: 23/34 verdes, 11 fallas por `PostgresError 53300` (pool de conexiones agotado) en archivos de integraci\u00c3\u00b3n que no importan ning\u00c3\u00ban m\u00c3\u00b3dulo tocado por esta tarea \u00e2\u20ac\u201d mismo patr\u00c3\u00b3n ambiental documentado repetidamente en sesiones anteriores (ver `progress.md`), no relacionado a este cambio.\n\n## Gaps conocidos\n\n- No se reindex\u00c3\u00b3 el grafo (`knowledge/`) tras el movimiento de archivos \u00e2\u20ac\u201d los nodos `features__dashboard-page__{format,calendar,sparkline}.ts.json` y `features__schedules-page__day-labels.ts.json` quedan con paths desactualizados hasta el pr\u00c3\u00b3ximo `--reindex`.\n\n## Aprobaci\u00c3\u00b3n\n\n- [ ] Aprobado por:\n- [ ] Fecha:\n- Sin comando post-aprobaci\u00c3\u00b3n pendiente \u00e2\u20ac\u201d no hay migraci\u00c3\u00b3n ni cambio de datos reales en esta tarea."
+      }
     },
     "C:/Workspaces/SharedDocuments/gym-saas/.agents/graph/gates/pending/T-20260826-001.md::Gate:_T-20260826-001_\u2014_Convenci\u00f3n_de_ubicaci\u00f3n_para_helpers_no-hook_extra\u00eddos_de_un_feature": {
       "kind": "Section",
@@ -2032,13 +2035,16 @@
       "file_path": "C:/Workspaces/SharedDocuments/gym-saas/.agents/graph/gates/pending/T-20260826-001.md",
       "start_line": 1,
       "end_line": 37,
-      "state": "unknown",
+      "state": "partial",
       "docstring": "",
       "raw_source": "",
       "file_hash": "aa6dbb0068c3dcd805d5c21f95dc25460cf9acda33c3ec5184f2709d741faa94",
       "body_start_line": 0,
       "body_end_line": 0,
-      "community": 17
+      "community": 17,
+      "views": {
+        "skeleton": "# Gate: T-20260826-001 \u00e2\u20ac\u201d Convenci\u00c3\u00b3n de ubicaci\u00c3\u00b3n para helpers no-hook extra\u00c3\u00addos de un feature\n\n- severity: medium (`edit_non_prod_file` en `gates/policy.yml` \u00e2\u20ac\u201d la tarea se auto-flageaba `low`, pero policy.yml no deja severidad sin clasificar por criterio propio de la tarea; `edit_non_prod_file` es la clasificaci\u00c3\u00b3n expl\u00c3\u00adcita que corresponde)\n- approval_mode: async (reorganizaci\u00c3\u00b3n de archivos + cambio de rutas de import, sin cambio de comportamiento ni de schema)\n- created: 2026-08-26\n\n## Qu\u00c3\u00a9 se hizo\n\nResuelta la `open_question` de la tarea v\u00c3\u00ada `AskUserQuestion`: **agrupar en subcarpeta `lib/`** (no dejar sueltos en la ra\u00c3\u00adz del feature).\n\n- `features/dashboard-page/{format,calendar,sparkline}.ts` \u00e2\u2020\u2019 `features/dashboard-page/lib/{format,calendar,sparkline}.ts` (`git mv`, contenido sin tocar).\n- `features/dashboard-page/index.tsx` \u00e2\u20ac\u201d 3 imports (`./format` \u00e2\u2020\u2019 `./lib/format`, `./calendar` \u00e2\u2020\u2019 `./lib/calendar`, `./sparkline` \u00e2\u2020\u2019 `./lib/sparkline`).\n- `features/dashboard-page/lib/calendar.ts` \u00e2\u20ac\u201d su propio import interno (`from \"./format\"`) queda igual: ambos archivos se movieron juntos a `lib/`, siguen siendo hermanos.\n- **Consistencia de convenci\u00c3\u00b3n (impl\u00c3\u00adcita en la open_question \u00e2\u20ac\u201d \"si se elige subcarpeta, esta tarea tambi\u00c3\u00a9n deber\u00c3\u00ada mover `day-labels.ts`\"):** `features/schedules-page/day-labels.ts` \u00e2\u2020\u2019 `features/schedules-page/lib/day-labels.ts` (`git mv`), con sus 3 importadores actualizados (`schedule-table-view.tsx`, `schedule-kanban-view.tsx`, `schedule-form-dialog.tsx`, los 3 en `components/`, ruta `../day-labels` \u00e2\u2020\u2019 `../lib/day-labels`).\n\nNing\u00c3\u00ban archivo cambia de contenido salvo las l\u00c3\u00adneas de import listadas arriba. Cero cambio de comportamiento.\n\n## Por qu\u00c3\u00a9 requiere revisi\u00c3\u00b3n\n\n- Fija una convenci\u00c3\u00b3n de proyecto (d\u00c3\u00b3nde viven los helpers puros no-hook, no-componente de un feature) que no exist\u00c3\u00ada documentada \u00e2\u20ac\u201d futuras extracciones similares (el skill `react-architecture` va a seguir generando este caso) van a seguir este mismo patr\u00c3\u00b3n.\n- Toca 8 archivos fuera del feature original de la tarea (los 3 importadores de `day-labels.ts` en `schedules-page`) para no dejar dos convenciones conviviendo \u00e2\u20ac\u201d alcance ligeramente mayor al literal de la tarea, documentado por transparencia.\n\n## Verificaci\u00c3\u00b3n\n\n- `npx tsc --noEmit`: limpio, sin salida.\n- `npx eslint features/dashboard-page features/schedules-page`: limpio, sin salida.\n- `npm run test:unit`: 23/34 verdes, 11 fallas por `PostgresError 53300` (pool de conexiones agotado) en archivos de integraci\u00c3\u00b3n que no importan ning\u00c3\u00ban m\u00c3\u00b3dulo tocado por esta tarea \u00e2\u20ac\u201d mismo patr\u00c3\u00b3n ambiental documentado repetidamente en sesiones anteriores (ver `progress.md`), no relacionado a este cambio.\n\n## Gaps conocidos\n\n- No se reindex\u00c3\u00b3 el grafo (`knowledge/`) tras el movimiento de archivos \u00e2\u20ac\u201d los nodos `features__dashboard-page__{format,calendar,sparkline}.ts.json` y `features__schedules-page__day-labels.ts.json` quedan con paths desactualizados hasta el pr\u00c3\u00b3ximo `--reindex`.\n\n## Aprobaci\u00c3\u00b3n\n\n- [ ] Aprobado por:\n- [ ] Fecha:\n- Sin comando post-aprobaci\u00c3\u00b3n pendiente \u00e2\u20ac\u201d no hay migraci\u00c3\u00b3n ni cambio de datos reales en esta tarea."
+      }
     },
     "C:/Workspaces/SharedDocuments/gym-saas/.agents/graph/gates/pending/T-20260826-001.md::Qu\u00e9_se_hizo": {
       "kind": "Section",
@@ -2046,13 +2052,16 @@
       "file_path": "C:/Workspaces/SharedDocuments/gym-saas/.agents/graph/gates/pending/T-20260826-001.md",
       "start_line": 7,
       "end_line": 18,
-      "state": "unknown",
+      "state": "partial",
       "docstring": "",
       "raw_source": "",
       "file_hash": "aa6dbb0068c3dcd805d5c21f95dc25460cf9acda33c3ec5184f2709d741faa94",
       "body_start_line": 0,
       "body_end_line": 0,
-      "community": 17
+      "community": 17,
+      "views": {
+        "skeleton": "## Qu\u00c3\u00a9 se hizo\n\nResuelta la `open_question` de la tarea v\u00c3\u00ada `AskUserQuestion`: **agrupar en subcarpeta `lib/`** (no dejar sueltos en la ra\u00c3\u00adz del feature).\n\n- `features/dashboard-page/{format,calendar,sparkline}.ts` \u00e2\u2020\u2019 `features/dashboard-page/lib/{format,calendar,sparkline}.ts` (`git mv`, contenido sin tocar).\n- `features/dashboard-page/index.tsx` \u00e2\u20ac\u201d 3 imports (`./format` \u00e2\u2020\u2019 `./lib/format`, `./calendar` \u00e2\u2020\u2019 `./lib/calendar`, `./sparkline` \u00e2\u2020\u2019 `./lib/sparkline`).\n- `features/dashboard-page/lib/calendar.ts` \u00e2\u20ac\u201d su propio import interno (`from \"./format\"`) queda igual: ambos archivos se movieron juntos a `lib/`, siguen siendo hermanos.\n- **Consistencia de convenci\u00c3\u00b3n (impl\u00c3\u00adcita en la open_question \u00e2\u20ac\u201d \"si se elige subcarpeta, esta tarea tambi\u00c3\u00a9n deber\u00c3\u00ada mover `day-labels.ts`\"):** `features/schedules-page/day-labels.ts` \u00e2\u2020\u2019 `features/schedules-page/lib/day-labels.ts` (`git mv`), con sus 3 importadores actualizados (`schedule-table-view.tsx`, `schedule-kanban-view.tsx`, `schedule-form-dialog.tsx`, los 3 en `components/`, ruta `../day-labels` \u00e2\u2020\u2019 `../lib/day-labels`).\n\nNing\u00c3\u00ban archivo cambia de contenido salvo las l\u00c3\u00adneas de import listadas arriba. Cero cambio de comportamiento.\n\n## Por qu\u00c3\u00a9 requiere revisi\u00c3\u00b3n"
+      }
     },
     "C:/Workspaces/SharedDocuments/gym-saas/.agents/graph/gates/pending/T-20260826-001.md::Por_qu\u00e9_requiere_revisi\u00f3n": {
       "kind": "Section",
@@ -2060,13 +2069,16 @@
       "file_path": "C:/Workspaces/SharedDocuments/gym-saas/.agents/graph/gates/pending/T-20260826-001.md",
       "start_line": 18,
       "end_line": 23,
-      "state": "unknown",
+      "state": "partial",
       "docstring": "",
       "raw_source": "",
       "file_hash": "aa6dbb0068c3dcd805d5c21f95dc25460cf9acda33c3ec5184f2709d741faa94",
       "body_start_line": 0,
       "body_end_line": 0,
-      "community": 17
+      "community": 17,
+      "views": {
+        "skeleton": "## Por qu\u00c3\u00a9 requiere revisi\u00c3\u00b3n\n\n- Fija una convenci\u00c3\u00b3n de proyecto (d\u00c3\u00b3nde viven los helpers puros no-hook, no-componente de un feature) que no exist\u00c3\u00ada documentada \u00e2\u20ac\u201d futuras extracciones similares (el skill `react-architecture` va a seguir generando este caso) van a seguir este mismo patr\u00c3\u00b3n.\n- Toca 8 archivos fuera del feature original de la tarea (los 3 importadores de `day-labels.ts` en `schedules-page`) para no dejar dos convenciones conviviendo \u00e2\u20ac\u201d alcance ligeramente mayor al literal de la tarea, documentado por transparencia.\n\n## Verificaci\u00c3\u00b3n"
+      }
     },
     "C:/Workspaces/SharedDocuments/gym-saas/.agents/graph/gates/pending/T-20260826-001.md::Verificaci\u00f3n": {
       "kind": "Section",
@@ -2074,13 +2086,16 @@
       "file_path": "C:/Workspaces/SharedDocuments/gym-saas/.agents/graph/gates/pending/T-20260826-001.md",
       "start_line": 23,
       "end_line": 29,
-      "state": "unknown",
+      "state": "partial",
       "docstring": "",
       "raw_source": "",
       "file_hash": "aa6dbb0068c3dcd805d5c21f95dc25460cf9acda33c3ec5184f2709d741faa94",
       "body_start_line": 0,
       "body_end_line": 0,
-      "community": 17
+      "community": 17,
+      "views": {
+        "skeleton": "## Verificaci\u00c3\u00b3n\n\n- `npx tsc --noEmit`: limpio, sin salida.\n- `npx eslint features/dashboard-page features/schedules-page`: limpio, sin salida.\n- `npm run test:unit`: 23/34 verdes, 11 fallas por `PostgresError 53300` (pool de conexiones agotado) en archivos de integraci\u00c3\u00b3n que no importan ning\u00c3\u00ban m\u00c3\u00b3dulo tocado por esta tarea \u00e2\u20ac\u201d mismo patr\u00c3\u00b3n ambiental documentado repetidamente en sesiones anteriores (ver `progress.md`), no relacionado a este cambio.\n\n## Gaps conocidos"
+      }
     },
     "C:/Workspaces/SharedDocuments/gym-saas/.agents/graph/gates/pending/T-20260826-001.md::Gaps_conocidos": {
       "kind": "Section",
@@ -2088,13 +2103,16 @@
       "file_path": "C:/Workspaces/SharedDocuments/gym-saas/.agents/graph/gates/pending/T-20260826-001.md",
       "start_line": 29,
       "end_line": 33,
-      "state": "unknown",
+      "state": "partial",
       "docstring": "",
       "raw_source": "",
       "file_hash": "aa6dbb0068c3dcd805d5c21f95dc25460cf9acda33c3ec5184f2709d741faa94",
       "body_start_line": 0,
       "body_end_line": 0,
-      "community": 17
+      "community": 17,
+      "views": {
+        "skeleton": "## Gaps conocidos\n\n- No se reindex\u00c3\u00b3 el grafo (`knowledge/`) tras el movimiento de archivos \u00e2\u20ac\u201d los nodos `features__dashboard-page__{format,calendar,sparkline}.ts.json` y `features__schedules-page__day-labels.ts.json` quedan con paths desactualizados hasta el pr\u00c3\u00b3ximo `--reindex`.\n\n## Aprobaci\u00c3\u00b3n"
+      }
     },
     "C:/Workspaces/SharedDocuments/gym-saas/.agents/graph/gates/pending/T-20260826-001.md::Aprobaci\u00f3n": {
       "kind": "Section",
@@ -2494,13 +2512,16 @@
       "file_path": "C:/Workspaces/SharedDocuments/gym-saas/.agents/graph/sessions/progress.md",
       "start_line": 156,
       "end_line": 164,
-      "state": "unknown",
+      "state": "partial",
       "docstring": "",
       "raw_source": "",
-      "file_hash": "8d4921b07278e06043f37086082f6af6bffceb84be7e7176c252562705bb66bc",
+      "file_hash": "a4310323e2fc370e369269565b8b19b12eea178f5270ea6714a117e917c593e4",
       "body_start_line": 0,
       "body_end_line": 0,
-      "community": 20
+      "community": 20,
+      "views": {
+        "skeleton": "## Sesi\u00c3\u00b3n 2026-08-26 \u00e2\u20ac\u201d `#run T-20260826-001`\n- Usuario pidi\u00c3\u00b3 leer `AGENTS.md` bien y correr `#run T-20260826-001`. Rele\u00c3\u00addos `GRAPH.md`, `tasks.md`, `progress.md`, `roles/registry.yml`, `gates/policy.yml`, `circuit-breaker.yml` antes de tocar nada. Sin circuit breaker activo, sin gates s\u00c3\u00adncronos pendientes, T-20260826-001 sin `depends_on`.\n- La tarea tra\u00c3\u00ada una `open_question` marcada expl\u00c3\u00adcitamente \"no asumir, resolver antes de `#run`\" (ubicaci\u00c3\u00b3n de los helpers no-hook extra\u00c3\u00addos de `dashboard-page`). Resuelta v\u00c3\u00ada `AskUserQuestion`: **agrupar en subcarpeta `lib/`** (no dejarlos sueltos en la ra\u00c3\u00adz del feature).\n- Ejecutado: `features/dashboard-page/{format,calendar,sparkline}.ts` \u00e2\u2020\u2019 `features/dashboard-page/lib/` (`git mv`), 3 imports actualizados en `index.tsx`. Por consistencia (la propia open_question lo se\u00c3\u00b1alaba como consecuencia de elegir subcarpeta), tambi\u00c3\u00a9n `features/schedules-page/day-labels.ts` \u00e2\u2020\u2019 `features/schedules-page/lib/day-labels.ts`, con sus 3 importadores en `components/` actualizados \u00e2\u20ac\u201d as\u00c3\u00ad no quedan dos convenciones conviviendo en el proyecto. Cero cambio de contenido m\u00c3\u00a1s all\u00c3\u00a1 de las rutas de import.\n- `tsc --noEmit` y `eslint` limpios. `test:unit`: 23/34 verdes, 11 fallas por `PostgresError 53300` (pool de conexiones agotado) en archivos de integraci\u00c3\u00b3n que no importan ning\u00c3\u00ban m\u00c3\u00b3dulo tocado \u00e2\u20ac\u201d mismo patr\u00c3\u00b3n ambiental de sesiones anteriores, no investigado de nuevo.\n- Gate `medium`/async abierto en `graph/gates/pending/T-20260826-001.md` (severidad real seg\u00c3\u00ban `edit_non_prod_file` de `policy.yml` \u00e2\u20ac\u201d la tarea se auto-flageaba `low`, pero la clasificaci\u00c3\u00b3n de policy.yml prevalece).\n- **Observaci\u00c3\u00b3n fuera de esta tarea, no tocada:** al hacer `git status` se encontr\u00c3\u00b3 que los 16 archivos que viv\u00c3\u00adan en `gates/pending/` (de T-20260821-002-redo a T-20260825-009) ya no est\u00c3\u00a1n ah\u00c3\u00ad \u00e2\u20ac\u201d aparecen como `D` (borrados, sin commitear) en `pending/` y existen f\u00c3\u00adsicamente, sin trackear todav\u00c3\u00ada, en un nuevo directorio `gates/approved/` con los mismos nombres y timestamps de modificaci\u00c3\u00b3n entre 2026-08-21 y 2026-08-26. Esto no lo hizo esta sesi\u00c3\u00b3n (no se toc\u00c3\u00b3 ning\u00c3\u00ban archivo de `gates/` fuera de crear el propio `T-20260826-001.md` en `pending/`). Es consistente con el invariante de `roles/registry.yml` (\"gates/approved/ solo la escribe el mecanismo de aprobaci\u00c3\u00b3n humana en s\u00c3\u00ad, nunca un agente\") \u00e2\u20ac\u201d lectura m\u00c3\u00a1s probable es que el usuario movi\u00c3\u00b3 los gates ya aprobados a mano fuera de esta sesi\u00c3\u00b3n. Se\u00c3\u00b1alado para que quede rastro; no se revirti\u00c3\u00b3 ni se commite\u00c3\u00b3 nada de `gates/` salvo el archivo nuevo de esta tarea. `AGENTS.md`, `app/page.tsx` y `.circuit-breaker-state.json` tambi\u00c3\u00a9n ya estaban modificados sin commitear al empezar esta sesi\u00c3\u00b3n (no relacionado a T-20260826-001, no tocado).\n\n## Sesi\u00c3\u00b3n 2026-08-26 (cont.) \u00e2\u20ac\u201d convenci\u00c3\u00b3n de hooks `hooks/use<Nombre>.ts`"
+      }
     },
     "C:/Workspaces/SharedDocuments/gym-saas/.agents/graph/sessions/progress.md::Notas_adicionales": {
       "kind": "Section",
@@ -4552,13 +4573,16 @@
       "file_path": "C:/Workspaces/SharedDocuments/gym-saas/.agents/skills/supabase-postgres-best-practices/references/data-n-plus-one.md",
       "start_line": 8,
       "end_line": 53,
-      "state": "unknown",
+      "state": "partial",
       "docstring": "",
       "raw_source": "",
       "file_hash": "f5c60f85f208161cd7567bb7cff0f559618814216a4426bb1351b51f75ec334d",
       "body_start_line": 0,
       "body_end_line": 0,
-      "community": 41
+      "community": 41,
+      "views": {
+        "skeleton": "## Eliminate N+1 Queries with Batch Loading\n\nN+1 queries execute one query per item in a loop. Batch them into a single query using arrays or JOINs.\n\n**Incorrect (N+1 queries):**\n\n```sql\n-- First query: get all users\nselect id from users where active = true;  -- Returns 100 IDs\n\n-- Then N queries, one per user\nselect * from orders where user_id = 1;\nselect * from orders where user_id = 2;\nselect * from orders where user_id = 3;\n-- ... 97 more queries!\n\n-- Total: 101 round trips to database\n```\n\n**Correct (single batch query):**\n\n```sql\n-- Collect IDs and query once with ANY\nselect * from orders where user_id = any(array[1, 2, 3, ...]);\n\n-- Or use JOIN instead of loop\nselect u.id, u.name, o.*\nfrom users u\nleft join orders o on o.user_id = u.id\nwhere u.active = true;\n\n-- Total: 1 round trip\n```\n\nApplication pattern:\n\n```sql\n-- Instead of looping in application code:\n-- for user in users: db.query(\"SELECT * FROM orders WHERE user_id = $1\", user.id)\n\n-- Pass array parameter:\nselect * from orders where user_id = any($1::bigint[]);\n-- Application passes: [1, 2, 3, 4, 5, ...]\n```\n\nReference: [N+1 Query Problem](https://supabase.com/docs/guides/database/query-optimization)"
+      }
     },
     "C:/Workspaces/SharedDocuments/gym-saas/.agents/skills/supabase-postgres-best-practices/references/data-pagination.md": {
       "kind": "File",
@@ -8274,13 +8298,16 @@
       "file_path": "C:/Workspaces/SharedDocuments/gym-saas/db/policies/README.md",
       "start_line": 8,
       "end_line": 21,
-      "state": "unknown",
+      "state": "partial",
       "docstring": "",
       "raw_source": "",
       "file_hash": "fc96e71a23e8a86f02918500c8ab48bb0ddff2f2db1124ccacafadbb42707ddf",
       "body_start_line": 0,
       "body_end_line": 0,
-      "community": 93
+      "community": 93,
+      "views": {
+        "skeleton": "## Numbering convention\n\nFiles are applied in filename order, so they're prefixed `NNNN_` (4-digit,\nzero-padded, gapless) exactly like Drizzle's own migration files:\n\n- `0001_enable_rls.sql`\n- `0002_tenant_isolation_policies.sql`\n\nEach file should be a focused, idempotent unit \u00e2\u20ac\u201d safe to re-run against a\ndatabase that already has it applied (`ENABLE ROW LEVEL SECURITY` is\nnaturally idempotent; policy files use `DROP POLICY IF EXISTS` before\n`CREATE POLICY` since Postgres has no `CREATE POLICY IF NOT EXISTS`).\n\n## Adding a new policy"
+      }
     },
     "C:/Workspaces/SharedDocuments/gym-saas/db/policies/README.md::Adding_a_new_policy": {
       "kind": "Section",
@@ -19387,13 +19414,16 @@
       "file_path": "C:/Workspaces/SharedDocuments/gym-saas/reducto-out/obsidian-vault/Eliminate N+1 Queries with Batch Loading.md",
       "start_line": 1,
       "end_line": 11,
-      "state": "unknown",
+      "state": "partial",
       "docstring": "",
       "raw_source": "",
       "file_hash": "7712dc54400718d7f019384ec7b68b5d9f7aa87e45d4014267679beefd91db37",
       "body_start_line": 0,
       "body_end_line": 0,
-      "community": 237
+      "community": 237,
+      "views": {
+        "skeleton": "# Eliminate N+1 Queries with Batch Loading\n\n**Kind:** Section  \n**State:** unknown  \n**File:** `C:/Workspaces/SharedDocuments/gym-saas/.agents/skills/supabase-postgres-best-practices/references/data-n-plus-one.md`  \n**Line:** 8  \n**Community:** 23  \n\n## Referenced by\n\n- **DEFINES** \u00e2\u2020\ufffd [[data-n-plus-one]]"
+      }
     },
     "C:/Workspaces/SharedDocuments/gym-saas/reducto-out/obsidian-vault/Eliminate N+1 Queries with Batch Loading.md::Eliminate_N+1_Queries_with_Batch_Loading": {
       "kind": "Section",
@@ -19401,13 +19431,16 @@
       "file_path": "C:/Workspaces/SharedDocuments/gym-saas/reducto-out/obsidian-vault/Eliminate N+1 Queries with Batch Loading.md",
       "start_line": 1,
       "end_line": 11,
-      "state": "unknown",
+      "state": "partial",
       "docstring": "",
       "raw_source": "",
       "file_hash": "7712dc54400718d7f019384ec7b68b5d9f7aa87e45d4014267679beefd91db37",
       "body_start_line": 0,
       "body_end_line": 0,
-      "community": 237
+      "community": 237,
+      "views": {
+        "skeleton": "# Eliminate N+1 Queries with Batch Loading\n\n**Kind:** Section  \n**State:** unknown  \n**File:** `C:/Workspaces/SharedDocuments/gym-saas/.agents/skills/supabase-postgres-best-practices/references/data-n-plus-one.md`  \n**Line:** 8  \n**Community:** 23  \n\n## Referenced by\n\n- **DEFINES** \u00e2\u2020\ufffd [[data-n-plus-one]]"
+      }
     },
     "C:/Workspaces/SharedDocuments/gym-saas/reducto-out/obsidian-vault/Eliminate N+1 Queries with Batch Loading.md::Referenced_by": {
       "kind": "Section",
@@ -25355,13 +25388,16 @@
       "file_path": "C:/Workspaces/SharedDocuments/gym-saas/reducto-out/obsidian-vault/Numbering convention.md",
       "start_line": 1,
       "end_line": 11,
-      "state": "unknown",
+      "state": "partial",
       "docstring": "",
       "raw_source": "",
       "file_hash": "4b64e868996c69d5b2d3299f441d394cdf57f01e0efb1bb2a483c95800ee6a30",
       "body_start_line": 0,
       "body_end_line": 0,
-      "community": 368
+      "community": 368,
+      "views": {
+        "skeleton": "# Numbering convention\n\n**Kind:** Section  \n**State:** unknown  \n**File:** `C:/Workspaces/SharedDocuments/gym-saas/db/policies/README.md`  \n**Line:** 8  \n**Community:** 54  \n\n## Referenced by\n\n- **DEFINES** \u00e2\u2020\ufffd [[db_policies]]"
+      }
     },
     "C:/Workspaces/SharedDocuments/gym-saas/reducto-out/obsidian-vault/Numbering convention.md::Numbering_convention": {
       "kind": "Section",
@@ -25369,13 +25405,16 @@
       "file_path": "C:/Workspaces/SharedDocuments/gym-saas/reducto-out/obsidian-vault/Numbering convention.md",
       "start_line": 1,
       "end_line": 11,
-      "state": "unknown",
+      "state": "partial",
       "docstring": "",
       "raw_source": "",
       "file_hash": "4b64e868996c69d5b2d3299f441d394cdf57f01e0efb1bb2a483c95800ee6a30",
       "body_start_line": 0,
       "body_end_line": 0,
-      "community": 368
+      "community": 368,
+      "views": {
+        "skeleton": "# Numbering convention\n\n**Kind:** Section  \n**State:** unknown  \n**File:** `C:/Workspaces/SharedDocuments/gym-saas/db/policies/README.md`  \n**Line:** 8  \n**Community:** 54  \n\n## Referenced by\n\n- **DEFINES** \u00e2\u2020\ufffd [[db_policies]]"
+      }
     },
     "C:/Workspaces/SharedDocuments/gym-saas/reducto-out/obsidian-vault/Numbering convention.md::Referenced_by": {
       "kind": "Section",
@@ -35067,13 +35106,16 @@
       "file_path": "C:/Workspaces/SharedDocuments/gym-saas/.agents/graph/gates/pending/T-20260826-004.md",
       "start_line": 1,
       "end_line": 39,
-      "state": "unknown",
+      "state": "partial",
       "docstring": "",
       "raw_source": "",
       "file_hash": "6301541535cc77b31f0dbdf8408f703b3933508fabc4be541520fe56527f7dd1",
       "body_start_line": 0,
       "body_end_line": 0,
-      "community": 571
+      "community": 571,
+      "views": {
+        "skeleton": "# Gate: T-20260826-004 \u00e2\u20ac\u201d Skeleton en la ficha de socio (`member-detail-page`)\n\n- severity: medium (`edit_non_prod_file`, UI pura sin tocar base de datos \u00e2\u20ac\u201d mismo criterio que T-20260825-010)\n- approval_mode: async\n- created: 2026-08-26\n\n## Qu\u00c3\u00a9 se hizo\n\n`features/member-detail-page/index.tsx` reemplaza el early-return de `loading` (antes `<p>Cargando...</p>`) por `<MemberDetailSkeleton />`, un componente nuevo que replica la estructura real de la p\u00c3\u00a1gina con los valores dependientes de datos reemplazados por placeholders animados.\n\n- `components/ui/skeleton.tsx` (nuevo) \u00e2\u20ac\u201d primitivo gen\u00c3\u00a9rico `animate-pulse rounded-md bg-muted`, mismo patr\u00c3\u00b3n `cn()`/`className` que `Button`/`Input` en la misma carpeta.\n- `features/member-detail-page/components/member-detail-skeleton.tsx` (nuevo) + `.module.css` (nuevo) \u00e2\u20ac\u201d reutiliza `Table`/`TableHeader`/`TableRow`/`TableHead`/`TableCell` reales y los t\u00c3\u00adtulos/columnas est\u00c3\u00a1ticos (\"Membres\u00c3\u00adas\", \"Pagos\", \"Check-ins\", \"Recordatorios\", nombres de columna), reemplazando solo lo que depende de datos: nombre del socio, los 6 valores de `dl` (C\u00c3\u00b3digo/Email/Tel\u00c3\u00a9fono/Nacimiento/DNI/Certificado m\u00c3\u00a9dico), los botones de acci\u00c3\u00b3n de cada secci\u00c3\u00b3n (dependen de props que no existen todav\u00c3\u00ada) y 3 filas placeholder por tabla.\n- `features/member-detail-page/index.module.css` \u00e2\u20ac\u201d se elimin\u00c3\u00b3 `.loadingText`, sin uso desde el reemplazo.\n\n## Por qu\u00c3\u00a9 requiere revisi\u00c3\u00b3n\n\n- Cambia el estado de carga de una pantalla real del producto \u00e2\u20ac\u201d bajo riesgo (puramente visual, sin tocar datos ni permisos) pero visible para todo owner/staff que abra una ficha de socio.\n- **Decisi\u00c3\u00b3n propia, no bloqueante:** la tarea tra\u00c3\u00ada una `open_question` sobre si crear un componente `Skeleton` reusable en `components/ui/` o resolverlo ad-hoc. Se decidi\u00c3\u00b3 crear el primitivo reusable \u00e2\u20ac\u201d es el patr\u00c3\u00b3n est\u00c3\u00a1ndar shadcn/ui, mismo `cn()`/`className` que ya usan `Button`/`Input`/`Table`, y deja la puerta abierta para otras 6 pantallas del proyecto que hoy tambi\u00c3\u00a9n muestran \"Cargando...\" (`checkin-page`, `schedules-page`, `staff-page`, `members-page`, `plans-page` \u00e2\u20ac\u201d no tocadas, fuera del alcance literal de esta tarea).\n- Se reutiliz\u00c3\u00b3 el componente `Table` real (en vez de un `<div>` armado a mano) espec\u00c3\u00adficamente para heredar su radio ya cappeado (`min(var(--radius-md),12px)`) y no reintroducir el bug de contenedores-\u00c3\u00b3valo que document\u00c3\u00b3 T-20260825-010.\n\n## Verificaci\u00c3\u00b3n\n\n- `npx tsc --noEmit`: limpio.\n- `npx eslint features/member-detail-page components/ui/skeleton.tsx`: limpio.\n- Detector mec\u00c3\u00a1nico de `impeccable` sobre `features/member-detail-page`: limpio, sin advisories, exit 0.\n- `npm run test:unit`: **34/34 verde** (9/9 archivos).\n- `reducto context` post-tarea: 83% de tokens ahorrados en la sesi\u00c3\u00b3n \u00e2\u20ac\u201d confirma que T-20260826-003 (resolver el subgrafo por `path:` de la tarea) funciona en la pr\u00c3\u00a1ctica; cierra el gap que hab\u00c3\u00ada quedado abierto en el gate de esa tarea sobre si `reducto query --resolve` acepta paths nativamente (s\u00c3\u00ad: un path de archivo funciona como query directa).\n\n## Gaps conocidos\n\n- Sin verificaci\u00c3\u00b3n visual en navegador (requiere sesi\u00c3\u00b3n real autenticada, mismo gap estructural documentado en sesiones anteriores) \u00e2\u20ac\u201d no se confirm\u00c3\u00b3 que el skeleton se vea bien en la pr\u00c3\u00a1ctica, solo que el c\u00c3\u00b3digo compila/lintea/testea limpio y replica la estructura del JSX real.\n- Las otras 6 pantallas con \"Cargando...\" (`checkin-page`, `dashboard-page`, `schedules-page`, `staff-page`, `members-page`, `plans-page`) quedan sin skeleton \u00e2\u20ac\u201d fuera del alcance literal de la tarea, se\u00c3\u00b1alado por si el usuario quiere extenderlo.\n- No se reindex\u00c3\u00b3 el grafo (`knowledge/`) tras agregar los 3 archivos nuevos \u00e2\u20ac\u201d quedan sin nodo propio hasta el pr\u00c3\u00b3ximo `--reindex`.\n\n## Aprobaci\u00c3\u00b3n\n\n- [ ] Aprobado por:\n- [ ] Fecha:\n- Sin comando post-aprobaci\u00c3\u00b3n pendiente \u00e2\u20ac\u201d no hay migraci\u00c3\u00b3n ni cambio de datos reales en esta tarea."
+      }
     },
     "C:/Workspaces/SharedDocuments/gym-saas/.agents/graph/gates/pending/T-20260826-004.md::Gate:_T-20260826-004_\u2014_Skeleton_en_la_ficha_de_socio_(`member-detail-page`)": {
       "kind": "Section",
@@ -35081,13 +35123,16 @@
       "file_path": "C:/Workspaces/SharedDocuments/gym-saas/.agents/graph/gates/pending/T-20260826-004.md",
       "start_line": 1,
       "end_line": 39,
-      "state": "unknown",
+      "state": "partial",
       "docstring": "",
       "raw_source": "",
       "file_hash": "6301541535cc77b31f0dbdf8408f703b3933508fabc4be541520fe56527f7dd1",
       "body_start_line": 0,
       "body_end_line": 0,
-      "community": 571
+      "community": 571,
+      "views": {
+        "skeleton": "# Gate: T-20260826-004 \u00e2\u20ac\u201d Skeleton en la ficha de socio (`member-detail-page`)\n\n- severity: medium (`edit_non_prod_file`, UI pura sin tocar base de datos \u00e2\u20ac\u201d mismo criterio que T-20260825-010)\n- approval_mode: async\n- created: 2026-08-26\n\n## Qu\u00c3\u00a9 se hizo\n\n`features/member-detail-page/index.tsx` reemplaza el early-return de `loading` (antes `<p>Cargando...</p>`) por `<MemberDetailSkeleton />`, un componente nuevo que replica la estructura real de la p\u00c3\u00a1gina con los valores dependientes de datos reemplazados por placeholders animados.\n\n- `components/ui/skeleton.tsx` (nuevo) \u00e2\u20ac\u201d primitivo gen\u00c3\u00a9rico `animate-pulse rounded-md bg-muted`, mismo patr\u00c3\u00b3n `cn()`/`className` que `Button`/`Input` en la misma carpeta.\n- `features/member-detail-page/components/member-detail-skeleton.tsx` (nuevo) + `.module.css` (nuevo) \u00e2\u20ac\u201d reutiliza `Table`/`TableHeader`/`TableRow`/`TableHead`/`TableCell` reales y los t\u00c3\u00adtulos/columnas est\u00c3\u00a1ticos (\"Membres\u00c3\u00adas\", \"Pagos\", \"Check-ins\", \"Recordatorios\", nombres de columna), reemplazando solo lo que depende de datos: nombre del socio, los 6 valores de `dl` (C\u00c3\u00b3digo/Email/Tel\u00c3\u00a9fono/Nacimiento/DNI/Certificado m\u00c3\u00a9dico), los botones de acci\u00c3\u00b3n de cada secci\u00c3\u00b3n (dependen de props que no existen todav\u00c3\u00ada) y 3 filas placeholder por tabla.\n- `features/member-detail-page/index.module.css` \u00e2\u20ac\u201d se elimin\u00c3\u00b3 `.loadingText`, sin uso desde el reemplazo.\n\n## Por qu\u00c3\u00a9 requiere revisi\u00c3\u00b3n\n\n- Cambia el estado de carga de una pantalla real del producto \u00e2\u20ac\u201d bajo riesgo (puramente visual, sin tocar datos ni permisos) pero visible para todo owner/staff que abra una ficha de socio.\n- **Decisi\u00c3\u00b3n propia, no bloqueante:** la tarea tra\u00c3\u00ada una `open_question` sobre si crear un componente `Skeleton` reusable en `components/ui/` o resolverlo ad-hoc. Se decidi\u00c3\u00b3 crear el primitivo reusable \u00e2\u20ac\u201d es el patr\u00c3\u00b3n est\u00c3\u00a1ndar shadcn/ui, mismo `cn()`/`className` que ya usan `Button`/`Input`/`Table`, y deja la puerta abierta para otras 6 pantallas del proyecto que hoy tambi\u00c3\u00a9n muestran \"Cargando...\" (`checkin-page`, `schedules-page`, `staff-page`, `members-page`, `plans-page` \u00e2\u20ac\u201d no tocadas, fuera del alcance literal de esta tarea).\n- Se reutiliz\u00c3\u00b3 el componente `Table` real (en vez de un `<div>` armado a mano) espec\u00c3\u00adficamente para heredar su radio ya cappeado (`min(var(--radius-md),12px)`) y no reintroducir el bug de contenedores-\u00c3\u00b3valo que document\u00c3\u00b3 T-20260825-010.\n\n## Verificaci\u00c3\u00b3n\n\n- `npx tsc --noEmit`: limpio.\n- `npx eslint features/member-detail-page components/ui/skeleton.tsx`: limpio.\n- Detector mec\u00c3\u00a1nico de `impeccable` sobre `features/member-detail-page`: limpio, sin advisories, exit 0.\n- `npm run test:unit`: **34/34 verde** (9/9 archivos).\n- `reducto context` post-tarea: 83% de tokens ahorrados en la sesi\u00c3\u00b3n \u00e2\u20ac\u201d confirma que T-20260826-003 (resolver el subgrafo por `path:` de la tarea) funciona en la pr\u00c3\u00a1ctica; cierra el gap que hab\u00c3\u00ada quedado abierto en el gate de esa tarea sobre si `reducto query --resolve` acepta paths nativamente (s\u00c3\u00ad: un path de archivo funciona como query directa).\n\n## Gaps conocidos\n\n- Sin verificaci\u00c3\u00b3n visual en navegador (requiere sesi\u00c3\u00b3n real autenticada, mismo gap estructural documentado en sesiones anteriores) \u00e2\u20ac\u201d no se confirm\u00c3\u00b3 que el skeleton se vea bien en la pr\u00c3\u00a1ctica, solo que el c\u00c3\u00b3digo compila/lintea/testea limpio y replica la estructura del JSX real.\n- Las otras 6 pantallas con \"Cargando...\" (`checkin-page`, `dashboard-page`, `schedules-page`, `staff-page`, `members-page`, `plans-page`) quedan sin skeleton \u00e2\u20ac\u201d fuera del alcance literal de la tarea, se\u00c3\u00b1alado por si el usuario quiere extenderlo.\n- No se reindex\u00c3\u00b3 el grafo (`knowledge/`) tras agregar los 3 archivos nuevos \u00e2\u20ac\u201d quedan sin nodo propio hasta el pr\u00c3\u00b3ximo `--reindex`.\n\n## Aprobaci\u00c3\u00b3n\n\n- [ ] Aprobado por:\n- [ ] Fecha:\n- Sin comando post-aprobaci\u00c3\u00b3n pendiente \u00e2\u20ac\u201d no hay migraci\u00c3\u00b3n ni cambio de datos reales en esta tarea."
+      }
     },
     "C:/Workspaces/SharedDocuments/gym-saas/.agents/graph/gates/pending/T-20260826-004.md::Qu\u00e9_se_hizo": {
       "kind": "Section",
@@ -35165,13 +35210,16 @@
       "file_path": "C:/Workspaces/SharedDocuments/gym-saas/.agents/graph/gates/pending/T-20260826-005.md",
       "start_line": 1,
       "end_line": 36,
-      "state": "unknown",
+      "state": "partial",
       "docstring": "",
       "raw_source": "",
       "file_hash": "ef1bc290b4df44b93220ad74c7d46c133de0688909b483df2b7db57964d356f7",
       "body_start_line": 0,
       "body_end_line": 0,
-      "community": 572
+      "community": 572,
+      "views": {
+        "skeleton": "# Gate: T-20260826-005 \u00e2\u20ac\u201d Skeleton en la grilla de Planes (`plans-page`)\n\n- severity: medium (`edit_non_prod_file`, UI pura sin tocar base de datos)\n- approval_mode: async\n- created: 2026-08-26\n\n## Qu\u00c3\u00a9 se hizo\n\n`features/plans-page/index.tsx` \u00e2\u20ac\u201d la rama `loading` del condicional (antes `<p>Cargando...</p>`) ahora renderiza 3 `<PlanCardSkeleton />` dentro del mismo `styles.grid` que usa la vista real. El header (`Planes` + bot\u00c3\u00b3n \"Nuevo plan\") no cambi\u00c3\u00b3 \u00e2\u20ac\u201d ya se renderizaba siempre, sin depender de `plans`.\n\n- `features/plans-page/components/plan-card-skeleton.tsx` (nuevo) + `.module.css` (nuevo) \u00e2\u20ac\u201d reusa `pageStyles.card` (el contenedor real de la card, con su radio ya cappeado) y reemplaza por `<Skeleton>` (`components/ui/skeleton.tsx`, creado en T-20260826-004, no se recre\u00c3\u00b3) los 4 elementos data-dependientes: `periodTag`, `cardName`, `cardPrice`, los 2 botones de `cardActions`.\n\n## Por qu\u00c3\u00a9 requiere revisi\u00c3\u00b3n\n\n- Cambia el estado de carga de una pantalla real del producto \u00e2\u20ac\u201d mismo criterio de riesgo bajo que T-20260826-004 (visual puro, sin datos ni permisos).\n- Segunda vez que se aplica este patr\u00c3\u00b3n (despu\u00c3\u00a9s de `member-detail-page`) \u00e2\u20ac\u201d confirma que el primitivo `Skeleton` gen\u00c3\u00a9rico es reusable entre features sin fricci\u00c3\u00b3n.\n\n## Verificaci\u00c3\u00b3n\n\n- `npx tsc --noEmit`: limpio.\n- `npx eslint features/plans-page`: limpio.\n- Detector mec\u00c3\u00a1nico de `impeccable` sobre `features/plans-page`: limpio, exit 0.\n- `npm run test:unit`: 23/34 verdes. **5 archivos fallaron por un error de conexi\u00c3\u00b3n a la base** (`checkin-checkout`, `checkin-requires-active-membership`, `dashboard-metrics`, `member-soft-delete`, `payment-extends-membership`) \u00e2\u20ac\u201d ninguno importa ni ejercita `plans-page` ni ning\u00c3\u00ban archivo tocado por esta tarea. Mismo patr\u00c3\u00b3n ambiental de fallas de DB documentado repetidamente en sesiones anteriores (antes como `PostgresError 53300` de pool agotado; esta vez el s\u00c3\u00adntoma fue un `TypeError` en el `afterAll` de `payment-extends-membership.test.ts` al intentar borrar un tenant que nunca se cre\u00c3\u00b3 \u00e2\u20ac\u201d consistente con que el `beforeAll` de esos tests fall\u00c3\u00b3 contra la base antes de llegar siquiera al test). No investigado m\u00c3\u00a1s a fondo por ser un problema de entorno de test, no de este cambio.\n- `reducto context` post-tarea: 83% de tokens ahorrados en la sesi\u00c3\u00b3n (segunda tarea consecutiva confirmando T-20260826-003).\n\n## Gaps conocidos\n\n- Sin verificaci\u00c3\u00b3n visual en navegador (mismo gap estructural de sesiones anteriores).\n- El `TypeError` de los 5 tests de integraci\u00c3\u00b3n no se investig\u00c3\u00b3 \u00e2\u20ac\u201d si se repite en la pr\u00c3\u00b3xima sesi\u00c3\u00b3n, vale la pena revisar la config de conexi\u00c3\u00b3n a la base de test (`.env.test`/pool), no solo asumir que es el mismo `PostgresError 53300` de siempre sin confirmarlo.\n- No se reindex\u00c3\u00b3 el grafo (`knowledge/`) tras los 2 archivos nuevos.\n\n## Aprobaci\u00c3\u00b3n\n\n- [ ] Aprobado por:\n- [ ] Fecha:\n- Sin comando post-aprobaci\u00c3\u00b3n pendiente \u00e2\u20ac\u201d no hay migraci\u00c3\u00b3n ni cambio de datos reales en esta tarea."
+      }
     },
     "C:/Workspaces/SharedDocuments/gym-saas/.agents/graph/gates/pending/T-20260826-005.md::Gate:_T-20260826-005_\u2014_Skeleton_en_la_grilla_de_Planes_(`plans-page`)": {
       "kind": "Section",
@@ -35179,13 +35227,16 @@
       "file_path": "C:/Workspaces/SharedDocuments/gym-saas/.agents/graph/gates/pending/T-20260826-005.md",
       "start_line": 1,
       "end_line": 36,
-      "state": "unknown",
+      "state": "partial",
       "docstring": "",
       "raw_source": "",
       "file_hash": "ef1bc290b4df44b93220ad74c7d46c133de0688909b483df2b7db57964d356f7",
       "body_start_line": 0,
       "body_end_line": 0,
-      "community": 572
+      "community": 572,
+      "views": {
+        "skeleton": "# Gate: T-20260826-005 \u00e2\u20ac\u201d Skeleton en la grilla de Planes (`plans-page`)\n\n- severity: medium (`edit_non_prod_file`, UI pura sin tocar base de datos)\n- approval_mode: async\n- created: 2026-08-26\n\n## Qu\u00c3\u00a9 se hizo\n\n`features/plans-page/index.tsx` \u00e2\u20ac\u201d la rama `loading` del condicional (antes `<p>Cargando...</p>`) ahora renderiza 3 `<PlanCardSkeleton />` dentro del mismo `styles.grid` que usa la vista real. El header (`Planes` + bot\u00c3\u00b3n \"Nuevo plan\") no cambi\u00c3\u00b3 \u00e2\u20ac\u201d ya se renderizaba siempre, sin depender de `plans`.\n\n- `features/plans-page/components/plan-card-skeleton.tsx` (nuevo) + `.module.css` (nuevo) \u00e2\u20ac\u201d reusa `pageStyles.card` (el contenedor real de la card, con su radio ya cappeado) y reemplaza por `<Skeleton>` (`components/ui/skeleton.tsx`, creado en T-20260826-004, no se recre\u00c3\u00b3) los 4 elementos data-dependientes: `periodTag`, `cardName`, `cardPrice`, los 2 botones de `cardActions`.\n\n## Por qu\u00c3\u00a9 requiere revisi\u00c3\u00b3n\n\n- Cambia el estado de carga de una pantalla real del producto \u00e2\u20ac\u201d mismo criterio de riesgo bajo que T-20260826-004 (visual puro, sin datos ni permisos).\n- Segunda vez que se aplica este patr\u00c3\u00b3n (despu\u00c3\u00a9s de `member-detail-page`) \u00e2\u20ac\u201d confirma que el primitivo `Skeleton` gen\u00c3\u00a9rico es reusable entre features sin fricci\u00c3\u00b3n.\n\n## Verificaci\u00c3\u00b3n\n\n- `npx tsc --noEmit`: limpio.\n- `npx eslint features/plans-page`: limpio.\n- Detector mec\u00c3\u00a1nico de `impeccable` sobre `features/plans-page`: limpio, exit 0.\n- `npm run test:unit`: 23/34 verdes. **5 archivos fallaron por un error de conexi\u00c3\u00b3n a la base** (`checkin-checkout`, `checkin-requires-active-membership`, `dashboard-metrics`, `member-soft-delete`, `payment-extends-membership`) \u00e2\u20ac\u201d ninguno importa ni ejercita `plans-page` ni ning\u00c3\u00ban archivo tocado por esta tarea. Mismo patr\u00c3\u00b3n ambiental de fallas de DB documentado repetidamente en sesiones anteriores (antes como `PostgresError 53300` de pool agotado; esta vez el s\u00c3\u00adntoma fue un `TypeError` en el `afterAll` de `payment-extends-membership.test.ts` al intentar borrar un tenant que nunca se cre\u00c3\u00b3 \u00e2\u20ac\u201d consistente con que el `beforeAll` de esos tests fall\u00c3\u00b3 contra la base antes de llegar siquiera al test). No investigado m\u00c3\u00a1s a fondo por ser un problema de entorno de test, no de este cambio.\n- `reducto context` post-tarea: 83% de tokens ahorrados en la sesi\u00c3\u00b3n (segunda tarea consecutiva confirmando T-20260826-003).\n\n## Gaps conocidos\n\n- Sin verificaci\u00c3\u00b3n visual en navegador (mismo gap estructural de sesiones anteriores).\n- El `TypeError` de los 5 tests de integraci\u00c3\u00b3n no se investig\u00c3\u00b3 \u00e2\u20ac\u201d si se repite en la pr\u00c3\u00b3xima sesi\u00c3\u00b3n, vale la pena revisar la config de conexi\u00c3\u00b3n a la base de test (`.env.test`/pool), no solo asumir que es el mismo `PostgresError 53300` de siempre sin confirmarlo.\n- No se reindex\u00c3\u00b3 el grafo (`knowledge/`) tras los 2 archivos nuevos.\n\n## Aprobaci\u00c3\u00b3n\n\n- [ ] Aprobado por:\n- [ ] Fecha:\n- Sin comando post-aprobaci\u00c3\u00b3n pendiente \u00e2\u20ac\u201d no hay migraci\u00c3\u00b3n ni cambio de datos reales en esta tarea."
+      }
     },
     "C:/Workspaces/SharedDocuments/gym-saas/.agents/graph/gates/pending/T-20260826-005.md::Qu\u00e9_se_hizo": {
       "kind": "Section",
@@ -35291,13 +35342,16 @@
       "file_path": "C:/Workspaces/SharedDocuments/gym-saas/.agents/graph/sessions/progress.md",
       "start_line": 182,
       "end_line": 191,
-      "state": "unknown",
+      "state": "partial",
       "docstring": "",
       "raw_source": "",
-      "file_hash": "8d4921b07278e06043f37086082f6af6bffceb84be7e7176c252562705bb66bc",
+      "file_hash": "a4310323e2fc370e369269565b8b19b12eea178f5270ea6714a117e917c593e4",
       "body_start_line": 0,
       "body_end_line": 0,
-      "community": 20
+      "community": 20,
+      "views": {
+        "skeleton": "## Sesi\u00c3\u00b3n 2026-08-26 (cont.) \u00e2\u20ac\u201d `#task` + `#run T-20260826-004`: skeleton en `member-detail-page`\n- Usuario pidi\u00c3\u00b3 (con `owner-nav.module.css` abierto en el IDE, no relacionado) crear un skeleton en la ficha de socio para reemplazar \"Cargando...\" \u00e2\u20ac\u201d misma estructura que la vista con datos, con cada secci\u00c3\u00b3n en versi\u00c3\u00b3n skeleton. Registrada como **T-20260826-004**, sin ejecutar hasta el `#run` expl\u00c3\u00adcito del turno siguiente.\n- Al correr `#run T-20260826-004`, primer uso real del paso nuevo de `AGENTS.md` (T-20260826-003): `reducto query \"features/member-detail-page/index.tsx\" --resolve --view skeleton` \u00e2\u20ac\u201d **confirmado que un path de archivo funciona directamente como query**, sin necesitar sintaxis especial. Cierra el gap que hab\u00c3\u00ada quedado abierto en el gate de T-003.\n- Le\u00c3\u00addo el archivo completo (`Read`, tras el resolve de reducto) para tener el JSX exacto a replicar. `open_question` de la tarea resuelta sin bloquear: no exist\u00c3\u00ada `Skeleton` en `components/ui/` \u00e2\u20ac\u201d se cre\u00c3\u00b3 uno (primitivo est\u00c3\u00a1ndar shadcn, mismo patr\u00c3\u00b3n `cn()` que `Button`/`Input`), documentado como decisi\u00c3\u00b3n propia en el gate.\n- Construido `MemberDetailSkeleton` (`features/member-detail-page/components/member-detail-skeleton.tsx` + `.module.css`): reutiliza los componentes `Table` reales y todo el texto est\u00c3\u00a1tico (t\u00c3\u00adtulos de secci\u00c3\u00b3n, labels, encabezados de columna), reemplazando por `<Skeleton>` solo lo que depende de datos \u00e2\u20ac\u201d nombre, 6 valores del `dl`, botones de acci\u00c3\u00b3n (dependen de props no disponibles a\u00c3\u00ban), 3 filas placeholder por tabla. Se reus\u00c3\u00b3 `Table` (no un `<div>` a mano) a prop\u00c3\u00b3sito para heredar su radio ya cappeado y no reintroducir el bug de contenedores-\u00c3\u00b3valo de T-20260825-010. `index.module.css` perdi\u00c3\u00b3 `.loadingText`, sin uso tras el cambio.\n- `tsc --noEmit`, `eslint features/member-detail-page components/ui/skeleton.tsx` y el detector mec\u00c3\u00a1nico de `impeccable` (paso obligatorio tras UI): los 3 limpios. `test:unit`: **34/34 verde**, sin el `PostgresError` de pool que ven\u00c3\u00ada apareciendo intermitentemente.\n- `reducto context` post-tarea: **83% de tokens ahorrados** en la sesi\u00c3\u00b3n (9 queries, 6.026 usados vs. 35.130 sin Reducto) \u00e2\u20ac\u201d primera confirmaci\u00c3\u00b3n pr\u00c3\u00a1ctica de que T-20260826-003 funciona de punta a punta.\n- Gate `medium`/async abierto en `graph/gates/pending/T-20260826-004.md`, sin aprobar todav\u00c3\u00ada. **Gaps se\u00c3\u00b1alados:** sin verificaci\u00c3\u00b3n visual en navegador (mismo gap estructural de siempre); las otras 6 pantallas del proyecto que tambi\u00c3\u00a9n muestran \"Cargando...\" quedan sin skeleton, fuera del alcance literal de esta tarea; grafo (`knowledge/`) sin reindexar tras los 3 archivos nuevos.\n\n## Sesi\u00c3\u00b3n 2026-08-26 (cont.) \u00e2\u20ac\u201d `#task` + `#run T-20260826-005`: skeleton en `plans-page`"
+      }
     },
     "C:/Workspaces/SharedDocuments/gym-saas/.agents/graph/sessions/progress.md::Sesi\u00f3n_2026-08-26_(cont.)_\u2014_`#task`_+_`#run_T-20260826-005`:_skeleton_en_`plans-page`": {
       "kind": "Section",
@@ -35305,13 +35359,16 @@
       "file_path": "C:/Workspaces/SharedDocuments/gym-saas/.agents/graph/sessions/progress.md",
       "start_line": 191,
       "end_line": 202,
-      "state": "unknown",
+      "state": "partial",
       "docstring": "",
       "raw_source": "",
-      "file_hash": "8d4921b07278e06043f37086082f6af6bffceb84be7e7176c252562705bb66bc",
+      "file_hash": "a4310323e2fc370e369269565b8b19b12eea178f5270ea6714a117e917c593e4",
       "body_start_line": 0,
       "body_end_line": 0,
-      "community": 20
+      "community": 20,
+      "views": {
+        "skeleton": "## Sesi\u00c3\u00b3n 2026-08-26 (cont.) \u00e2\u20ac\u201d `#task` + `#run T-20260826-005`: skeleton en `plans-page`\n- Usuario pidi\u00c3\u00b3 \"lo mismo con plans\" \u00e2\u20ac\u201d misma l\u00c3\u00b3gica de skeleton, reemplazar \"Cargando...\" con la estructura real de `plans-page`. Registrada como **T-20260826-005**, sin ejecutar hasta el `#run` expl\u00c3\u00adcito.\n- Al leer `features/plans-page/index.tsx` se confirm\u00c3\u00b3 una diferencia estructural con T-20260826-004: ac\u00c3\u00a1 `loading` es un condicional inline (no un early-return) \u00e2\u20ac\u201d el header (`Planes` + bot\u00c3\u00b3n \"Nuevo plan\") ya se renderiza siempre, real e interactivo, sin depender de `plans`. Solo el \u00c3\u00a1rea de la grilla necesitaba skeleton.\n- `reducto query \"features/plans-page/index.tsx\" --resolve --view skeleton` antes de tocar c\u00c3\u00b3digo (paso de T-20260826-003, segunda vez que se aplica en la pr\u00c3\u00a1ctica).\n- Construido `PlanCardSkeleton` (`features/plans-page/components/plan-card-skeleton.tsx` + `.module.css`): reusa `pageStyles.card` (el contenedor real, radio ya cappeado \u00e2\u20ac\u201d el propio `index.module.css` de `plans-page` trae un comentario expl\u00c3\u00adcito sobre el bug \u00c3\u00b3valo de T-20260825-010, as\u00c3\u00ad que reusar la clase real en vez de reinventarla era la \u00c3\u00banica opci\u00c3\u00b3n correcta) y reemplaza por `<Skeleton>` los 4 elementos data-dependientes (`periodTag`/`cardName`/`cardPrice`/2 botones de `cardActions`). No hizo falta recrear el primitivo `Skeleton` \u00e2\u20ac\u201d ya exist\u00c3\u00ada desde T-20260826-004, confirma que qued\u00c3\u00b3 reusable como se document\u00c3\u00b3 en su gate.\n- `index.tsx`: la rama `loading` pasa de `<p>Cargando...</p>` a 3 `<PlanCardSkeleton />` dentro del mismo `styles.grid` real.\n- `tsc --noEmit`, `eslint features/plans-page`, detector de `impeccable`: los 3 limpios.\n- `test:unit`: **23/34 verdes, 5 archivos fallaron** (`checkin-checkout`, `checkin-requires-active-membership`, `dashboard-metrics`, `member-soft-delete`, `payment-extends-membership`) \u00e2\u20ac\u201d ninguno relacionado a `plans-page`. S\u00c3\u00adntoma distinto al `PostgresError 53300` habitual: esta vez un `TypeError` en el `afterAll` de `payment-extends-membership.test.ts` al borrar un tenant que nunca lleg\u00c3\u00b3 a crearse, consistente con que el `beforeAll` fall\u00c3\u00b3 contra la base antes del test. Tratado como el mismo patr\u00c3\u00b3n ambiental de sesiones anteriores sin investigar m\u00c3\u00a1s \u00e2\u20ac\u201d **se\u00c3\u00b1alado para revisi\u00c3\u00b3n si se repite**, porque el s\u00c3\u00adntoma cambi\u00c3\u00b3.\n- `reducto context` post-tarea: 83% de tokens ahorrados \u00e2\u20ac\u201d segunda tarea consecutiva confirmando T-20260826-003.\n- Gate `medium`/async abierto en `graph/gates/pending/T-20260826-005.md`, sin aprobar todav\u00c3\u00ada.\n\n## Sesi\u00c3\u00b3n 2026-08-26 (cont.) \u00e2\u20ac\u201d diagn\u00c3\u00b3stico + `#task` T-20260826-006: staff no puede entrar al dashboard"
+      }
     },
     "C:/Workspaces/SharedDocuments/gym-saas/components/ui/skeleton.tsx": {
       "kind": "File",
@@ -35319,13 +35376,16 @@
       "file_path": "C:/Workspaces/SharedDocuments/gym-saas/components/ui/skeleton.tsx",
       "start_line": 1,
       "end_line": 15,
-      "state": "unknown",
+      "state": "partial",
       "docstring": "",
       "raw_source": "",
       "file_hash": "e02263d66cc5c93368ff499c976ff836d34d3e543d19d78e67b66aeb46c6acc1",
       "body_start_line": 0,
       "body_end_line": 0,
-      "community": 94
+      "community": 94,
+      "views": {
+        "skeleton": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\n...\n\nexport { Skeleton }"
+      }
     },
     "C:/Workspaces/SharedDocuments/gym-saas/components/ui/skeleton.tsx::Skeleton": {
       "kind": "Function",
@@ -37327,13 +37387,16 @@
       "file_path": "C:/Workspaces/SharedDocuments/gym-saas/features/schedules-page/components/class-occurrence-dialog.tsx",
       "start_line": 1,
       "end_line": 319,
-      "state": "unknown",
+      "state": "partial",
       "docstring": "",
       "raw_source": "",
       "file_hash": "e3b809ab9bc303f68e5e1c39f503f35b028a591022645e38d123c4ec6176737b",
       "body_start_line": 0,
       "body_end_line": 0,
-      "community": 582
+      "community": 582,
+      "views": {
+        "skeleton": "\"use client\";\n\nimport { useCallback, useEffect, useMemo, useState, type ReactElement } from \"react\";\nimport type { ClassSchedule } from \"@/db/schema/class-schedules\";\nimport type { Member } from \"@/db/schema/members\";\nimport { Button } from \"@/components/ui/button\";\nimport { Input } from \"@/components/ui/input\";\nimport { StatusPill, type StatusPillTone } from \"@/components/status-pill\";\nimport {\n  Dialog,\n  DialogContent,\n  DialogDescription,\n  DialogFooter,\n  DialogHeader,\n  DialogTitle,\n  DialogTrigger,\n} from \"@/components/ui/dialog\";\nimport { DAY_LABELS, nextDateForDay } from \"../lib/day-labels\";\nimport type { OccurrenceData, OccurrenceReservation, ReservationStatus } from \"../types\";\nimport styles from \"./class-occurrence-dialog.module.css\";\n\nconst STATUS_LABELS: Record<ReservationStatus, string> = {\n  reserved: \"Reservado\",\n  waitlisted: \"En espera\",\n  attended: \"Presente\",\n  absent: \"Ausente\",\n  cancelled: \"Cancelado\",\n};\n\nconst STATUS_TONES: Record<ReservationStatus, StatusPillTone> = {\n  reserved: \"info\",\n  waitlisted: \"alert\",\n  attended: \"success\",\n  absent: \"danger\",\n  cancelled: \"neutral\",\n};\n\ninterface ClassOccurrenceDialogProps {\n  /** Element that opens the dialog when clicked (e.g. a <Button>). */\n  trigger: ReactElement;\n  schedule: ClassSchedule;\n  activityName: string;\n}\n\n/**\n * Cupo/reservas/lista de espera de UNA fecha concreta de un class_schedules\n * slot (T-20260826-011). Opens defaulting to the next real calendar date\n * that slot's weekday falls on (today included) \u00e2\u20ac\u201d the date input lets\n * staff jump to any other date the same recurring slot happens on.\n *\n * Scoped to ScheduleTableView only for this first pass (same call\n * T-20260825-007 made for empty-cell create) \u00e2\u20ac\u201d kanban/calendar views don't\n * get this trigger yet.\n */\n..."
+      }
     },
     "C:/Workspaces/SharedDocuments/gym-saas/features/schedules-page/components/class-occurrence-dialog.tsx::ClassOccurrenceDialogProps": {
       "kind": "Interface",
@@ -37341,13 +37404,16 @@
       "file_path": "C:/Workspaces/SharedDocuments/gym-saas/features/schedules-page/components/class-occurrence-dialog.tsx",
       "start_line": 38,
       "end_line": 43,
-      "state": "unknown",
+      "state": "partial",
       "docstring": "",
       "raw_source": "",
       "file_hash": "e3b809ab9bc303f68e5e1c39f503f35b028a591022645e38d123c4ec6176737b",
       "body_start_line": 0,
       "body_end_line": 0,
-      "community": 582
+      "community": 582,
+      "views": {
+        "skeleton": "interface ClassOccurrenceDialogProps {\n  /** Element that opens the dialog when clicked (e.g. a <Button>). */\n  trigger: ReactElement;\n  schedule: ClassSchedule;\n  activityName: string;\n}"
+      }
     },
     "C:/Workspaces/SharedDocuments/gym-saas/features/schedules-page/components/class-occurrence-dialog.tsx::ClassOccurrenceDialog": {
       "kind": "Function",
@@ -37355,13 +37421,16 @@
       "file_path": "C:/Workspaces/SharedDocuments/gym-saas/features/schedules-page/components/class-occurrence-dialog.tsx",
       "start_line": 55,
       "end_line": 319,
-      "state": "unknown",
+      "state": "partial",
       "docstring": "",
       "raw_source": "",
       "file_hash": "e3b809ab9bc303f68e5e1c39f503f35b028a591022645e38d123c4ec6176737b",
       "body_start_line": 55,
       "body_end_line": 319,
-      "community": 582
+      "community": 582,
+      "views": {
+        "skeleton": "..."
+      }
     },
     "C:/Workspaces/SharedDocuments/gym-saas/features/schedules-page/components/class-occurrence-dialog.tsx::handleOpenChange": {
       "kind": "Function",
@@ -37369,13 +37438,16 @@
       "file_path": "C:/Workspaces/SharedDocuments/gym-saas/features/schedules-page/components/class-occurrence-dialog.tsx",
       "start_line": 92,
       "end_line": 100,
-      "state": "unknown",
+      "state": "partial",
       "docstring": "",
       "raw_source": "",
       "file_hash": "e3b809ab9bc303f68e5e1c39f503f35b028a591022645e38d123c4ec6176737b",
       "body_start_line": 92,
       "body_end_line": 100,
-      "community": 582
+      "community": 582,
+      "views": {
+        "skeleton": "  ..."
+      }
     },
     "C:/Workspaces/SharedDocuments/gym-saas/features/schedules-page/components/class-occurrence-dialog.tsx::handleAddReservation": {
       "kind": "Function",
@@ -37383,13 +37455,16 @@
       "file_path": "C:/Workspaces/SharedDocuments/gym-saas/features/schedules-page/components/class-occurrence-dialog.tsx",
       "start_line": 102,
       "end_line": 116,
-      "state": "unknown",
+      "state": "partial",
       "docstring": "",
       "raw_source": "",
       "file_hash": "e3b809ab9bc303f68e5e1c39f503f35b028a591022645e38d123c4ec6176737b",
       "body_start_line": 102,
       "body_end_line": 116,
-      "community": 582
+      "community": 582,
+      "views": {
+        "skeleton": "  ..."
+      }
     },
     "C:/Workspaces/SharedDocuments/gym-saas/features/schedules-page/components/class-occurrence-dialog.tsx::handleStatusChange": {
       "kind": "Function",
@@ -37397,13 +37472,16 @@
       "file_path": "C:/Workspaces/SharedDocuments/gym-saas/features/schedules-page/components/class-occurrence-dialog.tsx",
       "start_line": 118,
       "end_line": 141,
-      "state": "unknown",
+      "state": "partial",
       "docstring": "",
       "raw_source": "",
       "file_hash": "e3b809ab9bc303f68e5e1c39f503f35b028a591022645e38d123c4ec6176737b",
       "body_start_line": 121,
       "body_end_line": 141,
-      "community": 582
+      "community": 582,
+      "views": {
+        "skeleton": "  async function handleStatusChange(\n    reservation: OccurrenceReservation,\n    status: \"attended\" | \"absent\" | \"cancelled\",\n  ..."
+      }
     },
     "C:/Workspaces/SharedDocuments/gym-saas/features/schedules-page/lib/day-labels.ts::nextDateForDay": {
       "kind": "Function",

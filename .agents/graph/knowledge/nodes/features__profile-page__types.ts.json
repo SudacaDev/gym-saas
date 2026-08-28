@@ -1,0 +1,9 @@
+{
+  "id": "features/profile-page/types.ts",
+  "community": "features",
+  "references": [],
+  "referenced_by": [
+    "features/profile-page/components/profile-business-form.tsx",
+    "features/profile-page/hooks/useProfile.ts"
+  ]
+}

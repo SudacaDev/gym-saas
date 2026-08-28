@@ -7,6 +7,7 @@
   ],
   "referenced_by": [
     "db/schema/checkins.ts",
+    "db/schema/class-reservations.ts",
     "db/schema/email-send-log.ts",
     "db/schema/index.ts",
     "db/schema/memberships.ts",

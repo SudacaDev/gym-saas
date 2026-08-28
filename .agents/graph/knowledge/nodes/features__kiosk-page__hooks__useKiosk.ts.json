@@ -1,0 +1,8 @@
+{
+  "id": "features/kiosk-page/hooks/useKiosk.ts",
+  "community": "features",
+  "references": [],
+  "referenced_by": [
+    "features/kiosk-page/index.tsx"
+  ]
+}

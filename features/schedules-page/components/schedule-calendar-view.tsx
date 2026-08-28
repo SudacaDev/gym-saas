@@ -93,6 +93,8 @@ function buildCalendarWeeks(year: number, month: number, todayStr: string): Cale
 export function ScheduleCalendarView({
   schedules,
   activities,
+  instructors,
+  selfInstructor,
   activityNameById,
   onSaved,
   onRemoved,
@@ -190,6 +192,8 @@ export function ScheduleCalendarView({
                   key={schedule.id}
                   schedule={schedule}
                   activities={activities}
+                  instructors={instructors}
+                  selfInstructor={selfInstructor}
                   trigger={
                     <button type="button" className={styles.chip}>
                       <span className={styles.chipTime}>

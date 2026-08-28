@@ -1,0 +1,11 @@
+{
+  "id": "features/checkin-page/components/checkin-list-skeleton.tsx",
+  "community": "features",
+  "references": [
+    "features/checkin-page/index.module.css",
+    "features/checkin-page/components/checkin-list-skeleton.module.css"
+  ],
+  "referenced_by": [
+    "features/checkin-page/index.tsx"
+  ]
+}

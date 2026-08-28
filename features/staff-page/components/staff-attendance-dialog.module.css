@@ -23,3 +23,11 @@
 .times {
   @apply text-muted-foreground;
 }
+
+.skeletonDate {
+  @apply h-4 w-20;
+}
+
+.skeletonTimes {
+  @apply h-4 w-32;
+}

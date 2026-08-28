@@ -1,0 +1,12 @@
+{
+  "id": "features/checkin-page/components/current-class-column.tsx",
+  "community": "features",
+  "references": [
+    "features/checkin-page/hooks/useCurrentClass.ts",
+    "features/checkin-page/components/current-class-skeleton.tsx",
+    "features/checkin-page/components/current-class-column.module.css"
+  ],
+  "referenced_by": [
+    "features/checkin-page/index.tsx"
+  ]
+}

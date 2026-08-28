@@ -1,0 +1,9 @@
+{
+  "id": "features/operational-requests-page/index.module.css",
+  "community": "features",
+  "references": [],
+  "referenced_by": [
+    "features/operational-requests-page/components/operational-requests-table-skeleton.tsx",
+    "features/operational-requests-page/index.tsx"
+  ]
+}

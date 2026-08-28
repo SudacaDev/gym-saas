@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import { DAY_LABELS, nextDateForDay } from "../lib/day-labels";
 import type { OccurrenceData, OccurrenceReservation, ReservationStatus } from "../types";
+import { ClassOccurrenceSkeleton } from "./class-occurrence-skeleton";
 import styles from "./class-occurrence-dialog.module.css";
 
 const STATUS_LABELS: Record<ReservationStatus, string> = {
@@ -61,6 +62,8 @@ export function ClassOccurrenceDialog({ trigger, schedule, activityName }: Class
   const [members, setMembers] = useState<Member[]>([]);
   const [memberQuery, setMemberQuery] = useState("");
   const [pendingReservationId, setPendingReservationId] = useState<string | null>(null);
+  const [pendingStatus, setPendingStatus] = useState<ReservationStatus | null>(null);
+  const [reservingMemberId, setReservingMemberId] = useState<string | null>(null);
 
   const loadOccurrence = useCallback(async () => {
     setLoading(true);
@@ -100,19 +103,25 @@ export function ClassOccurrenceDialog({ trigger, schedule, activityName }: Class
   }
 
   async function handleAddReservation(memberId: string) {
+    if (reservingMemberId) return; // avoid double-submit while one is in flight
     setError(null);
-    const res = await fetch(`/api/v1/schedules/${schedule.id}/occurrences/reservations`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ date, memberId }),
-    });
-    if (!res.ok) {
-      const body = await res.json().catch(() => null);
-      setError(typeof body?.error === "string" ? body.error : "No se pudo agregar la reserva");
-      return;
+    setReservingMemberId(memberId);
+    try {
+      const res = await fetch(`/api/v1/schedules/${schedule.id}/occurrences/reservations`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ date, memberId }),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        setError(typeof body?.error === "string" ? body.error : "No se pudo agregar la reserva");
+        return;
+      }
+      setMemberQuery("");
+      await loadOccurrence();
+    } finally {
+      setReservingMemberId(null);
     }
-    setMemberQuery("");
-    await loadOccurrence();
   }
 
   async function handleStatusChange(
@@ -121,6 +130,7 @@ export function ClassOccurrenceDialog({ trigger, schedule, activityName }: Class
   ) {
     setError(null);
     setPendingReservationId(reservation.id);
+    setPendingStatus(status);
     try {
       const res = await fetch(
         `/api/v1/schedules/${schedule.id}/occurrences/reservations/${reservation.id}`,
@@ -137,6 +147,7 @@ export function ClassOccurrenceDialog({ trigger, schedule, activityName }: Class
       await loadOccurrence();
     } finally {
       setPendingReservationId(null);
+      setPendingStatus(null);
     }
   }
 
@@ -199,7 +210,7 @@ export function ClassOccurrenceDialog({ trigger, schedule, activityName }: Class
         )}
 
         {loading ? (
-          <p className={styles.emptyText}>Cargando...</p>
+          <ClassOccurrenceSkeleton />
         ) : (
           <div className={styles.sections}>
             <section className={styles.section}>
@@ -208,39 +219,42 @@ export function ClassOccurrenceDialog({ trigger, schedule, activityName }: Class
                 <p className={styles.emptyText}>Nadie reservó todavía.</p>
               ) : (
                 <ul className={styles.list}>
-                  {reserved.map((r) => (
-                    <li key={r.id} className={styles.row}>
-                      <span className={styles.name}>
-                        {r.firstName} {r.lastName}
-                      </span>
-                      <div className={styles.rowActions}>
-                        <Button
-                          size="xs"
-                          variant="outline"
-                          disabled={pendingReservationId === r.id}
-                          onClick={() => handleStatusChange(r, "attended")}
-                        >
-                          Presente
-                        </Button>
-                        <Button
-                          size="xs"
-                          variant="outline"
-                          disabled={pendingReservationId === r.id}
-                          onClick={() => handleStatusChange(r, "absent")}
-                        >
-                          Ausente
-                        </Button>
-                        <Button
-                          size="xs"
-                          variant="ghost"
-                          disabled={pendingReservationId === r.id}
-                          onClick={() => handleStatusChange(r, "cancelled")}
-                        >
-                          Cancelar
-                        </Button>
-                      </div>
-                    </li>
-                  ))}
+                  {reserved.map((r) => {
+                    const isRowPending = pendingReservationId === r.id;
+                    return (
+                      <li key={r.id} className={styles.row}>
+                        <span className={styles.name}>
+                          {r.firstName} {r.lastName}
+                        </span>
+                        <div className={styles.rowActions}>
+                          <Button
+                            size="xs"
+                            variant="outline"
+                            disabled={isRowPending}
+                            onClick={() => handleStatusChange(r, "attended")}
+                          >
+                            {isRowPending && pendingStatus === "attended" ? "..." : "Presente"}
+                          </Button>
+                          <Button
+                            size="xs"
+                            variant="outline"
+                            disabled={isRowPending}
+                            onClick={() => handleStatusChange(r, "absent")}
+                          >
+                            {isRowPending && pendingStatus === "absent" ? "..." : "Ausente"}
+                          </Button>
+                          <Button
+                            size="xs"
+                            variant="ghost"
+                            disabled={isRowPending}
+                            onClick={() => handleStatusChange(r, "cancelled")}
+                          >
+                            {isRowPending && pendingStatus === "cancelled" ? "..." : "Cancelar"}
+                          </Button>
+                        </div>
+                      </li>
+                    );
+                  })}
                 </ul>
               )}
             </section>
@@ -279,8 +293,12 @@ export function ClassOccurrenceDialog({ trigger, schedule, activityName }: Class
                       <span className={styles.name}>
                         {m.firstName} {m.lastName}
                       </span>
-                      <Button size="xs" onClick={() => handleAddReservation(m.id)}>
-                        Reservar
+                      <Button
+                        size="xs"
+                        disabled={reservingMemberId === m.id}
+                        onClick={() => handleAddReservation(m.id)}
+                      >
+                        {reservingMemberId === m.id ? "Reservando..." : "Reservar"}
                       </Button>
                     </li>
                   ))}

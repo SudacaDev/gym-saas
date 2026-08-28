@@ -4,9 +4,11 @@
   "references": [
     "db/schema/tenants.ts",
     "db/schema/activities.ts",
+    "db/schema/staff-members.ts",
     "db/schema/enums.ts"
   ],
   "referenced_by": [
+    "db/schema/class-occurrences.ts",
     "db/schema/index.ts",
     "db/schema/relations.ts"
   ]

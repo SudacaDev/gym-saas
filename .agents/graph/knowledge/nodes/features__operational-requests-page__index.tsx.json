@@ -1,0 +1,11 @@
+{
+  "id": "features/operational-requests-page/index.tsx",
+  "community": "features",
+  "references": [
+    "features/operational-requests-page/components/operational-request-form-dialog.tsx",
+    "features/operational-requests-page/components/operational-requests-table-skeleton.tsx",
+    "features/operational-requests-page/index.module.css",
+    "features/operational-requests-page/hooks/useOperationalRequests.ts"
+  ],
+  "referenced_by": []
+}

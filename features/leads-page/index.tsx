@@ -1,6 +1,9 @@
 "use client";
 
+import { UserPlusIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -12,6 +15,7 @@ import {
 import { StatusPill, type StatusPillTone } from "@/components/status-pill";
 import type { Lead } from "@/db/schema/leads";
 import { LeadFormDialog } from "./components/lead-form-dialog";
+import { LeadsTableSkeleton } from "./components/leads-table-skeleton";
 import styles from "./index.module.css";
 import { useLeads } from "./hooks/useLeads";
 
@@ -43,7 +47,18 @@ function waLink(whatsapp: string): string {
  * mismo criterio que otras pantallas operativas (checkin, kiosk, schedules).
  */
 export function LeadsPage() {
-  const { leads, loading, error, updatingId, handleCreated, handleStatusChange } = useLeads();
+  const {
+    leads,
+    filteredLeads,
+    loading,
+    error,
+    search,
+    setSearch,
+    updatingId,
+    pendingStatus,
+    handleCreated,
+    handleStatusChange,
+  } = useLeads();
 
   return (
     <div className={styles.container}>
@@ -52,12 +67,30 @@ export function LeadsPage() {
         <LeadFormDialog trigger={<Button>Nuevo prospecto</Button>} onSaved={handleCreated} />
       </div>
 
+      <Input
+        placeholder="Buscar por nombre, WhatsApp o nota..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className={styles.search}
+      />
+
       {error && <p className={styles.errorText}>{error}</p>}
 
       {loading ? (
-        <p className={styles.emptyText}>Cargando...</p>
-      ) : leads.length === 0 ? (
-        <p className={styles.emptyText}>Todavía no hay prospectos cargados.</p>
+        <LeadsTableSkeleton />
+      ) : filteredLeads.length === 0 ? (
+        leads.length === 0 ? (
+          <EmptyState
+            icon={UserPlusIcon}
+            title="Todavía no hay prospectos cargados"
+            description="Cargá a alguien que preguntó en el mostrador y hacele seguimiento desde acá."
+            action={
+              <LeadFormDialog trigger={<Button>Cargar el primer prospecto</Button>} onSaved={handleCreated} />
+            }
+          />
+        ) : (
+          <p className={styles.emptyText}>No hay resultados.</p>
+        )
       ) : (
         <Table>
           <TableHeader>
@@ -71,7 +104,7 @@ export function LeadsPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {leads.map((lead) => (
+            {filteredLeads.map((lead) => (
               <TableRow key={lead.id}>
                 <TableCell>{lead.name}</TableCell>
                 <TableCell>
@@ -100,7 +133,9 @@ export function LeadsPage() {
                         disabled={updatingId === lead.id}
                         onClick={() => handleStatusChange(lead, "convertido")}
                       >
-                        Convertido
+                        {updatingId === lead.id && pendingStatus === "convertido"
+                          ? "Actualizando..."
+                          : "Convertido"}
                       </Button>
                     )}
                     {lead.status !== "perdido" && (
@@ -110,7 +145,9 @@ export function LeadsPage() {
                         disabled={updatingId === lead.id}
                         onClick={() => handleStatusChange(lead, "perdido")}
                       >
-                        Perdido
+                        {updatingId === lead.id && pendingStatus === "perdido"
+                          ? "Actualizando..."
+                          : "Perdido"}
                       </Button>
                     )}
                   </div>

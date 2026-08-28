@@ -25,6 +25,15 @@ export const useMemberDetail = () => {
   const [statusActionError, setStatusActionError] = useState<string | null>(
     null,
   );
+  // Tracks which membership row has a status-change PATCH in flight, and
+  // which target status it's headed to — lets the row disable both of its
+  // buttons and swap the pressed one's label to a "-ing" form (same pattern
+  // as `sendingReminder` below) instead of giving no feedback while the
+  // request is out.
+  const [statusChange, setStatusChange] = useState<{
+    membershipId: string;
+    status: Membership["status"];
+  } | null>(null);
   const [reminderError, setReminderError] = useState<string | null>(null);
   const [sendingReminder, setSendingReminder] = useState(false);
 
@@ -110,24 +119,29 @@ export const useMemberDetail = () => {
     status: Membership["status"],
   ) {
     setStatusActionError(null);
-    const res = await fetch(`/api/v1/memberships/${membership.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status }),
-    });
-    if (!res.ok) {
-      const body = await res.json().catch(() => null);
-      setStatusActionError(
-        typeof body?.error === "string"
-          ? body.error
-          : "No se pudo actualizar el estado de la membresía",
+    setStatusChange({ membershipId: membership.id, status });
+    try {
+      const res = await fetch(`/api/v1/memberships/${membership.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        setStatusActionError(
+          typeof body?.error === "string"
+            ? body.error
+            : "No se pudo actualizar el estado de la membresía",
+        );
+        return;
+      }
+      const updated = (await res.json()) as Membership;
+      setMemberships((prev) =>
+        prev.map((m) => (m.id === updated.id ? updated : m)),
       );
-      return;
+    } finally {
+      setStatusChange(null);
     }
-    const updated = (await res.json()) as Membership;
-    setMemberships((prev) =>
-      prev.map((m) => (m.id === updated.id ? updated : m)),
-    );
   }
 
   async function handleSendReminder() {
@@ -165,6 +179,7 @@ export const useMemberDetail = () => {
     loading,
     error,
     statusActionError,
+    statusChange,
     reminderError,
     sendingReminder,
     planById,

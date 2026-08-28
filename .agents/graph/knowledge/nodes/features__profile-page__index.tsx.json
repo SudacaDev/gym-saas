@@ -1,0 +1,14 @@
+{
+  "id": "features/profile-page/index.tsx",
+  "community": "features",
+  "references": [
+    "features/staff-page/types.ts",
+    "features/profile-page/components/profile-business-form.tsx",
+    "features/profile-page/components/profile-password-form.tsx",
+    "features/profile-page/components/profile-email-form.tsx",
+    "features/profile-page/components/profile-skeleton.tsx",
+    "features/profile-page/index.module.css",
+    "features/profile-page/hooks/useProfile.ts"
+  ],
+  "referenced_by": []
+}

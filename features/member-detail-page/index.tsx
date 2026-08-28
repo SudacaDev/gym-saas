@@ -87,6 +87,7 @@ export function MemberDetailPage() {
     loading,
     error,
     statusActionError,
+    statusChange,
     reminderError,
     sendingReminder,
     planById,
@@ -208,6 +209,7 @@ export function MemberDetailPage() {
               {memberships.map((membership) => {
                 const effective = getEffectiveStatus(membership);
                 const isCurrent = membership.id === currentMembership?.id;
+                const isChangingThis = statusChange?.membershipId === membership.id;
                 return (
                   <TableRow key={membership.id}>
                     <TableCell>
@@ -228,31 +230,40 @@ export function MemberDetailPage() {
                             <Button
                               variant="outline"
                               size="sm"
+                              disabled={isChangingThis}
                               onClick={() =>
                                 handleStatusChange(membership, "active")
                               }
                             >
-                              Reactivar
+                              {isChangingThis && statusChange?.status === "active"
+                                ? "Reactivando..."
+                                : "Reactivar"}
                             </Button>
                           ) : (
                             <Button
                               variant="outline"
                               size="sm"
+                              disabled={isChangingThis}
                               onClick={() =>
                                 handleStatusChange(membership, "paused")
                               }
                             >
-                              Pausar
+                              {isChangingThis && statusChange?.status === "paused"
+                                ? "Pausando..."
+                                : "Pausar"}
                             </Button>
                           )}
                           <Button
                             variant="destructive"
                             size="sm"
+                            disabled={isChangingThis}
                             onClick={() =>
                               handleStatusChange(membership, "cancelled")
                             }
                           >
-                            Cancelar
+                            {isChangingThis && statusChange?.status === "cancelled"
+                              ? "Cancelando..."
+                              : "Cancelar"}
                           </Button>
                         </div>
                       )}

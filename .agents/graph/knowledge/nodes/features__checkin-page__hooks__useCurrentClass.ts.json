@@ -1,0 +1,10 @@
+{
+  "id": "features/checkin-page/hooks/useCurrentClass.ts",
+  "community": "features",
+  "references": [
+    "features/checkin-page/lib/current-class.ts"
+  ],
+  "referenced_by": [
+    "features/checkin-page/components/current-class-column.tsx"
+  ]
+}

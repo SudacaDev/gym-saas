@@ -1,0 +1,6 @@
+{
+  "id": "db/policies/0008_class_occurrences_reservations_rls.sql",
+  "community": "db",
+  "references": [],
+  "referenced_by": []
+}

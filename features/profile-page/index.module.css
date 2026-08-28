@@ -1,8 +1,5 @@
 @reference "../../app/globals.css";
 
-.loadingText {
-  @apply text-sm text-muted-foreground;
-}
 .errorText {
   @apply text-sm text-destructive;
 }

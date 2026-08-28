@@ -1,0 +1,12 @@
+{
+  "id": "features/schedules-page/components/schedule-table-skeleton.tsx",
+  "community": "features",
+  "references": [
+    "features/schedules-page/lib/day-labels.ts",
+    "features/schedules-page/index.module.css",
+    "features/schedules-page/components/schedule-table-skeleton.module.css"
+  ],
+  "referenced_by": [
+    "features/schedules-page/index.tsx"
+  ]
+}

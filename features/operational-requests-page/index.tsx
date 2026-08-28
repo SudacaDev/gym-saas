@@ -1,6 +1,9 @@
 "use client";
 
+import { ClipboardListIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -12,6 +15,7 @@ import {
 import { StatusPill, type StatusPillTone } from "@/components/status-pill";
 import type { OperationalRequest } from "@/db/schema/operational-requests";
 import { OperationalRequestFormDialog } from "./components/operational-request-form-dialog";
+import { OperationalRequestsTableSkeleton } from "./components/operational-requests-table-skeleton";
 import styles from "./index.module.css";
 import { useOperationalRequests, type OperationalRequestRow } from "./hooks/useOperationalRequests";
 
@@ -48,8 +52,17 @@ function reporterName(request: OperationalRequestRow): string {
  * T-20260826-014, no implementado todavía).
  */
 export function OperationalRequestsPage() {
-  const { requests, loading, error, updatingId, handleCreated, handleStatusChange } =
-    useOperationalRequests();
+  const {
+    requests,
+    filteredRequests,
+    loading,
+    error,
+    search,
+    setSearch,
+    updatingId,
+    handleCreated,
+    handleStatusChange,
+  } = useOperationalRequests();
 
   return (
     <div className={styles.container}>
@@ -61,12 +74,33 @@ export function OperationalRequestsPage() {
         />
       </div>
 
+      <Input
+        placeholder="Buscar por descripción o reportado por..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className={styles.search}
+      />
+
       {error && <p className={styles.errorText}>{error}</p>}
 
       {loading ? (
-        <p className={styles.emptyText}>Cargando...</p>
-      ) : requests.length === 0 ? (
-        <p className={styles.emptyText}>Todavía no hay necesidades reportadas.</p>
+        <OperationalRequestsTableSkeleton />
+      ) : filteredRequests.length === 0 ? (
+        requests.length === 0 ? (
+          <EmptyState
+            icon={ClipboardListIcon}
+            title="Todavía no hay necesidades reportadas"
+            description="Faltantes, mantenimiento o cualquier otra cosa que el box necesite — reportalo acá."
+            action={
+              <OperationalRequestFormDialog
+                trigger={<Button>Reportar la primera necesidad</Button>}
+                onSaved={handleCreated}
+              />
+            }
+          />
+        ) : (
+          <p className={styles.emptyText}>No hay resultados.</p>
+        )
       ) : (
         <Table>
           <TableHeader>
@@ -80,7 +114,7 @@ export function OperationalRequestsPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {requests.map((request) => (
+            {filteredRequests.map((request) => (
               <TableRow key={request.id}>
                 <TableCell className={styles.descriptionCell}>{request.description}</TableCell>
                 <TableCell>
@@ -103,7 +137,11 @@ export function OperationalRequestsPage() {
                         handleStatusChange(request, request.status === "open" ? "resolved" : "open")
                       }
                     >
-                      {request.status === "open" ? "Marcar resuelto" : "Reabrir"}
+                      {updatingId === request.id
+                        ? "Actualizando..."
+                        : request.status === "open"
+                          ? "Marcar resuelto"
+                          : "Reabrir"}
                     </Button>
                   </div>
                 </TableCell>

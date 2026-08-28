@@ -1,0 +1,8 @@
+{
+  "id": "features/checkin-page/lib/relative-time.ts",
+  "community": "features",
+  "references": [],
+  "referenced_by": [
+    "features/checkin-page/index.tsx"
+  ]
+}

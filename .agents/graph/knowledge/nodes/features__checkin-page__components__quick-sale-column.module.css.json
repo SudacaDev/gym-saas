@@ -1,0 +1,9 @@
+{
+  "id": "features/checkin-page/components/quick-sale-column.module.css",
+  "community": "features",
+  "references": [],
+  "referenced_by": [
+    "features/checkin-page/components/quick-sale-column.tsx",
+    "features/checkin-page/components/quick-sale-skeleton.tsx"
+  ]
+}

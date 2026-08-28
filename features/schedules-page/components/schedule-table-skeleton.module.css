@@ -1,0 +1,17 @@
+@reference "../../../app/globals.css";
+
+.timeLabel {
+  @apply h-3 w-9;
+}
+
+.slotTime {
+  @apply h-3 w-16;
+}
+
+.slotActivity {
+  @apply h-4 w-20;
+}
+
+.actionBar {
+  @apply h-3 w-10;
+}

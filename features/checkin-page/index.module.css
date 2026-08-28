@@ -8,9 +8,13 @@
   @apply font-heading text-3xl uppercase tracking-tight;
 }
 
+.header {
+  @apply flex items-center justify-between gap-3;
+}
+
 .resultBanner {
   /* Container, not a control — capped radius, see DESIGN.md Shapes. */
-  @apply rounded-[min(var(--radius-xl),20px)] border-2 px-6 py-5 text-center;
+  @apply rounded-cap-xl-20 border-2 px-6 py-5 text-center;
 }
 
 .resultBannerSuccess {
@@ -61,7 +65,7 @@
   /* Multi-row container clipped by overflow-hidden — capped, not the flat
      pill --radius, or the curve eats the first/last row's text. Same
      min()-capping pattern button.tsx already uses for its small sizes. */
-  @apply divide-y divide-border-subtle overflow-hidden rounded-[min(var(--radius-xl),20px)] border border-border;
+  @apply divide-y divide-border-subtle overflow-hidden rounded-cap-xl-20 border border-border;
 }
 
 .listItem {
@@ -69,7 +73,7 @@
 }
 
 .memberInfo {
-  @apply flex flex-wrap items-center gap-3;
+  @apply flex flex-col flex-wrap items-start w-full gap-3;
 }
 
 .memberName {
@@ -119,7 +123,7 @@
 }
 
 .feedRow {
-  @apply flex flex-wrap items-center justify-between gap-2 rounded-[min(var(--radius-md),12px)] border border-border-subtle bg-card px-3 py-2 text-sm;
+  @apply flex flex-wrap items-center justify-between gap-2 rounded-cap-md-12 border border-border-subtle bg-card px-3 py-2 text-sm;
 }
 
 .feedName {

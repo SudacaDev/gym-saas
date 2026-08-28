@@ -3,6 +3,7 @@
   "community": "features",
   "references": [
     "features/schedules-page/components/schedule-form-dialog.tsx",
+    "features/schedules-page/components/class-occurrence-dialog.tsx",
     "features/schedules-page/components/schedule-view-props.ts",
     "features/schedules-page/lib/day-labels.ts",
     "features/schedules-page/index.module.css"

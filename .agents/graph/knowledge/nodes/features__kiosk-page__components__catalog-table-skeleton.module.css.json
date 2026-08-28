@@ -1,0 +1,8 @@
+{
+  "id": "features/kiosk-page/components/catalog-table-skeleton.module.css",
+  "community": "features",
+  "references": [],
+  "referenced_by": [
+    "features/kiosk-page/components/catalog-table-skeleton.tsx"
+  ]
+}

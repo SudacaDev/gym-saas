@@ -1,0 +1,9 @@
+{
+  "id": "features/members-page/types.ts",
+  "community": "features",
+  "references": [],
+  "referenced_by": [
+    "features/members-page/hooks/useMembers.ts",
+    "features/members-page/index.tsx"
+  ]
+}

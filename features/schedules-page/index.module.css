@@ -3,17 +3,25 @@
 .container {
   @apply space-y-6;
 }
+
 .header {
   @apply flex items-center justify-between;
 }
+
 .title {
   @apply font-heading text-3xl uppercase tracking-tight;
 }
+
 .errorText {
   @apply text-sm text-destructive;
 }
+
 .emptyText {
   @apply text-sm text-muted-foreground;
+}
+
+.controlsRow {
+  @apply flex flex-wrap items-center justify-between gap-3;
 }
 
 .viewSwitcher {
@@ -28,12 +36,20 @@
   @apply border-primary text-foreground;
 }
 
+.myClassesToggle {
+  @apply h-8 rounded-full border border-border px-3 text-xs font-bold tracking-widest text-muted-foreground uppercase transition-colors hover:text-foreground;
+}
+
+.myClassesToggleActive {
+  @apply border-primary bg-primary text-primary-foreground hover:text-primary-foreground;
+}
+
 .weekWrap {
   /* Multi-row/multi-column grid clipped by overflow-x-auto — capped
      radius, same rationale as checkin-page's .list (see DESIGN.md
      Shapes). Missed in the first pass of the container-radius fix
      because that search only matched overflow-hidden, not overflow-x-auto. */
-  @apply overflow-x-auto rounded-[min(var(--radius-xl),20px)] border border-border-subtle;
+  @apply overflow-x-auto rounded-cap-xl-20 border border-border-subtle;
 }
 
 .week {
@@ -61,7 +77,7 @@
   /* Container-shaped grid slot, not a small control — capped radius, see
      DESIGN.md Shapes. Wide relative to its height, so the flat pill
      radius rendered it as an oval instead of a rounded rectangle. */
-  @apply flex min-h-16 flex-1 items-center justify-center rounded-[min(var(--radius-lg),20px)] bg-secondary/30 text-muted-foreground/60 transition-colors hover:bg-secondary/60 hover:text-foreground;
+  @apply flex min-h-16 flex-1 items-center justify-center rounded-cap-lg-20 bg-secondary/30 text-muted-foreground/60 transition-colors hover:bg-secondary/60 hover:text-foreground;
 }
 
 .cellEmptyIcon {
@@ -71,7 +87,7 @@
 .slot {
   /* Same rationale as .cellEmpty above — same cap so filled and empty
      cells read as the same shape language. */
-  @apply flex flex-col gap-1 rounded-[min(var(--radius-lg),20px)] border border-border-subtle p-3;
+  @apply flex flex-col gap-2 rounded-cap-lg-20 border border-border-subtle p-3;
 }
 
 .slotTime {
@@ -83,13 +99,21 @@
 }
 
 .slotActions {
-  @apply mt-1 flex gap-3;
+  @apply mt-1 flex gap-3 justify-between;
 }
 
 .slotAction {
-  @apply text-[11px] font-bold tracking-widest text-muted-foreground uppercase transition-colors hover:text-foreground;
+  @apply text-[11px] font-bold tracking-widest text-muted-foreground uppercase transition-colors hover:text-foreground disabled:pointer-events-none disabled:opacity-50;
 }
 
 .slotActionDelete {
   @apply hover:text-destructive;
+}
+
+.slotActionIcon {
+  @apply size-3.5;
+}
+
+.slotActionsGroup {
+  @apply flex gap-2;
 }

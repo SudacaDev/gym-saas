@@ -16,6 +16,8 @@
     "lib/rate-limit/fixed-window-limiter.ts",
     "lib/reminders/reminder-window.ts",
     "lib/reminders/send-and-log-reminder.ts",
+    "lib/schedules/resolve-instructor-id.ts",
+    "lib/staff/resolve-own-staff-member.ts",
     "lib/supabase/admin.ts",
     "lib/supabase/client.ts",
     "lib/supabase/server.ts",
@@ -23,13 +25,19 @@
     "lib/validations/activity.schema.ts",
     "lib/validations/auth.ts",
     "lib/validations/checkin.schema.ts",
+    "lib/validations/lead.schema.ts",
     "lib/validations/member.schema.ts",
     "lib/validations/membership.schema.ts",
     "lib/validations/onboarding.ts",
+    "lib/validations/operational-request.schema.ts",
     "lib/validations/payment.schema.ts",
     "lib/validations/plan.schema.ts",
+    "lib/validations/product.schema.ts",
+    "lib/validations/reservation.schema.ts",
     "lib/validations/schedule.schema.ts",
     "lib/validations/staff-attendance.schema.ts",
-    "lib/validations/staff-member.schema.ts"
+    "lib/validations/staff-member.schema.ts",
+    "lib/validations/staff-profile.schema.ts",
+    "lib/validations/walk-in-sale.schema.ts"
   ]
 }

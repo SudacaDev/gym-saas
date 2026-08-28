@@ -18,7 +18,7 @@
 
 .panel {
   /* Container, not a control — capped radius, see DESIGN.md Shapes. */
-  @apply space-y-4 rounded-[min(var(--radius-xl),20px)] border border-border bg-card p-4;
+  @apply space-y-4 rounded-cap-xl-20 border border-border bg-card p-4;
 }
 
 .panelHeader {
@@ -50,7 +50,7 @@
 }
 
 .row {
-  @apply flex flex-wrap items-center justify-between gap-2 rounded-[min(var(--radius-md),12px)] border border-border-subtle px-2.5 py-1.5 text-sm;
+  @apply flex flex-wrap items-center justify-between gap-2 rounded-cap-md-12 border border-border-subtle px-2.5 py-1.5 text-sm;
 }
 
 .name {

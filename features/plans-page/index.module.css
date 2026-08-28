@@ -23,7 +23,7 @@
 .card {
   /* Container, not a control — capped radius, see DESIGN.md Shapes. Was
      rendering as an egg/oval (width >> height, uncapped pill radius). */
-  @apply flex flex-col gap-4 rounded-[min(var(--radius-xl),20px)] border border-border bg-card p-6;
+  @apply flex flex-col gap-4 rounded-cap-xl-20 border border-border bg-card p-6;
 }
 
 .periodTag {
