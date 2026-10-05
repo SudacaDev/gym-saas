@@ -28,6 +28,9 @@ estado, no se vuelve a proponer. Toda idea nueva se agrega acá al proponerla. E
 | 16 | «El box cierra»: feriado/receso con extensión de vencimientos | 3–4 días | no (opcional) | [6](2026-10-05-ronda-6.md) |
 | 17 | Exportar a Excel para el contador | 1–2 días | no | [6](2026-10-05-ronda-6.md) |
 | 18 | Motivo de baja en un toque | 2 días | sí (chica) | [6](2026-10-05-ronda-6.md) |
+| 19 | Pago en dos veces: saldo pendiente de la cuota | 3–4 días | no (probable) | [7](2026-10-05-ronda-7.md) |
+| 20 | Cuota compartida: pareja o hermanos | ~1 semana | sí (chica) | [7](2026-10-05-ronda-7.md) |
+| 21 | Horas pico: cuándo se llena y cuándo está vacío | 2–3 días | no | [7](2026-10-05-ronda-7.md) |
 
 ## Ya evaluadas / diferidas (no volver a proponer)
 
