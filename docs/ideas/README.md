@@ -28,6 +28,15 @@ estado, no se vuelve a proponer. Toda idea nueva se agrega acá al proponerla. E
 | 16 | «El box cierra»: feriado/receso con extensión de vencimientos | 3–4 días | no (opcional) | [6](2026-10-05-ronda-6.md) |
 | 17 | Exportar a Excel para el contador | 1–2 días | no | [6](2026-10-05-ronda-6.md) |
 | 18 | Motivo de baja en un toque | 2 días | sí (chica) | [6](2026-10-05-ronda-6.md) |
+| 19 | Pago en dos veces: saldo pendiente de la cuota | 3–4 días | no (probable) | [7](2026-10-05-ronda-7.md) |
+| 20 | Cuota compartida: pareja o hermanos | ~1 semana | sí (chica) | [7](2026-10-05-ronda-7.md) |
+| 21 | Horas pico: cuándo se llena y cuándo está vacío | 2–3 días | no | [7](2026-10-05-ronda-7.md) |
+| 22 | Comunicado a todos los socios con un toque | 3–4 días | no | [8](2026-10-05-ronda-8.md) |
+| 23 | Foto del socio en el check-in | 4–5 días | sí (chica) | [8](2026-10-05-ronda-8.md) |
+| 24 | Liquidación mensual de profes | 3–4 días | sí (chica) | [8](2026-10-05-ronda-8.md) |
+| 25 | Registro de actividad: «quién tocó qué» | 3–4 días | sí | [9](2026-10-05-ronda-9.md) |
+| 26 | Matrícula o inscripción como cargo único al alta | 2–3 días | sí (chica) | [9](2026-10-05-ronda-9.md) |
+| 27 | Eventos y seminarios puntuales con cupo e inscripción | ~1 semana | sí | [9](2026-10-05-ronda-9.md) |
 
 ## Ya evaluadas / diferidas (no volver a proponer)
 
