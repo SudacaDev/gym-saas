@@ -34,6 +34,9 @@ estado, no se vuelve a proponer. Toda idea nueva se agrega acá al proponerla. E
 | 22 | Comunicado a todos los socios con un toque | 3–4 días | no | [8](2026-10-05-ronda-8.md) |
 | 23 | Foto del socio en el check-in | 4–5 días | sí (chica) | [8](2026-10-05-ronda-8.md) |
 | 24 | Liquidación mensual de profes | 3–4 días | sí (chica) | [8](2026-10-05-ronda-8.md) |
+| 25 | Registro de actividad: «quién tocó qué» | 3–4 días | sí | [9](2026-10-05-ronda-9.md) |
+| 26 | Matrícula o inscripción como cargo único al alta | 2–3 días | sí (chica) | [9](2026-10-05-ronda-9.md) |
+| 27 | Eventos y seminarios puntuales con cupo e inscripción | ~1 semana | sí | [9](2026-10-05-ronda-9.md) |
 
 ## Ya evaluadas / diferidas (no volver a proponer)
 
