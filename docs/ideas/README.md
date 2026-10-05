@@ -25,6 +25,9 @@ estado, no se vuelve a proponer. Toda idea nueva se agrega acá al proponerla. E
 | 13 | «Cuánto me queda»: gastos fijos y resultado del mes | 3–4 días | sí | [5](#ronda-5) |
 | 14 | Alta por QR en el mostrador (el socio se carga solo) | ~1 semana | sí (chica) | [5](#ronda-5) |
 | 15 | Check-in que sigue andando sin internet | 1–2 semanas | no | [5](#ronda-5) |
+| 16 | «El box cierra»: feriado/receso con extensión de vencimientos | 3–4 días | no (opcional) | [6](2026-10-05-ronda-6.md) |
+| 17 | Exportar a Excel para el contador | 1–2 días | no | [6](2026-10-05-ronda-6.md) |
+| 18 | Motivo de baja en un toque | 2 días | sí (chica) | [6](2026-10-05-ronda-6.md) |
 
 ## Ya evaluadas / diferidas (no volver a proponer)
 
