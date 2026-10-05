@@ -501,6 +501,31 @@
     - depends_on: T-20260821-004 (completada)
 
 ### Tareas pendientes
+- [ ] Avisos de vencimiento por WhatsApp con un toque (lista "a quién avisar hoy" + botón wa.me con mensaje prellenado es-AR)
+    - id: T-20261005-001
+    - type: feature
+    - priority: 1
+    - idea: IDEA-20261005-001 (ver `ideas.md`)
+    - description: hoy el recordatorio sale solo por mail (`lib/email/membership-reminder.ts`). Lista de socios que vencen en N días o ya vencidos, con link `wa.me` y mensaje prellenado. Sin API ni WhatsApp Business. `members.phone` ya existe.
+    - esfuerzo: S (3-5 días)
+    - open_questions: ¿N días por defecto? ¿qué hacer con socios sin teléfono? ¿respetar `emailOptOut` o es un opt-out distinto?
+- [ ] Importador de planilla (Excel/CSV/Google Sheets) para socios, planes y vencimientos
+    - id: T-20261005-002
+    - type: feature
+    - priority: 2
+    - idea: IDEA-20261005-002 (ver `ideas.md`)
+    - description: "de tu cuaderno a BoxFlow en 10 minutos". Vista previa antes de importar, detección de duplicados por DNI, validación de DNI y teléfono.
+    - esfuerzo: M (1-2 semanas)
+    - open_questions: ¿formato de columnas fijo o mapeo manual? ¿qué pasa con duplicados: saltear o actualizar?
+- [ ] Cobro de cuota por link/QR de Mercado Pago con conciliación automática
+    - id: T-20261005-003
+    - type: feature
+    - priority: 3
+    - idea: IDEA-20261005-003 (ver `ideas.md`)
+    - severity: high (webhooks + pagos append-only)
+    - description: el pago se registra solo vía webhook y el recibo sale por Resend. Idempotencia obligatoria sobre `payments` (append-only).
+    - esfuerzo: L (3-5 semanas)
+    - depends_on: decisión de modelo de precios (PRODUCT.md lo deja sin decidir — no inventar)
 
 ### Tareas completadas (referenciar en `progress.md`)
 - [x] Visual de horarios semanales (UI)
