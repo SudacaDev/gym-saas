@@ -31,6 +31,9 @@ estado, no se vuelve a proponer. Toda idea nueva se agrega acá al proponerla. E
 | 19 | Pago en dos veces: saldo pendiente de la cuota | 3–4 días | no (probable) | [7](2026-10-05-ronda-7.md) |
 | 20 | Cuota compartida: pareja o hermanos | ~1 semana | sí (chica) | [7](2026-10-05-ronda-7.md) |
 | 21 | Horas pico: cuándo se llena y cuándo está vacío | 2–3 días | no | [7](2026-10-05-ronda-7.md) |
+| 22 | Comunicado a todos los socios con un toque | 3–4 días | no | [8](2026-10-05-ronda-8.md) |
+| 23 | Foto del socio en el check-in | 4–5 días | sí (chica) | [8](2026-10-05-ronda-8.md) |
+| 24 | Liquidación mensual de profes | 3–4 días | sí (chica) | [8](2026-10-05-ronda-8.md) |
 
 ## Ya evaluadas / diferidas (no volver a proponer)
 
