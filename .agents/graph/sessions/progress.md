@@ -5,6 +5,7 @@
 > en que el contexto de la conversación sobreviva.
 
 ## Estado actual
+- **Ideas de negocio/producto (2026-10-05):** registro único en `docs/ideas/README.md` (15 ideas en 5 rondas, más las ya evaluadas/diferidas). Leerlo antes de proponer ideas nuevas. No hay ideas en `tasks.md`: pasan a tarea solo si el usuario las acepta.
 - Instalación: brownfield — completada el 2026-08-20
 - Indexación inicial: completa (55 nodos / 42 edges / 7 comunidades al instalar)
 - Reindexación más reciente: 2026-08-25 (`/graph-ia:graph --reindex`) — 190 nodos / 100 edges / 9 comunidades. **Desactualizado** — todavía no incluye T-20260825-007.

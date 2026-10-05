@@ -30,3 +30,6 @@ Este proyecto sigue el patrón **GRAPH**. Antes de actuar:
 ## Regla de oro
 Si una acción no está clasificada en `.agents/graph/gates/policy.yml`, tratala como severidad `high` por defecto. Nunca asumas bajo riesgo por omisión.
 <!-- /graph-ia:bridge-block -->
+
+## Ideas de producto
+Antes de proponer ideas de negocio o producto nuevas, leé `docs/ideas/README.md`: si una idea ya está ahí (propuesta, aprobada o descartada), no la vuelvas a subir. Agregá cada idea nueva a ese archivo al proponerla.
