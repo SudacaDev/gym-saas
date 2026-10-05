@@ -18,6 +18,9 @@ para no repetir.
 | 10 | Referidos: «vino de parte de…» | 1–2 días | sí (chica) | [4](#ronda-4) |
 | 11 | Resumen del lunes por mail al dueño | 3–4 días | no | [4](#ronda-4) |
 | 12 | País por box (moneda, documento, teléfono) | ~1 semana | sí (chica) | [4](#ronda-4) |
+| 13 | «Cuánto me queda»: gastos fijos y resultado del mes | 3–4 días | sí | [5](#ronda-5) |
+| 14 | Alta por QR en el mostrador (el socio se carga solo) | ~1 semana | sí (chica) | [5](#ronda-5) |
+| 15 | Check-in que sigue andando sin internet | 1–2 semanas | no | [5](#ronda-5) |
 
 ## Ya evaluadas / diferidas (no volver a proponer)
 
@@ -66,3 +69,37 @@ Cobro rápido, prospectos, ficha de salud, recordatorio de vencimiento por mail)
 
 **Orden sugerido:** 11 (barata, usa lo que ya hay), 10 (barata, alimenta la idea 5) y 12 cuando haya un primer box
 fuera de Argentina.
+
+## Ronda 5
+
+Revisado antes de proponer: rondas 1–4, ramas `ideas/boxflow-2026-10` y `claude/ideas-negocio-boxflow`, `PRODUCT.md`,
+`tasks.md`, `progress.md` y el código. Verificado: no hay gastos, offline/service worker ni alta por autoservicio del
+socio. Solo son ideas; no están en `tasks.md` ni se implementó nada.
+
+### 13. «Cuánto me queda»: gastos fijos y resultado del mes
+- **Problema:** el dashboard muestra lo que entra, pero el dueño de un solo box piensa en lo que le queda después de
+  alquiler, sueldos y servicios. Hoy lo calcula aparte, en un cuaderno.
+- **Encaje:** una sola cifra de gastos fijos del mes, no contabilidad ni reportes. Distinta del cierre de caja (idea 2),
+  que mira entradas del día. Principio 4: va como dato secundario bajo el número de ingresos, sin competir con él.
+- **Alcance:** tabla `fixed_expenses` (concepto, monto mensual) con RLS por tenant; resultado estimado = ingresos del mes
+  menos gastos cargados. Visible solo para `owner` (mismo criterio que T-20260821-006). Sin categorías ni impuestos.
+- **Esfuerzo:** 3–4 días. Migración (gate `high`), un diálogo de carga y una línea en el dashboard.
+
+### 14. Alta por QR en el mostrador
+- **Problema:** recepción tipea nombre, DNI, ficha de salud y teléfono de cada socio nuevo, con la persona esperando.
+- **Encaje:** el socio completa sus datos desde su celular y recepción solo confirma. Cero curva y sin crear cuentas: los
+  socios siguen sin login, el acceso es un token de un solo uso con vencimiento corto.
+- **Alcance:** ruta pública acotada que crea un alta pendiente; recepción la ve y la aprueba. Incluye aceptación de
+  deslinde/consentimiento (guardar fecha de aceptación). Dato sensible: misma regla de acceso que hoy (Ley 25.326).
+- **Esfuerzo:** ~1 semana. Migración chica (consentimiento, estado pendiente) con gate `high`; lo delicado es exponer
+  solo ese endpoint saltando RLS de forma segura y evitar spam.
+
+### 15. Check-in que sigue andando sin internet
+- **Problema:** si el wifi del box se cae, la puerta se frena y se rompe el principio 3.
+- **Encaje:** un box tiene un router, no infraestructura de cadena. Check-in sigue funcionando y se sincroniza solo.
+- **Alcance:** PWA con service worker y cola local de check-ins que se envía al volver la señal. Sin schema nuevo si el
+  envío es idempotente (clave de cliente por check-in).
+- **Esfuerzo:** 1–2 semanas. Riesgo principal: duplicados y estado de membresía desactualizado offline; mostrar el
+  último estado conocido sin bloquear.
+
+**Orden sugerido:** 13 (barata, dolor real del dueño), 14 y 15 cuando el onboarding o la conectividad sean un freno.
