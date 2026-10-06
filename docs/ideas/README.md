@@ -49,6 +49,9 @@ estado, no se vuelve a proponer. Toda idea nueva se agrega acá al proponerla. E
 | 34 | Cancelar una clase puntual y avisar a los anotados | 2–3 días | sí (chica) | [12](2026-10-06-ronda-12.md) |
 | 35 | Pausar membresía con fecha de vuelta (se reactiva sola) | 2–3 días | sí (chica) | [12](2026-10-06-ronda-12.md) |
 | 36 | Checklist de apertura y cierre con sello de hora | 3–4 días | sí (chica) | [12](2026-10-06-ronda-12.md) |
+| 37 | Datos de cobro del box: alias/CBU en recibos y avisos | 1–2 días | sí (chica) | [13](2026-10-06-ronda-13.md) |
+| 38 | Días de gracia antes de marcar «vencido» | 2–3 días | sí (chica) | [13](2026-10-06-ronda-13.md) |
+| 39 | Bitácora de la ficha: notas fechadas del profe | 3 días | sí | [13](2026-10-06-ronda-13.md) |
 
 ## Ya evaluadas / diferidas (no volver a proponer)
 
