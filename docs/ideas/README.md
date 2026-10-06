@@ -43,6 +43,9 @@ estado, no se vuelve a proponer. Toda idea nueva se agrega acá al proponerla. E
 | 31 | Clase de prueba con seguimiento (prospecto) | 2 días | sí (chica) | [11](2026-10-06-ronda-11.md) |
 | 32 | Bienvenida automática al socio nuevo (día 0 y 7) | 3 días | sí (chica) | [11](2026-10-06-ronda-11.md) |
 | 33 | Promo con fecha límite en un plan | 3–4 días | sí (chica) | [11](2026-10-06-ronda-11.md) |
+| 34 | Contacto de emergencia en la ficha del socio | 1–2 días | sí (chica) | [12](2026-10-06-ronda-12.md) |
+| 35 | Franja horaria de acceso por plan ("fuera de pico") | 3–4 días | sí (chica) | [12](2026-10-06-ronda-12.md) |
+| 36 | Aforo en vivo (candidata, necesita decisión antes de estimar) | sin estimar | sí | [12](2026-10-06-ronda-12.md) |
 | 34 | Cancelar una clase puntual y avisar a los anotados | 2–3 días | sí (chica) | [12](2026-10-06-ronda-12.md) |
 | 35 | Pausar membresía con fecha de vuelta (se reactiva sola) | 2–3 días | sí (chica) | [12](2026-10-06-ronda-12.md) |
 | 36 | Checklist de apertura y cierre con sello de hora | 3–4 días | sí (chica) | [12](2026-10-06-ronda-12.md) |
