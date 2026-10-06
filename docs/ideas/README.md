@@ -40,6 +40,9 @@ estado, no se vuelve a proponer. Toda idea nueva se agrega acá al proponerla. E
 | 28 | Hitos del socio: «hoy cumple 100 clases» | 1–2 días | no | [10](2026-10-06-ronda-10.md) |
 | 29 | Extras mensuales sobre la cuota (casillero, nutricionista) | 3–4 días | sí (chica) | [10](2026-10-06-ronda-10.md) |
 | 30 | Borrar o exportar los datos de un socio | 2–3 días | sí (chica) | [10](2026-10-06-ronda-10.md) |
+| 31 | Clase de prueba con seguimiento (prospecto) | 2 días | sí (chica) | [11](2026-10-06-ronda-11.md) |
+| 32 | Bienvenida automática al socio nuevo (día 0 y 7) | 3 días | sí (chica) | [11](2026-10-06-ronda-11.md) |
+| 33 | Promo con fecha límite en un plan | 3–4 días | sí (chica) | [11](2026-10-06-ronda-11.md) |
 
 ## Ya evaluadas / diferidas (no volver a proponer)
 
