@@ -37,6 +37,9 @@ estado, no se vuelve a proponer. Toda idea nueva se agrega acá al proponerla. E
 | 25 | Registro de actividad: «quién tocó qué» | 3–4 días | sí | [9](2026-10-05-ronda-9.md) |
 | 26 | Matrícula o inscripción como cargo único al alta | 2–3 días | sí (chica) | [9](2026-10-05-ronda-9.md) |
 | 27 | Eventos y seminarios puntuales con cupo e inscripción | ~1 semana | sí | [9](2026-10-05-ronda-9.md) |
+| 28 | Hitos del socio: «hoy cumple 100 clases» | 1–2 días | no | [10](2026-10-06-ronda-10.md) |
+| 29 | Extras mensuales sobre la cuota (casillero, nutricionista) | 3–4 días | sí (chica) | [10](2026-10-06-ronda-10.md) |
+| 30 | Borrar o exportar los datos de un socio | 2–3 días | sí (chica) | [10](2026-10-06-ronda-10.md) |
 
 ## Ya evaluadas / diferidas (no volver a proponer)
 
