@@ -5,6 +5,7 @@
 > en que el contexto de la conversación sobreviva.
 
 ## Estado actual
+- **Ideas de negocio/producto (2026-10-06):** registro único en `docs/ideas/README.md` (36 ideas en 12 rondas, más las ya evaluadas/diferidas). Ronda 12 agregó: cancelar clase puntual con aviso a anotados, pausa de membresía con fecha de vuelta automática, checklist de apertura/cierre. Leerlo antes de proponer ideas nuevas. No hay ideas en `tasks.md`: pasan a tarea solo si el usuario las acepta.
 - **Ideas de negocio/producto (2026-10-05):** registro único en `docs/ideas/README.md` (21 ideas en 7 rondas, más las ya evaluadas/diferidas). Leerlo antes de proponer ideas nuevas. No hay ideas en `tasks.md`: pasan a tarea solo si el usuario las acepta.
 - **Ideas de negocio/producto (2026-10-05):** registradas en `ideas.md` (IDEA-20261005-001/002/003: WhatsApp de vencimientos, importador de planilla, cobro Mercado Pago). Leer ese archivo antes de proponer ideas nuevas.
 - Instalación: brownfield — completada el 2026-08-20
