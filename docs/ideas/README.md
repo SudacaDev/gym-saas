@@ -46,6 +46,9 @@ estado, no se vuelve a proponer. Toda idea nueva se agrega acá al proponerla. E
 | 34 | Contacto de emergencia en la ficha del socio | 1–2 días | sí (chica) | [12](2026-10-06-ronda-12.md) |
 | 35 | Franja horaria de acceso por plan ("fuera de pico") | 3–4 días | sí (chica) | [12](2026-10-06-ronda-12.md) |
 | 36 | Aforo en vivo (candidata, necesita decisión antes de estimar) | sin estimar | sí | [12](2026-10-06-ronda-12.md) |
+| 34 | Cancelar una clase puntual y avisar a los anotados | 2–3 días | sí (chica) | [12](2026-10-06-ronda-12.md) |
+| 35 | Pausar membresía con fecha de vuelta (se reactiva sola) | 2–3 días | sí (chica) | [12](2026-10-06-ronda-12.md) |
+| 36 | Checklist de apertura y cierre con sello de hora | 3–4 días | sí (chica) | [12](2026-10-06-ronda-12.md) |
 
 ## Ya evaluadas / diferidas (no volver a proponer)
 
