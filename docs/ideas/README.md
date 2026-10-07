@@ -52,6 +52,9 @@ estado, no se vuelve a proponer. Toda idea nueva se agrega acá al proponerla. E
 | 37 | Datos de cobro del box: alias/CBU en recibos y avisos | 1–2 días | sí (chica) | [13](2026-10-06-ronda-13.md) |
 | 38 | Días de gracia antes de marcar «vencido» | 2–3 días | sí (chica) | [13](2026-10-06-ronda-13.md) |
 | 39 | Bitácora de la ficha: notas fechadas del profe | 3 días | sí | [13](2026-10-06-ronda-13.md) |
+| 40 | Pizarra del día: el WOD visible en recepción | 3–4 días | sí (chica) | [14](2026-10-07-ronda-14.md) |
+| 41 | Suplencia de profe en una clase puntual | 2 días | sí (chica) | [14](2026-10-07-ronda-14.md) |
+| 42 | Pulso del socio nuevo: pregunta de un toque a los 30 días | ~1 semana | sí (chica) | [14](2026-10-07-ronda-14.md) |
 
 ## Ya evaluadas / diferidas (no volver a proponer)
 
