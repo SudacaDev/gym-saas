@@ -55,6 +55,9 @@ estado, no se vuelve a proponer. Toda idea nueva se agrega acá al proponerla. E
 | 40 | Pizarra del día: el WOD visible en recepción | 3–4 días | sí (chica) | [14](2026-10-07-ronda-14.md) |
 | 41 | Suplencia de profe en una clase puntual | 2 días | sí (chica) | [14](2026-10-07-ronda-14.md) |
 | 42 | Pulso del socio nuevo: pregunta de un toque a los 30 días | ~1 semana | sí (chica) | [14](2026-10-07-ronda-14.md) |
+| 43 | Meta del mes: objetivo de ingresos bajo el número grande | 1–2 días | sí (chica) | [15](2026-10-08-ronda-15.md) |
+| 44 | Estrenar con datos de ejemplo (y borrarlos de un toque) | 3–4 días | sí (chica) | [15](2026-10-08-ronda-15.md) |
+| 45 | Socio repetido: aviso al cargar y fusión de fichas | 3–4 días | no (probable) | [15](2026-10-08-ronda-15.md) |
 
 ## Ya evaluadas / diferidas (no volver a proponer)
 
