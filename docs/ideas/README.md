@@ -61,6 +61,9 @@ estado, no se vuelve a proponer. Toda idea nueva se agrega acá al proponerla. E
 | 46 | «Mi horario de siempre»: reserva fija semanal | ~1 semana | sí (chica) | [16](2026-10-09-ronda-16.md) |
 | 47 | Pedir una reseña a quien está contento | 2 días | sí (chica) | [16](2026-10-09-ronda-16.md) |
 | 48 | Volver a llamar a los que se fueron (ex-socios) | 2–3 días | sí (chica) | [16](2026-10-09-ronda-16.md) |
+| 49 | Quedan pocas: stock mínimo en el kiosco | 2–3 días | sí (chica) | [17](2026-10-09-ronda-17.md) |
+| 50 | Cambio de plan a mitad de período | 3–4 días | no (probable) | [17](2026-10-09-ronda-17.md) |
+| 51 | Quién atiende: PIN corto en la tablet del mostrador | ~1 semana | sí (chica) | [17](2026-10-09-ronda-17.md) |
 
 ## Ya evaluadas / diferidas (no volver a proponer)
 
