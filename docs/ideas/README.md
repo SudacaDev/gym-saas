@@ -58,6 +58,9 @@ estado, no se vuelve a proponer. Toda idea nueva se agrega acá al proponerla. E
 | 43 | Meta del mes: objetivo de ingresos bajo el número grande | 1–2 días | sí (chica) | [15](2026-10-08-ronda-15.md) |
 | 44 | Estrenar con datos de ejemplo (y borrarlos de un toque) | 3–4 días | sí (chica) | [15](2026-10-08-ronda-15.md) |
 | 45 | Socio repetido: aviso al cargar y fusión de fichas | 3–4 días | no (probable) | [15](2026-10-08-ronda-15.md) |
+| 46 | «Mi horario de siempre»: reserva fija semanal | ~1 semana | sí (chica) | [16](2026-10-09-ronda-16.md) |
+| 47 | Pedir una reseña a quien está contento | 2 días | sí (chica) | [16](2026-10-09-ronda-16.md) |
+| 48 | Volver a llamar a los que se fueron (ex-socios) | 2–3 días | sí (chica) | [16](2026-10-09-ronda-16.md) |
 
 ## Ya evaluadas / diferidas (no volver a proponer)
 
