@@ -58,6 +58,9 @@ estado, no se vuelve a proponer. Toda idea nueva se agrega acá al proponerla. E
 | 43 | Meta del mes: objetivo de ingresos bajo el número grande | 1–2 días | sí (chica) | [15](2026-10-08-ronda-15.md) |
 | 44 | Estrenar con datos de ejemplo (y borrarlos de un toque) | 3–4 días | sí (chica) | [15](2026-10-08-ronda-15.md) |
 | 45 | Socio repetido: aviso al cargar y fusión de fichas | 3–4 días | no (probable) | [15](2026-10-08-ronda-15.md) |
+| 52 | Cargar a la cuenta del socio: el kiosco suma a la próxima cuota | 3–4 días | sí (chica) | [18](2026-10-13-ronda-18.md) |
+| 53 | Avisos que no llegaron: mails rebotados y socios inalcanzables | 2–3 días | sí (chica) | [18](2026-10-13-ronda-18.md) |
+| 54 | Aviso de lesión en la lista de la clase | 1–2 días | no | [18](2026-10-13-ronda-18.md) |
 
 ## Ya evaluadas / diferidas (no volver a proponer)
 
