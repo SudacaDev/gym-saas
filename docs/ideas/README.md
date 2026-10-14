@@ -58,6 +58,9 @@ estado, no se vuelve a proponer. Toda idea nueva se agrega acá al proponerla. E
 | 43 | Meta del mes: objetivo de ingresos bajo el número grande | 1–2 días | sí (chica) | [15](2026-10-08-ronda-15.md) |
 | 44 | Estrenar con datos de ejemplo (y borrarlos de un toque) | 3–4 días | sí (chica) | [15](2026-10-08-ronda-15.md) |
 | 45 | Socio repetido: aviso al cargar y fusión de fichas | 3–4 días | no (probable) | [15](2026-10-08-ronda-15.md) |
+| 46 | Fecha de cobro fija: «todos vencen el 10» con primer mes prorrateado | ~1 semana | sí (chica) | [16](2026-10-14-ronda-16.md) |
+| 47 | Cambio de plan a mitad de período sin perder el historial | 3–4 días | sí (chica) | [16](2026-10-14-ronda-16.md) |
+| 48 | Cortesía y becados: socios que no pagan y no ensucian el número | 2–3 días | sí (chica) | [16](2026-10-14-ronda-16.md) |
 
 ## Ya evaluadas / diferidas (no volver a proponer)
 
