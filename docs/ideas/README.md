@@ -61,6 +61,9 @@ estado, no se vuelve a proponer. Toda idea nueva se agrega acá al proponerla. E
 | 61 | Reservé y no vino: ausentismo en las clases con cupo | 2–3 días | no (umbral opcional) | [21](2026-10-19-ronda-21.md) |
 | 62 | Constancia de socio para obra social, empresa o reintegro | 2–3 días | no | [21](2026-10-19-ronda-21.md) |
 | 63 | Horarios de temporada: cambiar la grilla de una vez | ~1 semana | sí (chica) | [21](2026-10-19-ronda-21.md) |
+| 64 | Dos precios por plan: efectivo/transferencia y tarjeta | 2–3 días | sí (chica) | [21](2026-10-19-ronda-21.md) |
+| 65 | Casilleros y lugares numerados: quién tiene cuál | 3 días | sí (chica) | [21](2026-10-19-ronda-21.md) |
+| 66 | Invitado de un socio: pase de cortesía «traé a un amigo» | 2 días | no (probable) | [21](2026-10-19-ronda-21.md) |
 
 ## Ya evaluadas / diferidas (no volver a proponer)
 
