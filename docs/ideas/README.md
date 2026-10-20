@@ -58,6 +58,9 @@ estado, no se vuelve a proponer. Toda idea nueva se agrega acá al proponerla. E
 | 43 | Meta del mes: objetivo de ingresos bajo el número grande | 1–2 días | sí (chica) | [15](2026-10-08-ronda-15.md) |
 | 44 | Estrenar con datos de ejemplo (y borrarlos de un toque) | 3–4 días | sí (chica) | [15](2026-10-08-ronda-15.md) |
 | 45 | Socio repetido: aviso al cargar y fusión de fichas | 3–4 días | no (probable) | [15](2026-10-08-ronda-15.md) |
+| 67 | Deshacer en un toque: check-in o cobro al socio equivocado | 2–3 días | sí (chica) | [22](2026-10-20-ronda-22.md) |
+| 68 | Conciliar transferencias con el extracto (CSV del banco) | ~1 semana | no | [22](2026-10-20-ronda-22.md) |
+| 69 | Modo claro y letra grande en el mostrador | 2–3 días | no | [22](2026-10-20-ronda-22.md) |
 
 ## Ya evaluadas / diferidas (no volver a proponer)
 
