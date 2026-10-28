@@ -58,6 +58,9 @@ estado, no se vuelve a proponer. Toda idea nueva se agrega acá al proponerla. E
 | 43 | Meta del mes: objetivo de ingresos bajo el número grande | 1–2 días | sí (chica) | [15](2026-10-08-ronda-15.md) |
 | 44 | Estrenar con datos de ejemplo (y borrarlos de un toque) | 3–4 días | sí (chica) | [15](2026-10-08-ronda-15.md) |
 | 45 | Socio repetido: aviso al cargar y fusión de fichas | 3–4 días | no (probable) | [15](2026-10-08-ronda-15.md) |
+| 73 | Mediciones del socio: peso, cintura, % de grasa con evolución | 3–4 días | sí | [24](2026-10-28-ronda-24.md) |
+| 74 | Recado para la puerta: aviso que salta en el check-in | 1–2 días | sí (chica) | [24](2026-10-28-ronda-24.md) |
+| 75 | «Se liberó un lugar»: aviso al socio de la lista de espera | 1–2 días | no (probable) | [24](2026-10-28-ronda-24.md) |
 
 ## Ya evaluadas / diferidas (no volver a proponer)
 
