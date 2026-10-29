@@ -58,9 +58,13 @@ estado, no se vuelve a proponer. Toda idea nueva se agrega acá al proponerla. E
 | 43 | Meta del mes: objetivo de ingresos bajo el número grande | 1–2 días | sí (chica) | [15](2026-10-08-ronda-15.md) |
 | 44 | Estrenar con datos de ejemplo (y borrarlos de un toque) | 3–4 días | sí (chica) | [15](2026-10-08-ronda-15.md) |
 | 45 | Socio repetido: aviso al cargar y fusión de fichas | 3–4 días | no (probable) | [15](2026-10-08-ronda-15.md) |
+| 46 | Alta a mitad de mes: cuota proporcional | 1–2 días | no | [16](2026-10-29-ronda-16.md) |
+| 47 | Cambio de plan a mitad del período, con diferencia | 3 días | no (probable) | [16](2026-10-29-ronda-16.md) |
+| 48 | Aviso en el check-in: una línea que le aparece al socio en la puerta | 1–2 días | sí (chica) | [16](2026-10-29-ronda-16.md) |
 
 ## Ya evaluadas / diferidas (no volver a proponer)
 
+- Stock mínimo / control de inventario de productos — descartado por decisión explícita en T-20260826-012 («sin control de stock»).
 - Mercado Pago / cobro online — anotada en `.env.local.example`.
 - Automatización por WhatsApp — diferida en `db/schema/leads.ts`.
 - Credencial QR/NFC del socio — fuera de alcance en `app/api/v1/checkins/route.ts` mientras los socios no tengan login.
