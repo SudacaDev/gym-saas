@@ -58,6 +58,9 @@ estado, no se vuelve a proponer. Toda idea nueva se agrega acá al proponerla. E
 | 43 | Meta del mes: objetivo de ingresos bajo el número grande | 1–2 días | sí (chica) | [15](2026-10-08-ronda-15.md) |
 | 44 | Estrenar con datos de ejemplo (y borrarlos de un toque) | 3–4 días | sí (chica) | [15](2026-10-08-ronda-15.md) |
 | 45 | Socio repetido: aviso al cargar y fusión de fichas | 3–4 días | no (probable) | [15](2026-10-08-ronda-15.md) |
+| 76 | Pases de agregadores (Wellhub, TotalPass): contar visitas para conciliar | 3–4 días | sí (chica) | [25](2026-10-30-ronda-25.md) |
+| 77 | Escanear el DNI para el alta sin tipeo | ~1 semana | no | [25](2026-10-30-ronda-25.md) |
+| 78 | «Para completar»: fichas a las que les falta contacto o datos | 2 días | no | [25](2026-10-30-ronda-25.md) |
 
 ## Ya evaluadas / diferidas (no volver a proponer)
 
