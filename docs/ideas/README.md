@@ -58,6 +58,9 @@ estado, no se vuelve a proponer. Toda idea nueva se agrega acá al proponerla. E
 | 43 | Meta del mes: objetivo de ingresos bajo el número grande | 1–2 días | sí (chica) | [15](2026-10-08-ronda-15.md) |
 | 44 | Estrenar con datos de ejemplo (y borrarlos de un toque) | 3–4 días | sí (chica) | [15](2026-10-08-ronda-15.md) |
 | 45 | Socio repetido: aviso al cargar y fusión de fichas | 3–4 días | no (probable) | [15](2026-10-08-ronda-15.md) |
+| 46 | Vale de regalo: pase de un mes o de N clases | 3–4 días | sí (chica) | [16](2026-11-04-ronda-16.md) |
+| 47 | Marcas personales del socio (RM/PR) en la ficha | ~1 semana | sí (chica) | [16](2026-11-04-ronda-16.md) |
+| 48 | Formulario público «Quiero probar» (link para Instagram) | 2–3 días | sí (chica) | [16](2026-11-04-ronda-16.md) |
 
 ## Ya evaluadas / diferidas (no volver a proponer)
 
@@ -67,6 +70,7 @@ estado, no se vuelve a proponer. Toda idea nueva se agrega acá al proponerla. E
 - Vista de deudores — gap ya registrado en el gate de T-20260826-014.
 - Avisos de vencimiento por WhatsApp de un toque — propuesto en 3 ramas distintas (IDEA-20261005-001 y `claude/ideas-negocio-boxflow`). Pendiente de decidir; no volver a proponerlo.
 - Importador de planilla — ya es la idea 1 de este registro (también propuesto como IDEA-20261005-002).
+- Control de stock del kiosco — decidido en contra en T-20260826-012 («sin control de stock»); no volver a proponerlo.
 - Cobro por link/QR de Mercado Pago — propuesto otra vez como IDEA-20261005-003; sigue condicionado a definir el modelo de precios.
 
 ## Ronda 4
