@@ -61,6 +61,9 @@ estado, no se vuelve a proponer. Toda idea nueva se agrega acá al proponerla. E
 | 46 | Vale de regalo: pase de un mes o de N clases | 3–4 días | sí (chica) | [16](2026-11-04-ronda-16.md) |
 | 47 | Marcas personales del socio (RM/PR) en la ficha | ~1 semana | sí (chica) | [16](2026-11-04-ronda-16.md) |
 | 48 | Formulario público «Quiero probar» (link para Instagram) | 2–3 días | sí (chica) | [16](2026-11-04-ronda-16.md) |
+| 49 | Renovar en el mostrador: check-in de socio vencido se resuelve ahí | 2–3 días | no | [17](2026-11-04-ronda-17.md) |
+| 50 | «Qué plan me rinde»: socios e ingresos por plan | 2 días | no | [17](2026-11-04-ronda-17.md) |
+| 51 | Candidatos a plan largo (ofrecer trimestral/anual) | 2 días | no | [17](2026-11-04-ronda-17.md) |
 
 ## Ya evaluadas / diferidas (no volver a proponer)
 
