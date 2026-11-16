@@ -58,6 +58,9 @@ estado, no se vuelve a proponer. Toda idea nueva se agrega acá al proponerla. E
 | 43 | Meta del mes: objetivo de ingresos bajo el número grande | 1–2 días | sí (chica) | [15](2026-10-08-ronda-15.md) |
 | 44 | Estrenar con datos de ejemplo (y borrarlos de un toque) | 3–4 días | sí (chica) | [15](2026-10-08-ronda-15.md) |
 | 45 | Socio repetido: aviso al cargar y fusión de fichas | 3–4 días | no (probable) | [15](2026-10-08-ronda-15.md) |
+| 84 | «El profe no llegó»: aviso si la clase empieza y su profe no fichó | 1–2 días | no | [28](2026-11-16-ronda-28.md) |
+| 85 | «Hoy tenés clase»: recordatorio con «no puedo ir» que libera el lugar | 3–4 días | no (probable) | [28](2026-11-16-ronda-28.md) |
+| 86 | Red de independientes: el socio de viaje entrena en otro box BoxFlow (candidata, necesita decisión) | ~2 semanas | sí | [28](2026-11-16-ronda-28.md) |
 
 ## Ya evaluadas / diferidas (no volver a proponer)
 
