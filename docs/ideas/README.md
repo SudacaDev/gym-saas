@@ -61,6 +61,8 @@ estado, no se vuelve a proponer. Toda idea nueva se agrega acá al proponerla. E
 | 84 | «El profe no llegó»: aviso si la clase empieza y su profe no fichó | 1–2 días | no | [28](2026-11-16-ronda-28.md) |
 | 85 | «Hoy tenés clase»: recordatorio con «no puedo ir» que libera el lugar | 3–4 días | no (probable) | [28](2026-11-16-ronda-28.md) |
 | 86 | Red de independientes: el socio de viaje entrena en otro box BoxFlow (candidata, necesita decisión) | ~2 semanas | sí | [28](2026-11-16-ronda-28.md) |
+| 87 | Plan por disciplina: el check-in avisa si el plan no incluye esa clase | 3–4 días | sí (chica) | [29](2026-11-18-ronda-29.md) |
+| 88 | Sonido de la puerta: tono distinto si el socio está al día o vencido | 1 día | no | [29](2026-11-18-ronda-29.md) |
 
 ## Ya evaluadas / diferidas (no volver a proponer)
 
